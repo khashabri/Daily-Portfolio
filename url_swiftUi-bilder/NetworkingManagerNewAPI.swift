@@ -60,7 +60,6 @@ struct CompData: Codable & Identifiable & Decodable {
     var close3MChange: Double = 0
     var volume3MChange: Double = 0
     
-    
     var Days100Before: [Double]  = []
     
     enum CodingKeys: String, CodingKey, Decodable {
@@ -100,52 +99,52 @@ class NetworkingManager: ObservableObject {
             
             DispatchQueue.main.async {
                 // taking out the latest company data
-                var arrayOfTodayCompData = welcome.compData[welcome.metaData.lastRefreshed]!
-                arrayOfTodayCompData.makeDoubles(himself: arrayOfTodayCompData)
+                var compCharacteristics = welcome.compData[welcome.metaData.lastRefreshed]!
+                compCharacteristics.makeDoubles(himself: compCharacteristics)
                 
-                // sorting the total recieved compData
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-dd-mm"
+//                // sorting the total recieved compData
+//                let formatter = DateFormatter()
+//                formatter.dateFormat = "yyyy-dd-mm"
+//
+//                var sortedCompData = welcome.compData.map { (formatter.date(from: $0)!, $0, $1) }
+//                .sorted { $0.0 < $1.0 }
+//                .map { ($0.1, $0.2) }
+//
+//                sortedCompData = sortedCompData.reversed()
+                let totDatesArr = welcome.compData.keys.sorted(by: >)
                 
-                var sortedCompData = welcome.compData.map { (formatter.date(from: $0)!, $0, $1) }
-                .sorted { $0.0 < $1.0 }
-                .map { ($0.1, $0.2) }
+                compCharacteristics.Days100Before = welcome.compData.values(of: totDatesArr)
                 
-                sortedCompData = sortedCompData.reversed()
-                
-                // attaching the last 100 days prices to arrayOfTodayCompData
-                for (_, value) in sortedCompData{
-                    arrayOfTodayCompData.Days100Before.append(Double(value.s_close)!)
-                }
+                let compToday = welcome.compData[totDatesArr[0]]!
+                let compYesterday = welcome.compData[totDatesArr[1]]!
+                let compWeekBef = welcome.compData[totDatesArr[5]]!
+                let comp30DaysBef = welcome.compData[totDatesArr[22]]!
+                let comp3MoBef = welcome.compData[totDatesArr[66]]!
                 
                 // calc pchange
-                arrayOfTodayCompData.pchange = calcRateD(x: arrayOfTodayCompData.Days100Before[0], y: arrayOfTodayCompData.Days100Before[1])
+                compCharacteristics.pchange = calcRateD(x: compCharacteristics.Days100Before[0], y: compCharacteristics.Days100Before[1])
                 
                 // saving company symbol and the last data check date
-                arrayOfTodayCompData.symbol = welcome.metaData.symbol
-                arrayOfTodayCompData.lastRefreshed = welcome.metaData.lastRefreshed
+                compCharacteristics.symbol = welcome.metaData.symbol
+                compCharacteristics.lastRefreshed = welcome.metaData.lastRefreshed
 
                 // 1 Day base calculations
-                arrayOfTodayCompData.volumeDayChange = calcRateS(x: sortedCompData[0].1.s_volume, y: sortedCompData[1].1.s_volume)
+                compCharacteristics.volumeDayChange = calcRateS(x: compToday.s_volume, y: compYesterday.s_volume)
                 
                 // 30 Days base [22] calculations
-                arrayOfTodayCompData.close1MChange = calcRateS(x: sortedCompData[0].1.s_close, y: sortedCompData[22].1.s_close)
-                arrayOfTodayCompData.volume1MChange = calcRateS(x: sortedCompData[0].1.s_volume, y: sortedCompData[22].1.s_volume)
+                compCharacteristics.close1MChange = calcRateS(x: compToday.s_close, y: comp30DaysBef.s_close)
+                compCharacteristics.volume1MChange = calcRateS(x: compToday.s_volume, y: comp30DaysBef.s_volume)
                 
                 // weekly Days base [5] calculations
-                arrayOfTodayCompData.closeWeekChange = calcRateS(x: sortedCompData[0].1.s_close, y: sortedCompData[5].1.s_close)
-                arrayOfTodayCompData.volumeWeekChange = calcRateS(x: sortedCompData[0].1.s_volume, y: sortedCompData[5].1.s_volume)
+                compCharacteristics.closeWeekChange = calcRateS(x: compToday.s_close, y: compWeekBef.s_close)
+                compCharacteristics.volumeWeekChange = calcRateS(x: compToday.s_volume, y: compWeekBef.s_volume)
                 
                 // 3m Days base [66] calculations
-                arrayOfTodayCompData.close3MChange = calcRateS(x: sortedCompData[0].1.s_close, y: sortedCompData[66].1.s_close)
-                arrayOfTodayCompData.volume3MChange = calcRateS(x: sortedCompData[0].1.s_volume, y: sortedCompData[66].1.s_volume)
+                compCharacteristics.close3MChange = calcRateS(x: compToday.s_close, y: comp3MoBef.s_close)
+                compCharacteristics.volume3MChange = calcRateS(x: compToday.s_volume, y: comp3MoBef.s_volume)
                 
-                print(welcome.compData)
-//                print("###############")
-//                print(arrayOfTodayCompData)
-                completion(arrayOfTodayCompData)
-                
-//                print(roundGoodS(x: arrayOfTodayCompData.s_low))
+                completion(compCharacteristics)
+            
             }
         }.resume()
     }
