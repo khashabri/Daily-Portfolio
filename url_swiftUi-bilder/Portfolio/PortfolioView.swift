@@ -9,12 +9,15 @@
 import SwiftUI
 
 struct PortfolioView: View {
+    @State var userData = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
+    
     var body: some View {
         NavigationView{
             VStack{
                 List(0..<3) {_ in
                     Text("Item 1")
                 }
+                .onAppear { self.buildElements() }
                 
                 Form {
                     
@@ -36,6 +39,12 @@ struct PortfolioView: View {
             }
             
             .navigationBarTitle(Text("Portfolio"))
+        }
+    }
+    
+    private func buildElements() {
+        NetworkingManagerPortfolio(userInput: userData).getData { compPortfolioOutput in
+            print(compPortfolioOutput)
         }
     }
 }

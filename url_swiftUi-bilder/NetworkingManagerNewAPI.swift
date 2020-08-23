@@ -102,15 +102,6 @@ class NetworkingManager: ObservableObject {
                 var compCharacteristics = welcome.compData[welcome.metaData.lastRefreshed]!
                 compCharacteristics.makeDoubles(himself: compCharacteristics)
                 
-//                // sorting the total recieved compData
-//                let formatter = DateFormatter()
-//                formatter.dateFormat = "yyyy-dd-mm"
-//
-//                var sortedCompData = welcome.compData.map { (formatter.date(from: $0)!, $0, $1) }
-//                .sorted { $0.0 < $1.0 }
-//                .map { ($0.1, $0.2) }
-//
-//                sortedCompData = sortedCompData.reversed()
                 let totDatesArr = welcome.compData.keys.sorted(by: >)
                 
                 compCharacteristics.Days100Before = welcome.compData.values(of: totDatesArr)

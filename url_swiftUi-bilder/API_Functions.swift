@@ -51,11 +51,13 @@ func get_before_yesterday() -> String {
 //    return overall
 //}
 
-func MakeApiStringUrl(comp_symbol: String) -> String {
+func MakeApiStringUrl(comp_symbol: String, outputsize: String = "compact") -> String {
     let part1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="
     let part2 = comp_symbol
-    let part3 = "&outputsize=compact&apikey=4HX8NVQU9MV6J5LY"
-    let overall = part1+part2+part3
+    let part3 = "&outputsize="
+    let part4 = outputsize
+    let part5 = "&apikey=4HX8NVQU9MV6J5LY"
+    let overall = part1+part2+part3+part4+part5
 
     return overall
 }

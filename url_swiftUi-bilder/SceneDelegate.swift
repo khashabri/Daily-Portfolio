@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 
 class UserSettings: ObservableObject {
-    @Published var compNames = ["AMD", "AAPL"]
+    @Published var compNames = ["AAPL"]
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

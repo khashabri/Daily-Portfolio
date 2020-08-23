@@ -103,7 +103,7 @@ class NetworkingManagerPortfolio: ObservableObject {
         self.compPortfolioOutput.purchaseDate = userInput.purchaseDate
         self.compPortfolioOutput.purchaseAmount = userInput.purchaseAmount
         
-        self.urlString = MakeApiStringUrl(comp_symbol: compPortfolioOutput.compSymbol)
+        self.urlString = MakeApiStringUrl(comp_symbol: compPortfolioOutput.compSymbol, outputsize: "full")
     }
 
     func getData(completion: @escaping (CompPortfolioOutput) -> ()){
@@ -130,6 +130,8 @@ class NetworkingManagerPortfolio: ObservableObject {
                 self.compPortfolioOutput.gainHistory = self.compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
 
                 self.compPortfolioOutput.currentGain = roundGoodD(x: (prices.first! - prices.last!) / prices.last!)
+                
+                self.compPortfolioOutput.totalInvestmentAmount = self.compPortfolioOutput.purchaseAmount * prices.last!
 
                 completion(self.compPortfolioOutput)
             }
