@@ -8,29 +8,48 @@
 
 import SwiftUI
 
+var compPortfolioOutputOfflineSample = JsonOfflineCompPortfolioOutput()
+
 struct PortfolioView: View {
-    @State var userData = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
+    
+    @State var userData = [settingsForPreview.samplePortInput1, settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput3]
+    
+    @State var existingInputs: [UserInput] = []
+    @State var wholeData: [CompPortfolioOutput] = []
+    @State var totalInvestment = 0.0
+    @State var totalValue = 0.0
+    @State var rendite = 0.0
+    @State var renditePercent = 0.0
     
     var body: some View {
         NavigationView{
             VStack{
-                List(0..<3) {_ in
-                    Text("Item 1")
+                List() {
+                    
+                    ForEach(wholeData) {aCompPortRes in
+                        RowViewPortfolio(aPortElement: aCompPortRes)
+                    }
+
                 }
                 .onAppear { self.buildElements() }
                 
                 Form {
                     
-                    Section(header: Text("ABOUT")) {
+                    Section(header: Text("Total Result")) {
                         HStack {
-                            Text("Version")
+                            Text("Investment")
                             Spacer()
-                            Text("2.2.1")
+                            Text(String(roundGoodD(x: totalInvestment)))
                         }
                         HStack {
-                            Text("Copyright")
+                            Text("Current Value")
                             Spacer()
-                            Text("@ khashabri")
+                            Text(String(roundGoodD(x: totalValue)))
+                        }
+                        HStack {
+                            Text("Rendite")
+                            Spacer()
+                            Text(String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
                         }
                     }
                 }
@@ -43,14 +62,26 @@ struct PortfolioView: View {
     }
     
     private func buildElements() {
-        NetworkingManagerPortfolio(userInput: userData).getData { compPortfolioOutput in
-            print(compPortfolioOutput)
+        for input in userData {
+            if !self.existingInputs.contains(input){
+                existingInputs.append(input)
+                NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
+                    print(compPortfolioOutput)
+                    self.wholeData.append(compPortfolioOutput)
+                    self.totalInvestment += compPortfolioOutput.totalInvestment
+                    self.totalValue += compPortfolioOutput.totalCurrentValue
+                    
+                    self.rendite = self.totalValue - self.totalInvestment
+                    
+                    self.renditePercent = calcRateD(x: self.totalValue, y: self.totalInvestment)
+                }
+            }
         }
     }
 }
 
 struct PortfolioView_Previews: PreviewProvider {
     static var previews: some View {
-        PortfolioView()
+        PortfolioView().environmentObject(settingsForPreview)
     }
 }

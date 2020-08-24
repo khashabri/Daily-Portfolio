@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-var offlineData: [CompData] = [JsonOffline()]
+var offlineData: [CompData] = [JsonOfflineCompData()]
 var settingsForPreview = UserSettings()
 
 struct ContentView: View {
     @State var wholeData: [CompData] = []
-    @State var existingNames: [String] = []
+    @State var existingNames: [String] = ["AAPL", "SNAP"]
     @State var isSearching: Bool = false
     @State var searchTerm: String = ""
     @State var lastUpdateDate: String = ""

@@ -82,41 +82,6 @@ func getKey(value: String) -> String {
     return key
 }
 
-func JsonOffline() -> CompData {
-    let url = Bundle.main.url(forResource: "AmdOfflineApiData", withExtension: ".txt")!
-    let data = try! Data(contentsOf: url)
-    let welcome = try! JSONDecoder().decode(Welcome.self, from: data)
-
-    var arrayOfTodayCompData = welcome.compData[welcome.metaData.lastRefreshed]!
-    arrayOfTodayCompData.makeDoubles(himself: arrayOfTodayCompData)
-
-    // sorting the total recieved compData
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-dd-mm"
-
-    let sortedCompData = welcome.compData.map { (formatter.date(from: $0)!, $0, $1) }
-    .sorted { $0.0 < $1.0 }
-    .map { ($0.1, $0.2) }
-
-    // attaching the last 100 days prices to arrayOfTodayCompData
-    for (_, value) in sortedCompData{
-        arrayOfTodayCompData.Days100Before.append(Double(value.s_close)!)
-    }
-    arrayOfTodayCompData.Days100Before = arrayOfTodayCompData.Days100Before.reversed()
-
-    // calc pchange
-    let todayPrice = arrayOfTodayCompData.Days100Before[0]
-    let yesterdayPrice = arrayOfTodayCompData.Days100Before[1]
-    let price_change = (todayPrice - yesterdayPrice)/yesterdayPrice * 100
-    arrayOfTodayCompData.pchange = (price_change*100).rounded()/100
-
-    // saving company symbol and the last data check date
-    arrayOfTodayCompData.symbol = welcome.metaData.symbol
-    arrayOfTodayCompData.lastRefreshed = welcome.metaData.lastRefreshed
-
-    return arrayOfTodayCompData
-}
-
 func roundGoodD (x: Double) -> Double {
     return round(100 * x) / 100
 }
