@@ -10,6 +10,8 @@ import SwiftUI
 
 var compPortfolioOutputOfflineSample = JsonOfflineCompPortfolioOutput()
 
+var lastRefreshed = ""
+
 struct PortfolioView: View {
     
     @State var userData = [settingsForPreview.samplePortInput1, settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput3]
@@ -20,6 +22,7 @@ struct PortfolioView: View {
     @State var totalValue = 0.0
     @State var rendite = 0.0
     @State var renditePercent = 0.0
+    @State var totalGainHistory: [Double] = []
     
     var body: some View {
         NavigationView{
@@ -35,7 +38,7 @@ struct PortfolioView: View {
                 
                 Form {
                     
-                    Section(header: Text("Total Result")) {
+                    Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
                         HStack {
                             Text("Investment")
                             Spacer()
@@ -51,6 +54,7 @@ struct PortfolioView: View {
                             Spacer()
                             Text(String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
                         }
+                        
                     }
                 }
                 .padding(.bottom, -100.0)
@@ -74,6 +78,10 @@ struct PortfolioView: View {
                     self.rendite = self.totalValue - self.totalInvestment
                     
                     self.renditePercent = calcRateD(x: self.totalValue, y: self.totalInvestment)
+                    
+                    self.totalGainHistory += compPortfolioOutput.gainHistory
+                    
+                    lastRefreshed = compPortfolioOutput.lastRefreshed
                 }
             }
         }
@@ -83,5 +91,14 @@ struct PortfolioView: View {
 struct PortfolioView_Previews: PreviewProvider {
     static var previews: some View {
         PortfolioView().environmentObject(settingsForPreview)
+    }
+}
+
+struct ListHeader: View {
+    var body: some View {
+        HStack {
+            Image(systemName: "sum")
+            Text("Total Result")
+        }
     }
 }

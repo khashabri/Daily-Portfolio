@@ -15,6 +15,7 @@ struct UserInput: Equatable{
 // MARK: - Company Portfolio Output
 struct CompPortfolioOutput: Identifiable{
     var id = UUID()
+    var lastRefreshed: String = ""
     var compName: String = ""
     var compSymbol: String = ""
     var purchaseDate: String = ""
@@ -73,6 +74,8 @@ class NetworkingManagerPortfolio: ObservableObject {
                 
                 self.compPortfolioOutput.totalCurrentValue = self.compPortfolioOutput.purchaseAmount * prices.first!
                 
+                self.compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
+                
                 completion(self.compPortfolioOutput)
             }
         }.resume()
@@ -104,6 +107,8 @@ func JsonOfflineCompPortfolioOutput() -> CompPortfolioOutput {
     compPortfolioOutput.purchasePrice = prices.last!
     
     compPortfolioOutput.totalCurrentValue = compPortfolioOutput.purchaseAmount * prices.first!
+    
+    compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
     
     return compPortfolioOutput
 }
