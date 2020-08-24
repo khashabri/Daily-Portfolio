@@ -84,8 +84,8 @@
 			isa = PBXGroup;
 			children = (
 				8436978024DEA8040006F331 /* PortfolioView.swift */,
-				84C894DB24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift */,
 				84BE0D7024F33533006EAA59 /* RowViewPortfolio.swift */,
+				84C894DB24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift */,
 			);
 			path = Portfolio;
 			sourceTree = "<group>";

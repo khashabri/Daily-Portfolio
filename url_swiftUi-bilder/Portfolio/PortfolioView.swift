@@ -42,17 +42,24 @@ struct PortfolioView: View {
                         HStack {
                             Text("Investment")
                             Spacer()
-                            Text(String(roundGoodD(x: totalInvestment)))
+                            Text(String(roundGoodD(x: totalInvestment)) + " $")
                         }
                         HStack {
                             Text("Current Value")
                             Spacer()
-                            Text(String(roundGoodD(x: totalValue)))
+                            Text(String(roundGoodD(x: totalValue)) + " $")
                         }
                         HStack {
                             Text("Rendite")
                             Spacer()
-                            Text(String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                            if rendite < 0 {
+                                Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
+                                    .foregroundColor(Color.red)
+                            }
+                            else {
+                                Text("+ " + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                                    .foregroundColor(Color.green)
+                            }
                         }
                         
                     }
@@ -60,7 +67,6 @@ struct PortfolioView: View {
                 .padding(.bottom, -100.0)
                 .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
             }
-                
             .navigationBarTitle(Text("Portfolio"))
         }
     }
