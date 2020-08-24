@@ -1,8 +1,5 @@
 import Foundation
 import Combine
-import SwiftUI
-import UIKit
-
 
 // MARK: - User Input
 struct UserInput: Equatable{
@@ -25,6 +22,18 @@ struct CompPortfolioOutput: Identifiable{
     var totalCurrentValue: Double = 0
     var gainHistory: [Double] = []
     var currentGain: Double = 0
+    var priceHistory: [Double] = []
+    
+    // Additionals
+    var priceChange1D: Double = 0
+    var priceChange5D: Double = 0
+    var priceChange1M: Double = 0
+    var priceChange1Y: Double = 0
+    
+    var volumeChange1D: Double = 0
+    var volumeChange5D: Double = 0
+    var volumeChange1M: Double = 0
+    var volumeChange1Y: Double = 0
 }
 
 //// MARK: - Class
@@ -56,6 +65,26 @@ class NetworkingManagerPortfolio: ObservableObject {
                 
                 var workingDate = self.compPortfolioOutput.purchaseDate
                 let totDatesArr = welcome.compData.keys.sorted(by: >)
+                
+                let date0D = totDatesArr[0]
+                let date1D = totDatesArr[1]
+                let date5D = totDatesArr[5]
+                let date1M = totDatesArr[22]
+                let date1Y = totDatesArr[264]
+                
+                // Making up watchlist data
+                self.compPortfolioOutput.priceChange1D = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1D]!.s_close)
+                self.compPortfolioOutput.priceChange5D = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date5D]!.s_close)
+                self.compPortfolioOutput.priceChange1M = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1M]!.s_close)
+                self.compPortfolioOutput.priceChange1Y = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1Y]!.s_close)
+                
+                self.compPortfolioOutput.volumeChange1D = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1D]!.s_volume)
+                self.compPortfolioOutput.volumeChange5D = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date5D]!.s_volume)
+                self.compPortfolioOutput.volumeChange1M = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1M]!.s_volume)
+                self.compPortfolioOutput.volumeChange1Y = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1Y]!.s_volume)
+                
+                
+                // Making up portfolio data
                 while !totDatesArr.contains(workingDate) {
                     workingDate = workingDate.convertToNextDate()
                 }
@@ -76,6 +105,8 @@ class NetworkingManagerPortfolio: ObservableObject {
                 
                 self.compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
                 
+                self.compPortfolioOutput.priceHistory = prices
+                                
                 completion(self.compPortfolioOutput)
             }
         }.resume()

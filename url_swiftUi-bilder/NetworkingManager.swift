@@ -1,7 +1,5 @@
 import Foundation
 import Combine
-import SwiftUI
-import UIKit
 
 // MARK: - Welcome
 struct Welcome: Codable & Decodable  {

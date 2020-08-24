@@ -14,7 +14,8 @@ var lastRefreshed = ""
 
 struct PortfolioView: View {
     
-    @State var userData = [settingsForPreview.samplePortInput1, settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput3]
+    @State var userData = [settingsForPreview.samplePortInput1]
+//    @State var userData = [settingsForPreview.samplePortInput1, settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput3]
     
     @State var existingInputs: [UserInput] = []
     @State var wholeData: [CompPortfolioOutput] = []
@@ -57,7 +58,7 @@ struct PortfolioView: View {
                                     .foregroundColor(Color.red)
                             }
                             else {
-                                Text("+ " + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                                Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
                                     .foregroundColor(Color.green)
                             }
                         }

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RowViewPortfolio: View {
     @State var aPortElement: CompPortfolioOutput
+    @State var showingDetail = false
     
     var body: some View {
         HStack{
@@ -31,7 +32,7 @@ struct RowViewPortfolio: View {
                     Text(String(aPortElement.currentGain)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.red)
-                    Text(String(roundGoodD(x: aPortElement.gainHistory[0])))
+                    Text(String(roundGoodD(x: aPortElement.gainHistory[0])) + "$")
                         .font(.footnote)
                         .foregroundColor(Color.red)
                 }
@@ -43,10 +44,18 @@ struct RowViewPortfolio: View {
                     Text(String(aPortElement.currentGain)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.green)
-                    Text("+" + String(roundGoodD(x: aPortElement.gainHistory[0])))
+                    Text("+" + String(roundGoodD(x: aPortElement.gainHistory[0])) + "$")
                         .font(.footnote)
                         .foregroundColor(Color.green)
                 }
+            }
+            Button(action: {
+                self.showingDetail.toggle()
+            }) {
+                Image(systemName: "info.circle")
+                    .foregroundColor(.accentColor)
+            }.sheet(isPresented: $showingDetail) {
+                MoreInfo()
             }
         }
     }
