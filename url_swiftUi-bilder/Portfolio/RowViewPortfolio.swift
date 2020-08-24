@@ -14,13 +14,13 @@ struct RowViewPortfolio: View {
     var body: some View {
         HStack{
             HStack{
-//                LogoView(name_of_company: "Apple").padding(.trailing, 12.0)
+                //                LogoView(name_of_company: "Apple").padding(.trailing, 12.0)
                 VStack(alignment: .leading) {
                     Text(aPortElement.compName)
                         .font(.headline)
                     
-                        Text(String(aPortElement.purchaseAmount) + " @ " + String(aPortElement.purchasePrice))
-                            .font(.footnote)
+                    Text(String(aPortElement.purchaseAmount) + " @ " + String(aPortElement.purchasePrice))
+                        .font(.footnote)
                 }
             }
             Spacer()
@@ -33,7 +33,7 @@ struct RowViewPortfolio: View {
                         .foregroundColor(Color.red)
                     Text(String(roundGoodD(x: aPortElement.gainHistory[0])))
                         .font(.footnote)
-                    .foregroundColor(Color.red)
+                        .foregroundColor(Color.red)
                 }
             }
                 
@@ -45,7 +45,7 @@ struct RowViewPortfolio: View {
                         .foregroundColor(Color.green)
                     Text("+" + String(roundGoodD(x: aPortElement.gainHistory[0])))
                         .font(.footnote)
-                    .foregroundColor(Color.green)
+                        .foregroundColor(Color.green)
                 }
             }
         }

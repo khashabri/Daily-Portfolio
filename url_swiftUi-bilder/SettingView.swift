@@ -14,7 +14,7 @@ struct SettingView: View {
     @State var notificationsEnabled: Bool = false
     @State private var previewIndex = 0
     var previewOptions = ["Always", "When Unlocked", "Never"]
-
+    
     var body: some View {
         NavigationView {
             Form {

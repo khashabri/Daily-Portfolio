@@ -46,30 +46,30 @@ struct ContentView: View {
                     })
                     {
                         Image(systemName: "plus")
-                        .resizable()
-                        .padding(6)
-                        .frame(width: 30, height: 30)
-                        .background(Color.blue)
-                        .clipShape(Circle())
-                        .foregroundColor(.white)
-                        .offset(x: -5, y: 0)
+                            .resizable()
+                            .padding(6)
+                            .frame(width: 30, height: 30)
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                            .foregroundColor(.white)
+                            .offset(x: -5, y: 0)
                     }).sheet(isPresented: self.$showModal, content: {
                         SearchView().environmentObject(self.settings).onDisappear{ self.buildElements()}
                     })
-                    .navigationBarTitle(Text("Watchlist"))
+                        .navigationBarTitle(Text("Watchlist"))
                     
                 }
-            
-//                HStack {
-//                    Text("Updated On: " + lastUpdateDate)
-//                        .fontWeight(.semibold)
-//                        .padding(.leading, 5.0)
-//                    Spacer()
-//                    Button(action: self.refreshList) {
-//                        Image(systemName: "arrow.2.circlepath")
-//                    }
-//                    .padding(.trailing, 18.0)
-//                }.padding(.all)
+                
+                //                HStack {
+                //                    Text("Updated On: " + lastUpdateDate)
+                //                        .fontWeight(.semibold)
+                //                        .padding(.leading, 5.0)
+                //                    Spacer()
+                //                    Button(action: self.refreshList) {
+                //                        Image(systemName: "arrow.2.circlepath")
+                //                    }
+                //                    .padding(.trailing, 18.0)
+                //                }.padding(.all)
                 
             }
                 
@@ -79,15 +79,15 @@ struct ContentView: View {
             }
             
             PortfolioView()
-            .tabItem {
-                Image(systemName: "person.crop.circle")
-                Text("Portfolio")
+                .tabItem {
+                    Image(systemName: "person.crop.circle")
+                    Text("Portfolio")
             }
             
             SettingView()
-            .tabItem {
-                Image(systemName: "gear")
-                Text("Settings")
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
             }
             
         }

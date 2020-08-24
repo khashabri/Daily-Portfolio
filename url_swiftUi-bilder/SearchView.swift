@@ -12,28 +12,28 @@ struct SearchView: View {
     @State private var searchTerm: String = ""
     @State private var backgroundColor = Color.white
     @Environment(\.presentationMode) private var presentationMode
-
+    
     @EnvironmentObject var settings: UserSettings
     
     var body: some View {
         NavigationView {
             VStack {
-            
+                
                 SearchBar(text: $searchTerm)
                 
                 List {
-
+                    
                     ForEach(myDic_Symb2Name.values.sorted().filter{ word in
-                            self.searchTerm.isEmpty ? true:
-                                word.localizedCaseInsensitiveContains(self.searchTerm)}, id: \.self) {value in
-                                        Text(value)
-                                        .onTapGesture {
-                                            self.settings.compNames.append(getKey(value: value))
-                                            
-                                            self.presentationMode.wrappedValue.dismiss()
-                                            
-                                        }
-                        }
+                        self.searchTerm.isEmpty ? true:
+                            word.localizedCaseInsensitiveContains(self.searchTerm)}, id: \.self) {value in
+                                Text(value)
+                                    .onTapGesture {
+                                        self.settings.compNames.append(getKey(value: value))
+                                        
+                                        self.presentationMode.wrappedValue.dismiss()
+                                        
+                                }
+                    }
                     
                 }.id(UUID())
             }

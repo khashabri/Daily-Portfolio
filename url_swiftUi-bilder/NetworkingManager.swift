@@ -7,7 +7,7 @@ import UIKit
 struct Welcome: Codable & Decodable  {
     let metaData: MetaData
     var compData: [String: CompData]
-
+    
     enum CodingKeys: String, CodingKey, Decodable {
         case metaData = "Meta Data"
         case compData = "Time Series (Daily)"
@@ -19,7 +19,7 @@ struct Welcome: Codable & Decodable  {
 struct MetaData: Codable & Decodable {
     let information, symbol, lastRefreshed, outputSize: String
     let timeZone: String
-
+    
     enum CodingKeys: String, CodingKey, Decodable {
         case information = "1. Information"
         case symbol = "2. Symbol"
@@ -68,7 +68,7 @@ struct CompData: Codable & Identifiable & Decodable {
         case s_low = "3. low"
         case s_close = "4. close"
         case s_volume = "5. volume"
-    
+        
     }
     
     mutating func makeDoubles(himself: CompData){
@@ -118,7 +118,7 @@ class NetworkingManager: ObservableObject {
                 // saving company symbol and the last data check date
                 compCharacteristics.symbol = welcome.metaData.symbol
                 compCharacteristics.lastRefreshed = welcome.metaData.lastRefreshed
-
+                
                 // 1 Day base calculations
                 compCharacteristics.volumeDayChange = calcRateS(x: compToday.s_volume, y: compYesterday.s_volume)
                 
@@ -135,7 +135,7 @@ class NetworkingManager: ObservableObject {
                 compCharacteristics.volume3MChange = calcRateS(x: compToday.s_volume, y: comp3MoBef.s_volume)
                 
                 completion(compCharacteristics)
-            
+                
             }
         }.resume()
     }
@@ -146,33 +146,33 @@ func JsonOfflineCompData() -> CompData {
     let url = Bundle.main.url(forResource: "AmdOfflineApiData", withExtension: ".txt")!
     let data = try! Data(contentsOf: url)
     let welcome = try! JSONDecoder().decode(Welcome.self, from: data)
-
+    
     var arrayOfTodayCompData = welcome.compData[welcome.metaData.lastRefreshed]!
     arrayOfTodayCompData.makeDoubles(himself: arrayOfTodayCompData)
-
+    
     // sorting the total recieved compData
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-dd-mm"
-
+    
     let sortedCompData = welcome.compData.map { (formatter.date(from: $0)!, $0, $1) }
-    .sorted { $0.0 < $1.0 }
-    .map { ($0.1, $0.2) }
-
+        .sorted { $0.0 < $1.0 }
+        .map { ($0.1, $0.2) }
+    
     // attaching the last 100 days prices to arrayOfTodayCompData
     for (_, value) in sortedCompData{
         arrayOfTodayCompData.Days100Before.append(Double(value.s_close)!)
     }
     arrayOfTodayCompData.Days100Before = arrayOfTodayCompData.Days100Before.reversed()
-
+    
     // calc pchange
     let todayPrice = arrayOfTodayCompData.Days100Before[0]
     let yesterdayPrice = arrayOfTodayCompData.Days100Before[1]
     let price_change = (todayPrice - yesterdayPrice)/yesterdayPrice * 100
     arrayOfTodayCompData.pchange = (price_change*100).rounded()/100
-
+    
     // saving company symbol and the last data check date
     arrayOfTodayCompData.symbol = welcome.metaData.symbol
     arrayOfTodayCompData.lastRefreshed = welcome.metaData.lastRefreshed
-
+    
     return arrayOfTodayCompData
 }
