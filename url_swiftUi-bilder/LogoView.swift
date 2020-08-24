@@ -10,7 +10,7 @@ struct LogoView : View {
     let name_of_company: String
 
     var body: some View {
-        URLImage(calc_url(link_tmp: link+name_of_company+rest),
+        URLImage(cast2URL(string: link+name_of_company+rest),
             placeholder: {
                 ProgressView($0) { progress in
                     ZStack {
