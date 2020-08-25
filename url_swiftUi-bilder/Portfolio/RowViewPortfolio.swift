@@ -61,14 +61,14 @@ struct RowViewPortfolio: View {
                 Image(systemName: "info.circle")
                     .foregroundColor(.accentColor)
             }.sheet(isPresented: $showingDetail) {
-                MoreInfo()
+                MoreInfo(aPortElement: self.aPortElement)
             }
         }
     }
 }
 
-//struct RowViewPortfolio_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RowViewPortfolio(aPortElement: compPortfolioOutputOfflineSample)
-//    }
-//}
+struct RowViewPortfolio_Previews: PreviewProvider {
+    static var previews: some View {
+        RowViewPortfolio(aPortElement: compPortfolioOutputOfflineSample, Name: "Apple Inc.", portfolioListInvestDict: 1230, portfolioListGainDict: 400, portfolioListPercentageDict: 40, portfolioListShareNumberDict: 5)
+    }
+}

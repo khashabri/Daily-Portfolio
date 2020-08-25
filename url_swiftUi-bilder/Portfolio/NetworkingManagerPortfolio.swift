@@ -25,6 +25,14 @@ struct CompPortfolioOutput: Identifiable{
     var priceHistory: [Double] = []
     
     // Additionals
+    // Daily statistics
+    var open: String = ""
+    var close: String = ""
+    var high: String = ""
+    var low: String = ""
+    var volume: String = ""
+    
+    // Time characteristics
     var priceChange1D: Double = 0
     var priceChange5D: Double = 0
     var priceChange1M: Double = 0
@@ -71,6 +79,13 @@ class NetworkingManagerPortfolio: ObservableObject {
                 let date5D = totDatesArr[5]
                 let date1M = totDatesArr[22]
                 let date1Y = totDatesArr[264]
+                
+                // Make up day statistics
+                self.compPortfolioOutput.open = (welcome.compData[date0D]?.s_open)!
+                self.compPortfolioOutput.close = (welcome.compData[date0D]?.s_close)!
+                self.compPortfolioOutput.high = (welcome.compData[date0D]?.s_high)!
+                self.compPortfolioOutput.low = (welcome.compData[date0D]?.s_low)!
+                self.compPortfolioOutput.volume = (welcome.compData[date0D]?.s_volume)!
                 
                 // Making up watchlist data
                 self.compPortfolioOutput.priceChange1D = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1D]!.s_close)

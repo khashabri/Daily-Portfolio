@@ -11,20 +11,20 @@ import SwiftUICharts
 
 struct InfoSheet: View {
     
-    @State var aCompanyData: CompData = offlineData[0]
-//    @State var aCompanyData: CompPortfolioOutput
+    //    @State var aCompanyData: CompData = offlineData[0]
+    @State var aPortElement: CompPortfolioOutput
     
     var body: some View {
-            VStack(){
-                MarketPerformance(aCompanyData: aCompanyData)
-            }
+        VStack(){
+            MarketPerformance(aPortElement: aPortElement)
+        }
     }
 }
 
 
 struct MarketPerformance: View {
     
-    @State var aCompanyData: CompData
+    @State var aPortElement: CompPortfolioOutput
     var body: some View {
         Form {
             Section(header:
@@ -34,13 +34,13 @@ struct MarketPerformance: View {
                         Text("Data Analytics")
                     }
                     Spacer()
-                    Text(String(aCompanyData.lastRefreshed))
+                    Text(String(aPortElement.lastRefreshed))
             }) {
                 
                 HStack {
                     Text("Open").bold()
                     Spacer()
-                    Text(roundGoodS(x: aCompanyData.s_open) + " $")
+                    Text(roundGoodS(x: aPortElement.open) + " $")
                 }
                 
                 
@@ -49,105 +49,105 @@ struct MarketPerformance: View {
                     Spacer()
                     VStack(alignment: .leading){
                         HStack{
-                            Text("1 Day: ")
+                            Text("Daily: ")
                                 .multilineTextAlignment(.leading)
                             
-                            if aCompanyData.pchange > 0 {
-                                Text(String(aCompanyData.pchange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.priceChange1D > 0 {
+                                Text(String(aPortElement.priceChange1D)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.pchange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.priceChange1D)+" %").foregroundColor(.red).bold()
                             }
                         }
                         
                         HStack{
-                            Text("1 Week: ")
+                            Text("Weekly: ")
                             
-                            if aCompanyData.closeWeekChange > 0 {
-                                Text(String(aCompanyData.closeWeekChange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.priceChange5D > 0 {
+                                Text(String(aPortElement.priceChange5D)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.closeWeekChange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.priceChange5D)+" %").foregroundColor(.red).bold()
                             }
                         }
                         
                         HStack{
-                            Text("1 Month: ")
+                            Text("Monthly: ")
                             
-                            if aCompanyData.close1MChange > 0 {
-                                Text(String(aCompanyData.close1MChange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.priceChange1M > 0 {
+                                Text(String(aPortElement.priceChange1M)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.close1MChange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.priceChange1M)+" %").foregroundColor(.red).bold()
                             }
                         }
                         
                         HStack{
-                            Text("3 Months: ")
+                            Text("Yearly: ")
                             
-                            if aCompanyData.close3MChange > 0 {
-                                Text(String(aCompanyData.close3MChange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.priceChange1Y > 0 {
+                                Text(String(aPortElement.priceChange1Y)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.close3MChange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.priceChange1Y)+" %").foregroundColor(.red).bold()
                             }
                         }
                     }.offset(x: 10.5, y: 0)
                     Spacer()
                     Spacer()
-                    Text(roundGoodS(x: aCompanyData.s_close) + " $")
+                    Text(String(roundGoodD(x: aPortElement.priceHistory[0])) + " $")
                     
                 }
                 HStack {
                     Text("Low").bold()
                     
                     Spacer()
-                    Text(roundGoodS(x: aCompanyData.s_low) + " $")
+                    Text(roundGoodS(x: aPortElement.low) + " $")
                 }
                 HStack {
                     Text("High").bold()
                     
                     Spacer()
-                    Text(roundGoodS(x: aCompanyData.s_high) + " $")
+                    Text(roundGoodS(x: aPortElement.high) + " $")
                 }
                 HStack {
                     Text("Volume").bold()
                     
                     VStack(alignment: .leading){
                         HStack{
-                            Text("1 Day: ")
+                            Text("Daily: ")
                                 .multilineTextAlignment(.leading)
                             
-                            if aCompanyData.volumeDayChange > 0 {
-                                Text(String(aCompanyData.volumeDayChange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.volumeChange1D > 0 {
+                                Text(String(aPortElement.volumeChange1D)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.volumeDayChange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.volumeChange1D)+" %").foregroundColor(.red).bold()
                             }
                         }
                         
                         HStack{
-                            Text("1 Week: ")
+                            Text("Weekly: ")
                                 .multilineTextAlignment(.leading)
-                            if aCompanyData.volumeWeekChange > 0 {
-                                Text(String(aCompanyData.volumeWeekChange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.volumeChange5D > 0 {
+                                Text(String(aPortElement.volumeChange5D)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.volumeWeekChange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.volumeChange5D)+" %").foregroundColor(.red).bold()
                             }
                         }
                         
                         HStack{
-                            Text("1 Month: ")
+                            Text("Monthly: ")
                             
-                            if aCompanyData.volume1MChange > 0 {
-                                Text(String(aCompanyData.volume1MChange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.volumeChange1M > 0 {
+                                Text(String(aPortElement.volumeChange1M)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.volume1MChange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.volumeChange1M)+" %").foregroundColor(.red).bold()
                             }
                         }
                         
                         HStack{
-                            Text("3 Months: ")
+                            Text("Yealy: ")
                             
-                            if aCompanyData.volume3MChange > 0 {
-                                Text(String(aCompanyData.volume3MChange)+" %").foregroundColor(.green).bold()
+                            if aPortElement.volumeChange1Y > 0 {
+                                Text(String(aPortElement.volumeChange1Y)+" %").foregroundColor(.green).bold()
                             } else {
-                                Text(String(aCompanyData.volume3MChange)+" %").foregroundColor(.red).bold()
+                                Text(String(aPortElement.volumeChange1Y)+" %").foregroundColor(.red).bold()
                             }
                         }
                         
@@ -155,7 +155,7 @@ struct MarketPerformance: View {
                     .offset(x: 20, y: 0)
                     
                     Spacer()
-                    Text(aCompanyData.s_volume)
+                    Text(aPortElement.volume)
                 }
             }
             
@@ -163,7 +163,7 @@ struct MarketPerformance: View {
                 header: HStack {
                     Image(systemName: "cart")
                     Text("Your Purchase Dates")
-                }) {
+            }) {
                 HStack{
                     Text("2019-09-12")
                     
@@ -196,6 +196,6 @@ struct MarketPerformance: View {
 
 struct InfoSheet_Previews: PreviewProvider {
     static var previews: some View {
-        InfoSheet()
+        InfoSheet(aPortElement: compPortfolioOutputOfflineSample)
     }
 }
