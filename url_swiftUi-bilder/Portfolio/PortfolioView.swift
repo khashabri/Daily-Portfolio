@@ -11,62 +11,40 @@ import SwiftUI
 var compPortfolioOutputOfflineSample = JsonOfflineCompPortfolioOutput()
 
 var lastRefreshed = ""
+var totalInvestment = 0.0
+var totalValue = 0.0
+var rendite = 0.0
+var renditePercent = 0.0
+var totalGainHistory: [Double] = []
 
 struct PortfolioView: View {
     
-    @State var userData = [settingsForPreview.samplePortInput1]
-//    @State var userData = [settingsForPreview.samplePortInput1, settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput3]
+    //    @State var userData = [settingsForPreview.samplePortInput1]
+    @State var userData = [settingsForPreview.samplePortInput1,settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput4]
     
     @State var existingInputs: [UserInput] = []
     @State var wholeData: [CompPortfolioOutput] = []
-    @State var totalInvestment = 0.0
-    @State var totalValue = 0.0
-    @State var rendite = 0.0
-    @State var renditePercent = 0.0
-    @State var totalGainHistory: [Double] = []
+    @State var companiesEntriesDict = [String : [CompPortfolioOutput]]()
+    @State var portfolioListInvestDict = [String : Double]()
+    @State var portfolioListGainDict = [String : Double]()
+    @State var portfolioListPercentageDict = [String : Double]()
+    @State var portfolioListShareNumberDict = [String : Double]()
+    
     
     var body: some View {
         NavigationView{
             VStack{
                 List() {
-                    
-                    ForEach(wholeData) {aCompPortRes in
-                        RowViewPortfolio(aPortElement: aCompPortRes)
+                    ForEach(portfolioListInvestDict.sorted(by: >), id: \.value) {key, value in
+                        RowViewPortfolio(Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
                     }
                     
                 }
                 .onAppear { self.buildElements() }
                 
-                Form {
-                    
-                    Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
-                        HStack {
-                            Text("Investment")
-                            Spacer()
-                            Text(String(roundGoodD(x: totalInvestment)) + " $")
-                        }
-                        HStack {
-                            Text("Current Value")
-                            Spacer()
-                            Text(String(roundGoodD(x: totalValue)) + " $")
-                        }
-                        HStack {
-                            Text("Rendite")
-                            Spacer()
-                            if rendite < 0 {
-                                Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
-                                    .foregroundColor(Color.red)
-                            }
-                            else {
-                                Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
-                                    .foregroundColor(Color.green)
-                            }
-                        }
-                        
-                    }
-                }
-                .padding(.bottom, -100.0)
-                .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
+                totalResult()
+                    .padding(.bottom, -100.0)
+                    .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
             }
             .navigationBarTitle(Text("Portfolio"))
         }
@@ -77,18 +55,46 @@ struct PortfolioView: View {
             if !self.existingInputs.contains(input){
                 existingInputs.append(input)
                 NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
+                    
                     print(compPortfolioOutput)
-                    self.wholeData.append(compPortfolioOutput)
-                    self.totalInvestment += compPortfolioOutput.totalInvestment
-                    self.totalValue += compPortfolioOutput.totalCurrentValue
+                    //                    self.wholeData.append(compPortfolioOutput)
                     
-                    self.rendite = self.totalValue - self.totalInvestment
+                    // Catching Data of companies
+                    let key = compPortfolioOutput.compSymbol
+                    if self.companiesEntriesDict.keys.contains(key){
+                        
+                        self.companiesEntriesDict[key]?.append(compPortfolioOutput)
+                        self.portfolioListInvestDict[key]! += compPortfolioOutput.totalInvestment
+                        self.portfolioListGainDict[key]! += compPortfolioOutput.gainHistory[0]
+                        self.portfolioListShareNumberDict[key]! += compPortfolioOutput.purchaseAmount
+                        
+                    }
+                    else{
+                        self.companiesEntriesDict[key] = [compPortfolioOutput]
+                        self.portfolioListInvestDict[key] = compPortfolioOutput.totalInvestment
+                        self.portfolioListGainDict[key] = compPortfolioOutput.gainHistory[0]
+                        self.portfolioListShareNumberDict[key] = compPortfolioOutput.purchaseAmount
+                        
+                    }
                     
-                    self.renditePercent = calcRateD(x: self.totalValue, y: self.totalInvestment)
+                    let currentPrice = compPortfolioOutput.priceHistory[0]
+                    // Catching data for the Portfolio List (some are above)
+                    self.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.portfolioListShareNumberDict[key]!, y: self.portfolioListInvestDict[key]!)
                     
-                    self.totalGainHistory += compPortfolioOutput.gainHistory
-                    
+                    // Calc data for "Total Result" section
+                    totalInvestment += compPortfolioOutput.totalInvestment
+                    totalValue += compPortfolioOutput.totalCurrentValue
+                    rendite = totalValue - totalInvestment
+                    renditePercent = calcRateD(x: totalValue, y: totalInvestment)
+                    totalGainHistory += compPortfolioOutput.gainHistory
                     lastRefreshed = compPortfolioOutput.lastRefreshed
+                    
+                    
+                    print(self.companiesEntriesDict)
+                    print(self.portfolioListInvestDict)
+                    print(self.portfolioListGainDict)
+                    print(self.portfolioListPercentageDict)
+                    print(self.portfolioListShareNumberDict)
                 }
             }
         }
@@ -106,6 +112,39 @@ struct ListHeader: View {
         HStack {
             Image(systemName: "sum")
             Text("Total Result")
+        }
+    }
+}
+
+struct totalResult: View {
+    var body: some View {
+        
+        Form{
+            
+            Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
+                HStack {
+                    Text("Investment")
+                    Spacer()
+                    Text(String(roundGoodD(x: totalInvestment)) + " $")
+                }
+                HStack {
+                    Text("Current Value")
+                    Spacer()
+                    Text(String(roundGoodD(x: totalValue)) + " $")
+                }
+                HStack {
+                    Text("Rendite")
+                    Spacer()
+                    if rendite < 0 {
+                        Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
+                            .foregroundColor(Color.red)
+                    }
+                    else {
+                        Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                            .foregroundColor(Color.green)
+                    }
+                }
+            }
         }
     }
 }

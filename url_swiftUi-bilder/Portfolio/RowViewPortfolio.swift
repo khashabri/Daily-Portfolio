@@ -9,30 +9,35 @@
 import SwiftUI
 
 struct RowViewPortfolio: View {
-    @State var aPortElement: CompPortfolioOutput
     @State var showingDetail = false
     
+    @State var Name: String
+    @State var portfolioListInvestDict: Double
+    @State var portfolioListGainDict: Double
+    @State var portfolioListPercentageDict: Double
+    @State var portfolioListShareNumberDict: Double
+        
     var body: some View {
         HStack{
             HStack{
                 //                LogoView(name_of_company: "Apple").padding(.trailing, 12.0)
                 VStack(alignment: .leading) {
-                    Text(aPortElement.compName)
+                    Text(Name)
                         .font(.headline)
                     
-                    Text(String(aPortElement.purchaseAmount) + " @ " + String(aPortElement.purchasePrice))
+                    Text(String(portfolioListShareNumberDict) + " @ " + String(roundGoodD(x: portfolioListInvestDict/portfolioListShareNumberDict)))
                         .font(.footnote)
                 }
             }
             Spacer()
             
-            if aPortElement.currentGain < 0
+            if portfolioListGainDict < 0
             {
                 VStack(alignment: .center){
-                    Text(String(aPortElement.currentGain)+"%")
+                    Text(String(portfolioListPercentageDict)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.red)
-                    Text(String(roundGoodD(x: aPortElement.gainHistory[0])) + "$")
+                    Text(String(roundGoodD(x: portfolioListGainDict)) + "$")
                         .font(.footnote)
                         .foregroundColor(Color.red)
                 }
@@ -41,10 +46,10 @@ struct RowViewPortfolio: View {
             else
             {
                 VStack(alignment: .center){
-                    Text(String(aPortElement.currentGain)+"%")
+                    Text(String(portfolioListPercentageDict)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.green)
-                    Text("+" + String(roundGoodD(x: aPortElement.gainHistory[0])) + "$")
+                    Text("+" + String(roundGoodD(x: portfolioListGainDict)) + "$")
                         .font(.footnote)
                         .foregroundColor(Color.green)
                 }
@@ -61,8 +66,8 @@ struct RowViewPortfolio: View {
     }
 }
 
-struct RowViewPortfolio_Previews: PreviewProvider {
-    static var previews: some View {
-        RowViewPortfolio(aPortElement: compPortfolioOutputOfflineSample)
-    }
-}
+//struct RowViewPortfolio_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RowViewPortfolio(aPortElement: compPortfolioOutputOfflineSample)
+//    }
+//}
