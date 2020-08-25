@@ -10,11 +10,6 @@ import SwiftUI
 
 var compPortfolioOutputOfflineSample = JsonOfflineCompPortfolioOutput()
 
-var lastRefreshed = ""
-var totalInvestment = 0.0
-var totalValue = 0.0
-var rendite = 0.0
-var renditePercent = 0.0
 var totalGainHistory: [Double] = []
 
 struct PortfolioView: View {
@@ -30,6 +25,11 @@ struct PortfolioView: View {
     @State var portfolioListPercentageDict = [String : Double]()
     @State var portfolioListShareNumberDict = [String : Double]()
     
+    @State var lastRefreshed = ""
+    @State var totalInvestment = 0.0
+    @State var totalValue = 0.0
+    @State var rendite = 0.0
+    @State var renditePercent = 0.0
     
     var body: some View {
         NavigationView{
@@ -42,9 +42,35 @@ struct PortfolioView: View {
                 }
                 .onAppear { self.buildElements() }
                 
-                totalResult()
-                    .padding(.bottom, -100.0)
-                    .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
+                Form{
+                    
+                    Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
+                        HStack {
+                            Text("Investment")
+                            Spacer()
+                            Text(String(roundGoodD(x: totalInvestment)) + " $")
+                        }
+                        HStack {
+                            Text("Current Value")
+                            Spacer()
+                            Text(String(roundGoodD(x: totalValue)) + " $")
+                        }
+                        HStack {
+                            Text("Rendite")
+                            Spacer()
+                            if rendite < 0 {
+                                Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
+                                    .foregroundColor(Color.red)
+                            }
+                            else {
+                                Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                                    .foregroundColor(Color.green)
+                            }
+                        }
+                    }
+                }
+                .padding(.bottom, -100.0)
+                .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
             }
             .navigationBarTitle(Text("Portfolio"))
         }
@@ -82,12 +108,12 @@ struct PortfolioView: View {
                     self.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.portfolioListShareNumberDict[key]!, y: self.portfolioListInvestDict[key]!)
                     
                     // Calc data for "Total Result" section
-                    totalInvestment += compPortfolioOutput.totalInvestment
-                    totalValue += compPortfolioOutput.totalCurrentValue
-                    rendite = totalValue - totalInvestment
-                    renditePercent = calcRateD(x: totalValue, y: totalInvestment)
+                    self.totalInvestment += compPortfolioOutput.totalInvestment
+                    self.totalValue += compPortfolioOutput.totalCurrentValue
+                    self.rendite = self.totalValue - self.totalInvestment
+                    self.renditePercent = calcRateD(x: self.totalValue, y: self.totalInvestment)
                     totalGainHistory += compPortfolioOutput.gainHistory
-                    lastRefreshed = compPortfolioOutput.lastRefreshed
+                    self.lastRefreshed = compPortfolioOutput.lastRefreshed
                     
                     
                     print(self.companiesEntriesDict)
@@ -112,39 +138,6 @@ struct ListHeader: View {
         HStack {
             Image(systemName: "sum")
             Text("Total Result")
-        }
-    }
-}
-
-struct totalResult: View {
-    var body: some View {
-        
-        Form{
-            
-            Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
-                HStack {
-                    Text("Investment")
-                    Spacer()
-                    Text(String(roundGoodD(x: totalInvestment)) + " $")
-                }
-                HStack {
-                    Text("Current Value")
-                    Spacer()
-                    Text(String(roundGoodD(x: totalValue)) + " $")
-                }
-                HStack {
-                    Text("Rendite")
-                    Spacer()
-                    if rendite < 0 {
-                        Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
-                            .foregroundColor(Color.red)
-                    }
-                    else {
-                        Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
-                            .foregroundColor(Color.green)
-                    }
-                }
-            }
         }
     }
 }
