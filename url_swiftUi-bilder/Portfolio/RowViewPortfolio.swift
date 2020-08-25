@@ -63,7 +63,7 @@ struct RowViewPortfolio: View {
             }.sheet(isPresented: $showingDetail) {
                 MoreInfo(dataEntries: self.dataEntries)
             }
-        }
+        }.frame(height: 40)
     }
 }
 

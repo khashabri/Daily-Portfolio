@@ -90,9 +90,8 @@ struct MarketPerformance: View {
                         }
                     }.offset(x: 10.5, y: 0)
                     Spacer()
-                    Spacer()
                     Text(String(roundGoodD(x: dataEntries[0].priceHistory[0])) + " $")
-                    
+                        .minimumScaleFactor(0.5)
                 }
                 HStack {
                     Text("Low").bold()
@@ -153,6 +152,7 @@ struct MarketPerformance: View {
                         
                     }
                     .offset(x: 20, y: 0)
+                    .minimumScaleFactor(0.5)
                     
                     Spacer()
                     Text(dataEntries[0].volume)

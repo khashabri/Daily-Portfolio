@@ -19,8 +19,8 @@ var renditePercent = 0.0
 
 struct PortfolioView: View {
     
-    //    @State var userData = [settingsForPreview.samplePortInput1]
-    @State var userData = [settingsForPreview.samplePortInput1,settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput4, settingsForPreview.samplePortInput4]
+//    @State var userData = [settingsForPreview.samplePortInput3]
+    @State var userData = [settingsForPreview.samplePortInput1,settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput4, settingsForPreview.samplePortInput3]
     
     @State var existingInputs: [UserInput] = []
     @State var wholeData: [CompPortfolioOutput] = []
@@ -41,7 +41,7 @@ struct PortfolioView: View {
                     }
                     
                 }
-                .onAppear { self.buildElements() }
+                    .onAppear { self.buildElements() }
                 
                 totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent)
             }
@@ -151,7 +151,7 @@ struct totalInfoSubview: View, Equatable {
                 }
             }
         }
-        .padding(.bottom, -100.0)
-        .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
+        .padding(.bottom, -80.0)
+        .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -80)
     }
 }

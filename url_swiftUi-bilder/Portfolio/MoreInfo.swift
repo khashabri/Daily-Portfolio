@@ -33,7 +33,7 @@ struct MoreInfo: View {
                 Spacer()
                 InfoSheet(dataEntries: dataEntries)
             }
-            .navigationBarTitle("Apple Inc.", displayMode: .inline)
+            .navigationBarTitle("Overview", displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 print("Dismissing sheet view...")
                 self.presentationMode.wrappedValue.dismiss()
