@@ -20,7 +20,7 @@ var renditePercent = 0.0
 struct PortfolioView: View {
     
     //    @State var userData = [settingsForPreview.samplePortInput1]
-    @State var userData = [settingsForPreview.samplePortInput1,settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput4]
+    @State var userData = [settingsForPreview.samplePortInput1,settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput4, settingsForPreview.samplePortInput4]
     
     @State var existingInputs: [UserInput] = []
     @State var wholeData: [CompPortfolioOutput] = []
@@ -37,13 +37,13 @@ struct PortfolioView: View {
                     
                     ForEach(portfolioListInvestDict.sorted(by: >), id: \.value) {key, value in
                         
-                        RowViewPortfolio(aPortElement: (self.companiesEntriesDict[key]?.first!)! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
+                        RowViewPortfolio(dataEntries: self.companiesEntriesDict[key]! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
                     }
                     
                 }
                 .onAppear { self.buildElements() }
                 
-                ExtractedView(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent)
+                totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent)
             }
             .navigationBarTitle(Text("Portfolio"))
         }
@@ -115,7 +115,7 @@ struct ListHeader: View {
     }
 }
 
-struct ExtractedView: View, Equatable {
+struct totalInfoSubview: View, Equatable {
     let lastRefreshed: String
     let totalInvestment: Double
     let totalValue: Double

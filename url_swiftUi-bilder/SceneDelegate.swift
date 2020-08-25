@@ -14,8 +14,8 @@ class UserSettings: ObservableObject {
     
     @State var samplePortInput1 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
     @State var samplePortInput2 = UserInput(compName: "Snap Inc.", purchaseDate: "2017-07-01", purchaseAmount: 15)
-    @State var samplePortInput3 = UserInput(compName: "American Airlines Group Inc.", purchaseDate: "2015-01-01", purchaseAmount: 27)
-    @State var samplePortInput4 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 4)
+    @State var samplePortInput3 = UserInput(compName: "American Airlines Group Inc.", purchaseDate: "2015-01-01", purchaseAmount: 19)
+    @State var samplePortInput4 = UserInput(compName: "Apple Inc.", purchaseDate: "2020-01-23", purchaseAmount: 4)
     
 }
 

@@ -11,7 +11,7 @@ import SwiftUI
 struct RowViewPortfolio: View {
     @State var showingDetail = false
     
-    @State var aPortElement: CompPortfolioOutput
+    @State var dataEntries: [CompPortfolioOutput]
     @State var Name: String
     @State var portfolioListInvestDict: Double
     @State var portfolioListGainDict: Double
@@ -61,7 +61,7 @@ struct RowViewPortfolio: View {
                 Image(systemName: "info.circle")
                     .foregroundColor(.accentColor)
             }.sheet(isPresented: $showingDetail) {
-                MoreInfo(aPortElement: self.aPortElement)
+                MoreInfo(dataEntries: self.dataEntries)
             }
         }
     }
@@ -69,6 +69,6 @@ struct RowViewPortfolio: View {
 
 struct RowViewPortfolio_Previews: PreviewProvider {
     static var previews: some View {
-        RowViewPortfolio(aPortElement: compPortfolioOutputOfflineSample, Name: "Apple Inc.", portfolioListInvestDict: 1230, portfolioListGainDict: 400, portfolioListPercentageDict: 40, portfolioListShareNumberDict: 5)
+        RowViewPortfolio(dataEntries: [compPortfolioOutputOfflineSample], Name: "Apple Inc.", portfolioListInvestDict: 1230, portfolioListGainDict: 400, portfolioListPercentageDict: 40, portfolioListShareNumberDict: 5)
     }
 }

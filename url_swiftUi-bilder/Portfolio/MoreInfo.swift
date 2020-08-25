@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MoreInfo: View {
-    @State var aPortElement: CompPortfolioOutput
+    @State var dataEntries: [CompPortfolioOutput]
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
@@ -19,7 +19,7 @@ struct MoreInfo: View {
                     Text("Name:")
                         .font(.headline)
                         .padding(.leading, 20)
-                    Text(aPortElement.compName)
+                    Text(dataEntries[0].compName)
                     Spacer()
                 }
                 .padding(.top)
@@ -27,11 +27,11 @@ struct MoreInfo: View {
                     Text("Market Symbol:")
                         .font(.headline)
                         .padding(.leading, 20)
-                    Text(aPortElement.compSymbol)
+                    Text(dataEntries[0].compSymbol)
                     Spacer()
                 }
                 Spacer()
-                InfoSheet(aPortElement: aPortElement)
+                InfoSheet(dataEntries: dataEntries)
             }
             .navigationBarTitle("Apple Inc.", displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
@@ -47,7 +47,7 @@ struct MoreInfo: View {
 
 struct MoreInfo_Previews: PreviewProvider {
     static var previews: some View {
-        MoreInfo(aPortElement: compPortfolioOutputOfflineSample)
+        MoreInfo(dataEntries: [compPortfolioOutputOfflineSample])
     }
 }
 
