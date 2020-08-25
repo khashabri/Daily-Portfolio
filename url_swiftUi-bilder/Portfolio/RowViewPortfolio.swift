@@ -11,6 +11,7 @@ import SwiftUI
 struct RowViewPortfolio: View {
     @State var showingDetail = false
     
+    @State var aPortElement: CompPortfolioOutput
     @State var Name: String
     @State var portfolioListInvestDict: Double
     @State var portfolioListGainDict: Double

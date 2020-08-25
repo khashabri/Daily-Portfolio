@@ -11,6 +11,11 @@ import SwiftUI
 var compPortfolioOutputOfflineSample = JsonOfflineCompPortfolioOutput()
 
 var totalGainHistory: [Double] = []
+var lastRefreshed = ""
+var totalInvestment = 0.0
+var totalValue = 0.0
+var rendite = 0.0
+var renditePercent = 0.0
 
 struct PortfolioView: View {
     
@@ -25,52 +30,20 @@ struct PortfolioView: View {
     @State var portfolioListPercentageDict = [String : Double]()
     @State var portfolioListShareNumberDict = [String : Double]()
     
-    @State var lastRefreshed = ""
-    @State var totalInvestment = 0.0
-    @State var totalValue = 0.0
-    @State var rendite = 0.0
-    @State var renditePercent = 0.0
-    
     var body: some View {
         NavigationView{
             VStack{
                 List() {
+                    
                     ForEach(portfolioListInvestDict.sorted(by: >), id: \.value) {key, value in
-                        RowViewPortfolio(Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
+                        
+                        RowViewPortfolio(aPortElement: (self.companiesEntriesDict[key]?.first!)! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
                     }
                     
                 }
                 .onAppear { self.buildElements() }
                 
-                Form{
-                    
-                    Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
-                        HStack {
-                            Text("Investment")
-                            Spacer()
-                            Text(String(roundGoodD(x: totalInvestment)) + " $")
-                        }
-                        HStack {
-                            Text("Current Value")
-                            Spacer()
-                            Text(String(roundGoodD(x: totalValue)) + " $")
-                        }
-                        HStack {
-                            Text("Rendite")
-                            Spacer()
-                            if rendite < 0 {
-                                Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
-                                    .foregroundColor(Color.red)
-                            }
-                            else {
-                                Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
-                                    .foregroundColor(Color.green)
-                            }
-                        }
-                    }
-                }
-                .padding(.bottom, -100.0)
-                .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
+                ExtractedView(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent)
             }
             .navigationBarTitle(Text("Portfolio"))
         }
@@ -108,12 +81,12 @@ struct PortfolioView: View {
                     self.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.portfolioListShareNumberDict[key]!, y: self.portfolioListInvestDict[key]!)
                     
                     // Calc data for "Total Result" section
-                    self.totalInvestment += compPortfolioOutput.totalInvestment
-                    self.totalValue += compPortfolioOutput.totalCurrentValue
-                    self.rendite = self.totalValue - self.totalInvestment
-                    self.renditePercent = calcRateD(x: self.totalValue, y: self.totalInvestment)
+                    totalInvestment += compPortfolioOutput.totalInvestment
+                    totalValue += compPortfolioOutput.totalCurrentValue
+                    rendite = totalValue - totalInvestment
+                    renditePercent = calcRateD(x: totalValue, y: totalInvestment)
                     totalGainHistory += compPortfolioOutput.gainHistory
-                    self.lastRefreshed = compPortfolioOutput.lastRefreshed
+                    lastRefreshed = compPortfolioOutput.lastRefreshed
                     
                     
                     print(self.companiesEntriesDict)
@@ -139,5 +112,46 @@ struct ListHeader: View {
             Image(systemName: "sum")
             Text("Total Result")
         }
+    }
+}
+
+struct ExtractedView: View, Equatable {
+    let lastRefreshed: String
+    let totalInvestment: Double
+    let totalValue: Double
+    let rendite: Double
+    let renditePercent: Double
+    
+    var body: some View {
+        
+        Form{
+            
+            Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
+                HStack {
+                    Text("Investment")
+                    Spacer()
+                    Text(String(roundGoodD(x: totalInvestment)) + " $")
+                }
+                HStack {
+                    Text("Current Value")
+                    Spacer()
+                    Text(String(roundGoodD(x: totalValue)) + " $")
+                }
+                HStack {
+                    Text("Rendite")
+                    Spacer()
+                    if rendite < 0 {
+                        Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
+                            .foregroundColor(Color.red)
+                    }
+                    else {
+                        Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                            .foregroundColor(Color.green)
+                    }
+                }
+            }
+        }
+        .padding(.bottom, -100.0)
+        .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -100)
     }
 }
