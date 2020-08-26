@@ -32,6 +32,8 @@ struct AskingView: View {
                         .cornerRadius(10)
                     Text(compName)
                         .font(.title)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.1)
                 }
                 
                 Section(header: HStack{
@@ -65,7 +67,7 @@ struct AskingView: View {
                 }
             }
             .gesture(DragGesture().onChanged{_ in UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)})
-
+                
             .padding(.bottom, -1111.0)
             
             //
@@ -94,14 +96,21 @@ struct AskingView: View {
                 }
                 .frame(minWidth: 0, maxWidth: 200)
                 .padding()
-                .foregroundColor(.white)
+                .foregroundColor(buttonTextColor)
                 .background(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .leading, endPoint: .trailing))
                 .cornerRadius(40)
                 .padding(.vertical, 30)
+                
             }.frame(alignment: .bottom)
+            .disabled(amountOfStock == "")
             //
         }
     }
+    
+    var buttonTextColor: Color {
+        return amountOfStock != "" ? .white : .gray
+    }
+    
 }
 
 // to use this first comment out @Binding var shouldPopToRootView : Bool
