@@ -21,11 +21,11 @@ struct RowViewPortfolio: View {
     var body: some View {
         HStack{
             HStack{
-//                Image("aa.com")
+//                Image("tesla.com")
                 Image(myDic_Symb2Img[dataEntries[0].compSymbol]!)
                     .resizable()
-                    .frame(minWidth: 40)
                     .aspectRatio(contentMode: .fit)
+                    .cornerRadius(10)
                 
                 VStack(alignment: .leading) {
                     Text(Name)
