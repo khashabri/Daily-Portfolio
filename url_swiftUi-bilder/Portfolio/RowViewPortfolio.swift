@@ -21,7 +21,12 @@ struct RowViewPortfolio: View {
     var body: some View {
         HStack{
             HStack{
-                //                LogoView(name_of_company: "Apple").padding(.trailing, 12.0)
+//                Image("aa.com")
+                Image(myDic_Symb2Img[dataEntries[0].compSymbol]!)
+                    .resizable()
+                    .frame(minWidth: 40)
+                    .aspectRatio(contentMode: .fit)
+                
                 VStack(alignment: .leading) {
                     Text(Name)
                         .font(.headline)
