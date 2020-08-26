@@ -87,7 +87,8 @@ struct AskingView: View {
                         .font(.title)
                     Text("Done")
                         .fontWeight(.semibold)
-                        .font(.body)
+                        .font(.callout)
+    
                 }
                 .frame(minWidth: 0, maxWidth: 200)
                 .padding()
