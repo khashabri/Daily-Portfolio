@@ -190,7 +190,8 @@ struct purchaseDatesSubView: View {
                         Text(String(dataEntry.purchaseAmount) + " @ " + String(dataEntry.purchasePrice) + "$")
                         Text("= " + String(dataEntry.totalInvestment) + "$")
                             .font(.subheadline).foregroundColor(.gray)
-                    }
+                    }.lineLimit(1)
+                    .minimumScaleFactor(0.1)
                 }
             }
         }
