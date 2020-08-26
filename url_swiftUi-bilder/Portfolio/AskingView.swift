@@ -20,7 +20,7 @@ struct AskingView: View {
     // this variable is somit shared through all views with this line
     @EnvironmentObject var settings: UserSettings
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-        
+    
     var body: some View {
         VStack {
             Form {
@@ -64,6 +64,8 @@ struct AskingView: View {
                     }
                 }
             }
+            .gesture(DragGesture().onChanged{_ in UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)})
+
             .padding(.bottom, -1111.0)
             
             //
@@ -77,7 +79,7 @@ struct AskingView: View {
                 self.settings.portfolio.append(userInput)
                 print(self.selectedDate)
                 
-//                self.shouldPopToRootView = false
+                //                self.shouldPopToRootView = false
                 self.presentationMode.wrappedValue.dismiss()
                 self.presentationMode.wrappedValue.dismiss()
                 
@@ -88,7 +90,7 @@ struct AskingView: View {
                     Text("Done")
                         .fontWeight(.semibold)
                         .font(.callout)
-    
+                    
                 }
                 .frame(minWidth: 0, maxWidth: 200)
                 .padding()

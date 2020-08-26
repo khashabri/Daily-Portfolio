@@ -21,7 +21,6 @@ let myDic_Symb2Name: [String:String] =
     "MSFT": "Microsoft Corporation",
     "KO": "Coca-Cola Company",
     "DIS": "Walt Disney Company",
-    "GOOGL": "Alphabet Inc.",
     "BYND": "Beyond Meat Inc.",
     "FB": "Facebook Inc.",
     "MCD": "McDonald's Corporation",
