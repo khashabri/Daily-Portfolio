@@ -2,7 +2,8 @@ import Foundation
 import Combine
 
 // MARK: - User Input
-struct UserInput: Equatable{
+struct UserInput: Identifiable, Equatable{
+    let id = UUID()
     let compName: String
     lazy var compSymbol = getKey(value: compName)
     let purchaseDate: String

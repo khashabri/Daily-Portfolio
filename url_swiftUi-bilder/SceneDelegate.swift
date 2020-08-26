@@ -11,19 +11,23 @@ import SwiftUI
 
 class UserSettings: ObservableObject {
     @Published var compNames = ["AAPL", "SNAP"]
+    @Published var portfolio = [UserInput]()
     
-    @State var samplePortInput1 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
-    @State var samplePortInput2 = UserInput(compName: "Snap Inc.", purchaseDate: "2017-07-01", purchaseAmount: 15)
-    @State var samplePortInput3 = UserInput(compName: "Intel Corporation", purchaseDate: "2020-01-01", purchaseAmount: 19)
-    @State var samplePortInput4 = UserInput(compName: "Apple Inc.", purchaseDate: "2020-01-23", purchaseAmount: 4)
-    
+    init() {
+        let samplePortInput1 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
+        let samplePortInput2 = UserInput(compName: "Snap Inc.", purchaseDate: "2017-07-01", purchaseAmount: 15)
+        let samplePortInput3 = UserInput(compName: "Intel Corporation", purchaseDate: "2020-01-01", purchaseAmount: 19)
+        let purchaseDate4 = UserInput(compName: "Apple Inc.", purchaseDate: "2020-01-23", purchaseAmount: 4)
+        self.portfolio.append(samplePortInput2)
+        self.portfolio.append(samplePortInput3)
+        self.portfolio.append(samplePortInput1)
+    }
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     var settings = UserSettings()
-    
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.

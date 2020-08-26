@@ -20,7 +20,6 @@ var renditePercent = 0.0
 struct PortfolioView: View {
     
 //    @State var userData = [settingsForPreview.samplePortInput3]
-    @State var userData = [settingsForPreview.samplePortInput1,settingsForPreview.samplePortInput2, settingsForPreview.samplePortInput4, settingsForPreview.samplePortInput3]
     
     @State var existingInputs: [UserInput] = []
     @State var wholeData: [CompPortfolioOutput] = []
@@ -29,6 +28,11 @@ struct PortfolioView: View {
     @State var portfolioListGainDict = [String : Double]()
     @State var portfolioListPercentageDict = [String : Double]()
     @State var portfolioListShareNumberDict = [String : Double]()
+    
+    // For add button
+    @State private var showModal = false
+    // shared variable between add and this view to exchange objects
+    @EnvironmentObject var settings: UserSettings
     
     var body: some View {
         NavigationView{
@@ -42,15 +46,16 @@ struct PortfolioView: View {
                     
                 }
                     .onAppear { self.buildElements() }
-                
+                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
+
                 totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent)
             }
-            .navigationBarTitle(Text("Portfolio"))
+            .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
         }
     }
     
     private func buildElements() {
-        for input in userData {
+        for input in settings.portfolio {
             if !self.existingInputs.contains(input){
                 existingInputs.append(input)
                 NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
@@ -153,5 +158,23 @@ struct totalInfoSubview: View, Equatable {
         }
         .padding(.bottom, -80.0)
         .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -80)
+    }
+}
+
+struct AddButton<Destination : View>: View {
+
+    var destination:  Destination
+
+    var body: some View {
+        NavigationLink(destination: self.destination) {
+            Image(systemName: "plus")
+                .resizable()
+                .padding(6)
+                .frame(width: 30, height: 30)
+                .background(Color.blue)
+                .clipShape(Circle())
+                .foregroundColor(.white)
+                .offset(x: -5, y: 0)
+        }
     }
 }

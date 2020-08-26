@@ -16,6 +16,7 @@
 		84366F7524F3DBFB0099BD6B /* MoreInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366F7424F3DBFB0099BD6B /* MoreInfo.swift */; };
 		8436977F24DEA70D0006F331 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8436977E24DEA70D0006F331 /* SettingView.swift */; };
 		8436978124DEA8040006F331 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8436978024DEA8040006F331 /* PortfolioView.swift */; };
+		84649DE024F665B400F12DAE /* SearchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84649DDF24F665B400F12DAE /* SearchingView.swift */; };
 		848F995A24F40F0700B7628A /* InfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F995924F40F0700B7628A /* InfoSheet.swift */; };
 		849C5ED624D6416000F67F05 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C5ED524D6416000F67F05 /* Functions.swift */; };
 		84A1EE6324DDD1D200FA945B /* AmdOfflineApiData.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84A1EE6224DDD1D200FA945B /* AmdOfflineApiData.txt */; };
@@ -43,6 +44,7 @@
 		84366F7424F3DBFB0099BD6B /* MoreInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfo.swift; sourceTree = "<group>"; };
 		8436977E24DEA70D0006F331 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		8436978024DEA8040006F331 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
+		84649DDF24F665B400F12DAE /* SearchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingView.swift; sourceTree = "<group>"; };
 		848F995924F40F0700B7628A /* InfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSheet.swift; sourceTree = "<group>"; };
 		849C5ED524D6416000F67F05 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		84A1EE6224DDD1D200FA945B /* AmdOfflineApiData.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AmdOfflineApiData.txt; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				84366F7424F3DBFB0099BD6B /* MoreInfo.swift */,
 				848F995924F40F0700B7628A /* InfoSheet.swift */,
 				84C894DB24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift */,
+				84649DDF24F665B400F12DAE /* SearchingView.swift */,
 			);
 			path = Portfolio;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				840D416E24D43E7800394CA8 /* LogoView.swift in Sources */,
 				84B6CD4424D96ACF002716C2 /* DataBank.swift in Sources */,
 				84366F7524F3DBFB0099BD6B /* MoreInfo.swift in Sources */,
+				84649DE024F665B400F12DAE /* SearchingView.swift in Sources */,
 				84BE0D7624F3C1BF006EAA59 /* Extentions.swift in Sources */,
 				8401CF9A24D617F000EEB2E5 /* MoreDetailsView.swift in Sources */,
 				84C894DC24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift in Sources */,
