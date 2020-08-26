@@ -25,11 +25,13 @@ struct AskingView: View {
         VStack {
             Form {
                 HStack{
-                    Image(myDic_Symb2Img[getKey(value: self.compName)]!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 40)
-                        .cornerRadius(10)
+                    if (UIImage(named: myDic_Symb2Img[getKey(value: self.compName)]!) != nil) {
+                        Image(myDic_Symb2Img[getKey(value: self.compName)]!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 40)
+                            .cornerRadius(10)
+                    }
                     Text(compName)
                         .font(.title)
                         .lineLimit(1)
@@ -102,7 +104,7 @@ struct AskingView: View {
                 .padding(.vertical, 30)
                 
             }.frame(alignment: .bottom)
-            .disabled(amountOfStock == "")
+                .disabled(amountOfStock == "")
             //
         }
     }

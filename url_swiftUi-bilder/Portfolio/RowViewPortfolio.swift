@@ -31,7 +31,7 @@ struct RowViewPortfolio: View {
                     Text(Name)
                         .font(.headline)
                     
-                    Text(String(portfolioListShareNumberDict) + " @ " + String(roundGoodD(x: portfolioListInvestDict/portfolioListShareNumberDict)))
+                    Text(String(portfolioListShareNumberDict) + " @ " + String(roundGoodD(x: portfolioListInvestDict/portfolioListShareNumberDict))+"$")
                         .font(.footnote)
                 }
             }
