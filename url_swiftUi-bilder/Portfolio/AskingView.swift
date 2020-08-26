@@ -15,6 +15,7 @@ struct AskingView: View {
     @State private var termsAccepted = false
     @State private var amountOfStock = ""
     @State private var pricePerShare = ""
+    @State private var today = get_today()
     
     
     // this variable is somit shared through all views with this line
@@ -110,7 +111,10 @@ struct AskingView: View {
     }
     
     var buttonTextColor: Color {
-        return amountOfStock != "" ? .white : .gray
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        let date = df.string(from: self.selectedDate)
+        return (amountOfStock != "") && (today>date) ? .white : .gray
     }
     
 }
