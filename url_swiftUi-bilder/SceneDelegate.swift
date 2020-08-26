@@ -19,8 +19,8 @@ class UserSettings: ObservableObject {
         let samplePortInput3 = UserInput(compName: "Intel Corporation", purchaseDate: "2020-01-01", purchaseAmount: 19)
         let purchaseDate4 = UserInput(compName: "Apple Inc.", purchaseDate: "2020-01-23", purchaseAmount: 4)
         self.portfolio.append(samplePortInput2)
-        self.portfolio.append(samplePortInput3)
-        self.portfolio.append(samplePortInput1)
+//        self.portfolio.append(samplePortInput3)
+//        self.portfolio.append(samplePortInput1)
     }
 }
 
