@@ -40,12 +40,12 @@ struct PortfolioView: View {
             VStack{
                 List() {
                     
-                    ForEach(portfolioListInvestDict.sorted(by: >), id: \.value) {key, value in
+                    ForEach(portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
                         
                         RowViewPortfolio(dataEntries: self.companiesEntriesDict[key]! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
                     }
                     .onDelete(perform: self.deleteRow)
-                    .onMove(perform: self.move)
+//                    .onMove(perform: self.move)
                 }
                 .onAppear { self.buildElements() }
                 .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
@@ -110,11 +110,41 @@ struct PortfolioView: View {
         }
     }
     
-//    private func deleteRow(at indexSet: IndexSet) {
-//        let x = self.portfolioListInvestDict.sorted(by: >)
-//        x.remove(atOffsets: indexSet)
-//        self.settings.portfolio.remove(atOffsets: indexSet)
-//    }
+    private func deleteRow(at indexSet: IndexSet) {
+        var delArr = self.portfolioListInvestDict.sorted(by: <)
+        let OrgArr = delArr
+        delArr.remove(atOffsets: indexSet)
+        var removedKey = ""
+        
+        for elementOrgArr in OrgArr{
+            var gefunden = false
+            for elementdelArr in delArr{
+                if elementOrgArr.0 == elementdelArr.0{
+                    gefunden = true
+                }
+            }
+            if gefunden == false{
+                removedKey = elementOrgArr.0
+            }
+        }
+        
+        for entry in companiesEntriesDict[removedKey]!{
+            totalGainHistory = totalGainHistory - entry.gainHistory
+        }
+
+        totalInvestment -= portfolioListInvestDict[removedKey]!
+        totalValue -= (portfolioListInvestDict[removedKey]! + portfolioListGainDict[removedKey]!)
+        rendite -= portfolioListGainDict[removedKey]!
+        renditePercent = calcRateD(x: totalValue, y: totalInvestment)
+        
+        self.companiesEntriesDict[removedKey] = nil
+        self.portfolioListInvestDict[removedKey] = nil
+        self.portfolioListGainDict[removedKey] = nil
+        self.portfolioListPercentageDict[removedKey] = nil
+        self.portfolioListShareNumberDict[removedKey] = nil
+        
+        self.settings.portfolio.remove(atOffsets: indexSet)
+    }
 //    
 //    private func move(from source: IndexSet, to destination: Int) {
 //        wholeData.move(fromOffsets: source, toOffset: destination)

@@ -39,13 +39,16 @@ extension Array where Element == Double {
         var right = right
         
         let lenDiff = abs(left.count-right.count)
-        let padding = [Double](repeating: 0.0, count: lenDiff)
+        var padding = [Double](repeating: 0.0, count: lenDiff)
         
+        // += merges two arrays. + adds them elementarwise
         if left.count < right.count{
-            left += padding
+            padding += left
+            left = padding
         }
         else{
-            right += padding
+            padding += right
+            right = padding
         }
         
         return zip(left,right).map(+)
@@ -58,13 +61,15 @@ extension Array where Element == Double {
         var right = right
         
         let lenDiff = abs(left.count-right.count)
-        let padding = [Double](repeating: 0.0, count: lenDiff)
+        var padding = [Double](repeating: 0.0, count: lenDiff)
         
         if left.count < right.count{
-            left += padding
+            padding += left
+            left = padding
         }
         else{
-            right += padding
+            padding += right
+            right = padding
         }
         
         return zip(left,right).map(-)
