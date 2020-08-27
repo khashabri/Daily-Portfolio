@@ -80,5 +80,24 @@ func calcRateD (x: Double, y: Double) -> Double {
     return roundGoodD(x: (x-y)/y*100)
 }
 
+// 223.436 -> 223,44 $"
+func currencyString(x: Double, symbol: String = " $") -> String{
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .currencyPlural
+    formatter.locale = Locale(identifier: "en_US")
+    formatter.string(from: NSNumber(value: x))
+    var numFormated = String(formatter.string(from: NSNumber(value: x))?.dropLast(11) ?? "")
+    if (numFormated == "-0.00") {numFormated = "0.00"}
+    return numFormated+symbol
+}
 
-
+func currencyString(x: String, symbol: String = " $") -> String{
+    let x = Double(x)!
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .currencyPlural
+    formatter.locale = Locale(identifier: "en_US")
+    formatter.string(from: NSNumber(value: x))
+    var numFormated = String(formatter.string(from: NSNumber(value: x))?.dropLast(11) ?? "")
+    if (numFormated == "-0.00") {numFormated = "0.00"}
+    return numFormated+symbol
+}

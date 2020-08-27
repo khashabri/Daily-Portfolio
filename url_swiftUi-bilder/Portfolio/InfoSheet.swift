@@ -40,7 +40,7 @@ struct MarketPerformance: View {
                 HStack {
                     Text("Open").bold()
                     Spacer()
-                    Text(roundGoodS(x: dataEntries[0].open) + " $")
+                    Text(currencyString(x: dataEntries[0].open))
                 }
                 
                 
@@ -90,20 +90,20 @@ struct MarketPerformance: View {
                         }
                     }.offset(x: 10.5, y: 0)
                     Spacer()
-                    Text(String(roundGoodD(x: dataEntries[0].priceHistory[0])) + " $")
+                    Text(currencyString(x: dataEntries[0].priceHistory[0]))
                         .minimumScaleFactor(0.5)
                 }
                 HStack {
                     Text("Low").bold()
                     
                     Spacer()
-                    Text(roundGoodS(x: dataEntries[0].low) + " $")
+                    Text(currencyString(x: dataEntries[0].low))
                 }
                 HStack {
                     Text("High").bold()
                     
                     Spacer()
-                    Text(roundGoodS(x: dataEntries[0].high) + " $")
+                    Text(currencyString(x: dataEntries[0].high))
                 }
                 HStack {
                     Text("Volume").bold()
@@ -155,7 +155,7 @@ struct MarketPerformance: View {
                     .minimumScaleFactor(0.5)
                     
                     Spacer()
-                    Text(dataEntries[0].volume)
+                    Text(currencyString(x: dataEntries[0].volume, symbol: "").dropLast(3))
                 }
             }
             
@@ -187,8 +187,8 @@ struct purchaseDatesSubView: View {
                     Spacer()
                     
                     HStack(){
-                        Text(String(dataEntry.purchaseAmount) + " @ " + String(dataEntry.purchasePrice) + "$")
-                        Text("= " + String(dataEntry.totalInvestment) + "$")
+                        Text(String(dataEntry.purchaseAmount) + " @ " + currencyString(x:dataEntry.purchasePrice, symbol: "$"))
+                        Text("= " + currencyString(x: dataEntry.totalInvestment, symbol: "$"))
                             .font(.subheadline).foregroundColor(.gray)
                     }.lineLimit(1)
                     .minimumScaleFactor(0.1)

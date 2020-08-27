@@ -31,7 +31,7 @@ struct RowViewPortfolio: View {
                     Text(Name)
                         .font(.headline)
                     
-                    Text(String(portfolioListShareNumberDict) + " @ " + String(roundGoodD(x: portfolioListInvestDict/portfolioListShareNumberDict))+"$")
+                    Text(String(portfolioListShareNumberDict) + " @ " + currencyString(x: portfolioListInvestDict/portfolioListShareNumberDict, symbol: "$"))
                         .font(.footnote)
                 }
             }
@@ -43,7 +43,7 @@ struct RowViewPortfolio: View {
                     Text(String(portfolioListPercentageDict)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.red)
-                    Text(String(roundGoodD(x: portfolioListGainDict)) + "$")
+                    Text(currencyString(x: portfolioListGainDict, symbol: "$"))
                         .font(.footnote)
                         .foregroundColor(Color.red)
                 }
@@ -55,7 +55,7 @@ struct RowViewPortfolio: View {
                     Text(String(portfolioListPercentageDict)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.green)
-                    Text("+" + String(roundGoodD(x: portfolioListGainDict)) + "$")
+                    Text("+" + currencyString(x: portfolioListGainDict, symbol: "$"))
                         .font(.footnote)
                         .foregroundColor(Color.green)
                 }

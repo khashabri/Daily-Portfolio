@@ -184,22 +184,22 @@ struct totalInfoSubview: View, Equatable {
                     HStack {
                         Text("Investment")
                         Spacer()
-                        Text(String(roundGoodD(x: totalInvestment)) + " $")
+                        Text(currencyString(x: totalInvestment))
                     }
                     HStack {
                         Text("Current Value")
                         Spacer()
-                        Text(String(roundGoodD(x: totalValue)) + " $")
+                        Text(currencyString(x: totalValue))
                     }
                     HStack {
                         Text("Rendite")
                         Spacer()
-                        if rendite < 0 {
-                            Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
+                        if roundGoodD(x: rendite) < 0 {
+                            Text(currencyString(x: rendite) + " (" + String(abs(renditePercent)) + "%)")
                                 .foregroundColor(Color.red)
                         }
                         else {
-                            Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                            Text("+" + currencyString(x: rendite) + " (" + String(renditePercent) + "%)")
                                 .foregroundColor(Color.green)
                         }
                     }

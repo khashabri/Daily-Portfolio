@@ -95,9 +95,9 @@
 				84BE0D7024F33533006EAA59 /* RowViewPortfolio.swift */,
 				84366F7424F3DBFB0099BD6B /* MoreInfo.swift */,
 				848F995924F40F0700B7628A /* InfoSheet.swift */,
-				84C894DB24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift */,
 				84649DDF24F665B400F12DAE /* SearchingView.swift */,
 				84649DE124F6874D00F12DAE /* AskingView.swift */,
+				84C894DB24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift */,
 			);
 			path = Portfolio;
 			sourceTree = "<group>";

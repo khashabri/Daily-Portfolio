@@ -34,9 +34,7 @@ struct MoreInfo: View {
                 InfoSheet(dataEntries: dataEntries)
             }
             .navigationBarTitle("Overview", displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {
-                print("Dismissing sheet view...")
-                self.presentationMode.wrappedValue.dismiss()
+            .navigationBarItems(trailing: Button(action: { self.presentationMode.wrappedValue.dismiss()
             }) {
                 Text("Done").bold()
             })
