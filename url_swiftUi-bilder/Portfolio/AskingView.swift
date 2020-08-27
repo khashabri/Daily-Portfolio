@@ -76,6 +76,7 @@ struct AskingView: View {
             //
             Spacer()
             Button(action: {
+                isLoading = true
                 let df = DateFormatter()
                 df.dateFormat = "yyyy-MM-dd"
                 let date = df.string(from: self.selectedDate)
@@ -105,7 +106,7 @@ struct AskingView: View {
                 .padding(.vertical, 30)
                 
             }.frame(alignment: .bottom)
-                .disabled(amountOfStock == "")
+                .disabled(buttonTextColor == .gray)
             //
         }
     }

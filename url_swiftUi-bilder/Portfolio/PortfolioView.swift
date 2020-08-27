@@ -16,10 +16,11 @@ var totalInvestment = 0.0
 var totalValue = 0.0
 var rendite = 0.0
 var renditePercent = 0.0
+var isLoading = false
 
 struct PortfolioView: View {
     
-//    @State var userData = [settingsForPreview.samplePortInput3]
+    //    @State var userData = [settingsForPreview.samplePortInput3]
     
     @State var existingInputs: [UserInput] = []
     @State var wholeData: [CompPortfolioOutput] = []
@@ -43,12 +44,13 @@ struct PortfolioView: View {
                         
                         RowViewPortfolio(dataEntries: self.companiesEntriesDict[key]! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
                     }
-                    
+                    .onDelete(perform: self.deleteRow)
+                    .onMove(perform: self.move)
                 }
-                    .onAppear { self.buildElements() }
+                .onAppear { self.buildElements() }
                 .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
-
-                totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent)
+                
+                totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: isLoading)
             }
             .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
         }
@@ -102,7 +104,22 @@ struct PortfolioView: View {
                 }
             }
         }
+        
+        withAnimation{
+            isLoading = false
+        }
     }
+    
+//    private func deleteRow(at indexSet: IndexSet) {
+//        let x = self.portfolioListInvestDict.sorted(by: >)
+//        x.remove(atOffsets: indexSet)
+//        self.settings.portfolio.remove(atOffsets: indexSet)
+//    }
+//    
+//    private func move(from source: IndexSet, to destination: Int) {
+//        wholeData.move(fromOffsets: source, toOffset: destination)
+//    }
+    
 }
 
 struct PortfolioView_Previews: PreviewProvider {
@@ -126,45 +143,57 @@ struct totalInfoSubview: View, Equatable {
     let totalValue: Double
     let rendite: Double
     let renditePercent: Double
+    let isLoading: Bool
+    
     
     var body: some View {
-        
-        Form{
-            
-            Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
-                HStack {
-                    Text("Investment")
-                    Spacer()
-                    Text(String(roundGoodD(x: totalInvestment)) + " $")
-                }
-                HStack {
-                    Text("Current Value")
-                    Spacer()
-                    Text(String(roundGoodD(x: totalValue)) + " $")
-                }
-                HStack {
-                    Text("Rendite")
-                    Spacer()
-                    if rendite < 0 {
-                        Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
-                            .foregroundColor(Color.red)
+        VStack{
+            Form{
+                
+                Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
+                    HStack {
+                        Text("Investment")
+                        Spacer()
+                        Text(String(roundGoodD(x: totalInvestment)) + " $")
                     }
-                    else {
-                        Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
-                            .foregroundColor(Color.green)
+                    HStack {
+                        Text("Current Value")
+                        Spacer()
+                        Text(String(roundGoodD(x: totalValue)) + " $")
+                    }
+                    HStack {
+                        Text("Rendite")
+                        Spacer()
+                        if rendite < 0 {
+                            Text(String(roundGoodD(x: rendite)) + " (" + String(abs(renditePercent)) + "%)")
+                                .foregroundColor(Color.red)
+                        }
+                        else {
+                            Text("+" + String(roundGoodD(x: rendite)) + " (" + String(renditePercent) + "%)")
+                                .foregroundColor(Color.green)
+                        }
                     }
                 }
             }
+            .padding(.bottom, -200)
+            .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -50)
+            
+            Spacer()
+            if(isLoading){
+                HStack{
+                    ActivityIndicator().frame(width: 25, height: 25)
+                    Text("Loading...")
+                }.padding(15)
+                    .transition(.scale)
+            }
         }
-        .padding(.bottom, -50)
-        .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -50)
     }
 }
 
 struct AddButton<Destination : View>: View {
-
+    
     var destination:  Destination
-
+    
     var body: some View {
         NavigationLink(destination: self.destination) {
             Image(systemName: "plus")
@@ -177,4 +206,50 @@ struct AddButton<Destination : View>: View {
                 .offset(x: -5, y: 0)
         }
     }
+}
+
+struct ActivityIndicator: View {
+    
+    @State private var isAnimating: Bool = false
+    
+    
+    
+    var body: some View {
+        
+        GeometryReader { (geometry: GeometryProxy) in
+            
+            ForEach(0..<5) { index in
+                
+                Group {
+                    
+                    Circle()
+                        
+                        .frame(width: geometry.size.width / 5, height: geometry.size.height / 5)
+                        
+                        .scaleEffect(!self.isAnimating ? 1 - CGFloat(index) / 5 : 0.2 + CGFloat(index) / 5)
+                        
+                        .offset(y: geometry.size.width / 10 - geometry.size.height / 2)
+                    
+                }.frame(width: geometry.size.width, height: geometry.size.height)
+                    
+                    .rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
+                    
+                    .animation(Animation
+                        
+                        .timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
+                        
+                        .repeatForever(autoreverses: false))
+                
+            }
+            
+        }.aspectRatio(1, contentMode: .fit)
+            
+            .onAppear {
+                
+                self.isAnimating = true
+                
+        }
+        
+    }
+    
 }
