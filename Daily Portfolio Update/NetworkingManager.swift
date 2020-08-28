@@ -5,6 +5,7 @@ import Combine
 class NetworkingManagerPortfolio: ObservableObject {
     var urlString: String
     var compPortfolioOutput = CompPortfolioOutput()
+    var manualPurchasedPrice: Double? = nil
     
     init(userInput: UserInput) {
         var userInput = userInput
@@ -15,6 +16,8 @@ class NetworkingManagerPortfolio: ObservableObject {
         self.compPortfolioOutput.purchaseAmount = userInput.purchaseAmount
         
         self.urlString = MakeApiStringUrl(compSymbol: compPortfolioOutput.compSymbol, outputSize: "full")
+        
+        if !userInput.manualPurchasedPrice.isZero { self.manualPurchasedPrice = userInput.manualPurchasedPrice }
     }
     
     func getData(completion: @escaping (CompPortfolioOutput) -> ()){
@@ -63,15 +66,16 @@ class NetworkingManagerPortfolio: ObservableObject {
                 let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!
                 let usefulDates = Array(totDatesArr[0...thatDatePosition])
                 let prices = welcome.compData.values(of: usefulDates)
-                let thatTimePrice = prices.last!
+                
+                let thatTimePrice: Double = self.manualPurchasedPrice ?? prices.last!
                 
                 self.compPortfolioOutput.gainHistory = self.compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
                 
-                self.compPortfolioOutput.currentGain = calcRateD(x: prices.first!, y: prices.last!)
+                self.compPortfolioOutput.currentGain = calcRateD(x: prices.first!, y: thatTimePrice)
                 
-                self.compPortfolioOutput.totalInvestment = self.compPortfolioOutput.purchaseAmount * prices.last!
+                self.compPortfolioOutput.totalInvestment = self.compPortfolioOutput.purchaseAmount * thatTimePrice
                 
-                self.compPortfolioOutput.purchasePrice = prices.last!
+                self.compPortfolioOutput.purchasePrice = thatTimePrice
                 
                 self.compPortfolioOutput.totalCurrentValue = self.compPortfolioOutput.purchaseAmount * prices.first!
                 

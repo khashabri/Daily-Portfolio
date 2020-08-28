@@ -93,6 +93,7 @@ struct UserInput: Identifiable, Equatable{
     lazy var compSymbol = getKey(value: compName)
     let purchaseDate: String
     let purchaseAmount: Double
+    var manualPurchasedPrice: Double = 0
 }
 
 // MARK: - Company Portfolio Output

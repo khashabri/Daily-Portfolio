@@ -12,12 +12,11 @@ import Combine
 struct AskingView: View {
     @State var compName: String
     @State var selectedDate = Date()
-    @State private var termsAccepted = false
+    @State private var toggleOn = false
     @State private var amountOfStock = ""
-    @State private var pricePerShare = ""
+    @State private var manualPurchasedPrice = ""
     @State private var today = get_today()
-    
-    
+        
     // this variable is somit shared through all views with this line
     @EnvironmentObject var settings: UserSettings
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -45,7 +44,7 @@ struct AskingView: View {
                         DatePicker("Your stock purchase date:", selection: $selectedDate, displayedComponents: .date)
                         
                         TextField("Purchased amount", text: $amountOfStock)
-                            .keyboardType(.numberPad)
+                            //                            .keyboardType(.numberPad)
                             .onReceive(Just(amountOfStock)) { newValue in
                                 let filtered = newValue.filter { ".0123456789".contains($0) }
                                 if filtered != newValue {
@@ -54,21 +53,23 @@ struct AskingView: View {
                         }
                 }
                 
-                Toggle(isOn: $termsAccepted,
+                Toggle(isOn: $toggleOn,
                        label: {
-                        Text("Enter directly the price")
+                        Text("Enter price per share manually")
+                        .lineLimit(1)
+                            .minimumScaleFactor(0.1)
                 })
-                if termsAccepted{
-                    TextField("Price per share", text: $pricePerShare)
-                        .keyboardType(.numberPad)
-                        .onReceive(Just(pricePerShare)) { newValue in
+                if toggleOn{
+                    TextField("Price per share", text: $manualPurchasedPrice)
+                        //                        .keyboardType(.numberPad)
+                        .onReceive(Just(manualPurchasedPrice)) { newValue in
                             let filtered = newValue.filter { ".0123456789".contains($0) }
                             if filtered != newValue {
-                                self.pricePerShare = filtered
+                                self.manualPurchasedPrice = filtered
                             }
                     }
                 }
-            }
+                }
             .gesture(DragGesture().onChanged{_ in UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)})
                 
             .padding(.bottom, -1111.0)
@@ -81,11 +82,17 @@ struct AskingView: View {
                 df.dateFormat = "yyyy-MM-dd"
                 let date = df.string(from: self.selectedDate)
                 
-                let userInput = UserInput(compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!)
+                let userInput: UserInput
+                if self.toggleOn && self.manualPurchasedPrice != ""{
+                    userInput = UserInput(compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!, manualPurchasedPrice: Double(self.manualPurchasedPrice)!)
+                }
+                else{
+                    userInput = UserInput(compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!)
+                }
+                
                 self.settings.portfolio.append(userInput)
                 print(self.selectedDate)
                 
-                //                self.shouldPopToRootView = false
                 self.presentationMode.wrappedValue.dismiss()
                 self.presentationMode.wrappedValue.dismiss()
                 
@@ -115,9 +122,9 @@ struct AskingView: View {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         let date = df.string(from: self.selectedDate)
-        return (amountOfStock != "") && (today>date) ? .white : .gray
+        return (amountOfStock != "") && (today>date) && (!toggleOn || manualPurchasedPrice != "") ? .white : .gray
     }
-    
+
 }
 
 // to use this first comment out @Binding var shouldPopToRootView : Bool
@@ -126,3 +133,5 @@ struct AskingView_Previews: PreviewProvider {
         AskingView(compName: "Apple Inc.")
     }
 }
+
+

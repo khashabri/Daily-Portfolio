@@ -76,7 +76,6 @@ struct ContentView: View {
                 NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
                     
                     print(compPortfolioOutput)
-                    //                    self.wholeData.append(compPortfolioOutput)
                     
                     // Catching Data of companies
                     let key = compPortfolioOutput.compSymbol
@@ -105,7 +104,7 @@ struct ContentView: View {
                     totalValue += compPortfolioOutput.totalCurrentValue
                     rendite = totalValue - totalInvestment
                     renditePercent = calcRateD(x: totalValue, y: totalInvestment)
-                    totalGainHistory += compPortfolioOutput.gainHistory
+                    totalGainHistory = totalGainHistory + compPortfolioOutput.gainHistory
                     lastRefreshed = compPortfolioOutput.lastRefreshed
                     
                     
