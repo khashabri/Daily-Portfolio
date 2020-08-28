@@ -39,7 +39,7 @@ struct RowViewPortfolio: View {
             
             if portfolioListGainDict < 0
             {
-                VStack(alignment: .center){
+                VStack(alignment: .trailing){
                     Text(String(portfolioListPercentageDict)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.red)
@@ -51,7 +51,7 @@ struct RowViewPortfolio: View {
                 
             else
             {
-                VStack(alignment: .center){
+                VStack(alignment: .trailing){
                     Text(String(portfolioListPercentageDict)+"%")
                         .fontWeight(.bold)
                         .foregroundColor(Color.green)
