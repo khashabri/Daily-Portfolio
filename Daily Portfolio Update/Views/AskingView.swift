@@ -40,7 +40,7 @@ struct AskingView: View {
                 
                 Section(header: HStack{
                     Image(systemName: "cart")
-                    Text("Purchase Informations")}, footer: Text("If you don't set the price manually the purchased price will be the close price of the purchase date.")){
+                    Text("Purchase Informations")}){
                         DatePicker("Your stock purchase date:", selection: $selectedDate, displayedComponents: .date)
                         
                         TextField("Purchased amount", text: $amountOfStock)
@@ -122,7 +122,8 @@ struct AskingView: View {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         let date = df.string(from: self.selectedDate)
-        return (amountOfStock != "") && (today>date) && (!toggleOn || manualPurchasedPrice != "") ? .white : .gray
+        let color: Color = (amountOfStock != "") && (today>date) && (!toggleOn || manualPurchasedPrice != "") ? .white : .gray
+        return color
     }
 
 }
