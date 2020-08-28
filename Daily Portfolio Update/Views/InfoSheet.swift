@@ -91,7 +91,7 @@ struct MarketPerformance: View {
                     .padding(.horizontal)
                     .lineLimit(1)
                     .minimumScaleFactor(0.1)
-
+                    
                     Spacer()
                     Text(currencyString(x: dataEntries[0].priceHistory[0]))
                         .minimumScaleFactor(0.5)
@@ -156,9 +156,9 @@ struct MarketPerformance: View {
                     }
                     .lineLimit(1)
                     .minimumScaleFactor(0.1)
-                        .padding(.horizontal)
-                        
-
+                    .padding(.horizontal)
+                    
+                    
                     
                     Spacer()
                     Text(currencyString(x: dataEntries[0].volume, symbol: "").dropLast(3))
@@ -173,7 +173,7 @@ struct MarketPerformance: View {
 
 struct InfoSheet_Previews: PreviewProvider {
     static var previews: some View {
-        InfoSheet(dataEntries: [compPortfolioOutputOfflineSample])
+        InfoSheet(dataEntries: SampledataEntry["SNAP"]!)
     }
 }
 
@@ -197,7 +197,7 @@ struct purchaseDatesSubView: View {
                         Text("= " + currencyString(x: dataEntry.totalInvestment, symbol: "$"))
                             .font(.subheadline).foregroundColor(.gray)
                     }.lineLimit(1)
-                    .minimumScaleFactor(0.1)
+                        .minimumScaleFactor(0.1)
                 }
             }
         }

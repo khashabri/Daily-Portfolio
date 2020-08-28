@@ -48,7 +48,7 @@ struct MoreInfo: View {
 
 struct MoreInfo_Previews: PreviewProvider {
     static var previews: some View {
-        MoreInfo(dataEntries: [compPortfolioOutputOfflineSample])
+        MoreInfo(dataEntries: SampledataEntry["SNAP"]!)
     }
 }
 

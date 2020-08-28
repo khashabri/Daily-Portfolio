@@ -50,7 +50,7 @@ func MakeApiStringUrl(compSymbol: String, outputSize: String = "compact") -> Str
 }
 
 func cast2URL(string: String) -> URL {
-    return URL(string: link) ?? URL(string: "a")!
+    return URL(string: string) ?? URL(string: "a")!
 }
 
 func getKey(value: String) -> String {

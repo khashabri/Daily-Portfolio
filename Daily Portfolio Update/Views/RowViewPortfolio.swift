@@ -17,11 +17,11 @@ struct RowViewPortfolio: View {
     @State var portfolioListGainDict: Double
     @State var portfolioListPercentageDict: Double
     @State var portfolioListShareNumberDict: Double
-        
+    
     var body: some View {
         HStack{
             HStack{
-//                Image("tesla.com")
+                //                Image("tesla.com")
                 Image(myDic_Symb2Img[dataEntries[0].compSymbol]!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -74,6 +74,6 @@ struct RowViewPortfolio: View {
 
 struct RowViewPortfolio_Previews: PreviewProvider {
     static var previews: some View {
-        RowViewPortfolio(dataEntries: [compPortfolioOutputOfflineSample], Name: "Apple Inc.", portfolioListInvestDict: 1230, portfolioListGainDict: 400, portfolioListPercentageDict: 40, portfolioListShareNumberDict: 5)
+        RowViewPortfolio(dataEntries: SampledataEntry["SNAP"]!, Name: "Apple Inc.", portfolioListInvestDict: 1230, portfolioListGainDict: 400, portfolioListPercentageDict: 40, portfolioListShareNumberDict: 5)
     }
 }

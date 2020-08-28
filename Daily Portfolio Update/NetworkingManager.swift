@@ -1,92 +1,23 @@
 import Foundation
 import Combine
 
-// MARK: - Welcome
-struct Welcome: Codable & Decodable  {
-    let metaData: MetaData
-    var compData: [String: CompData]
-    
-    enum CodingKeys: String, CodingKey, Decodable {
-        case metaData = "Meta Data"
-        case compData = "Time Series (Daily)"
-    }
-    
-}
-
-// MARK: - MetaData
-struct MetaData: Codable & Decodable {
-    let information, symbol, lastRefreshed, outputSize: String
-    let timeZone: String
-    
-    enum CodingKeys: String, CodingKey, Decodable {
-        case information = "1. Information"
-        case symbol = "2. Symbol"
-        case lastRefreshed = "3. Last Refreshed"
-        case outputSize = "4. Output Size"
-        case timeZone = "5. Time Zone"
-    }
-}
-
-// MARK: - TimeSeriesDaily
-struct CompData: Codable & Identifiable & Decodable {
-    var id = UUID()
-    var s_open, s_high, s_low, s_close, s_volume: String
-    
-    var symbol: String = ""
-    var lastRefreshed: String = ""
-    
-    // making some Doubles out of Strings
-    var open: Double = 0
-    var high: Double = 0
-    var low: Double  = 0
-    var close: Double  = 0
-    var volume: Double  = 0
-    
-    // Additional Data
-    var pchange: Double = 0
-    var volumeDayChange: Double = 0
-    
-    // 30 Days base [22]
-    var close1MChange: Double = 0
-    var volume1MChange: Double = 0
-    
-    // weekly Days base [5]
-    var closeWeekChange: Double = 0
-    var volumeWeekChange: Double = 0
-    
-    // 3m Days base [5]
-    var close3MChange: Double = 0
-    var volume3MChange: Double = 0
-    
-    var Days100Before: [Double]  = []
-    
-    enum CodingKeys: String, CodingKey, Decodable {
-        case s_open = "1. open"
-        case s_high = "2. high"
-        case s_low = "3. low"
-        case s_close = "4. close"
-        case s_volume = "5. volume"
-        
-    }
-    
-    mutating func makeDoubles(himself: CompData){
-        self.open = Double(himself.s_open)!
-        self.high = Double(himself.s_high)!
-        self.low = Double(himself.s_low)!
-        self.close = Double(himself.s_close)!
-        self.volume = Double(himself.s_volume)!
-    }
-}
-
-// MARK: - Class
-class NetworkingManager: ObservableObject {
+//// MARK: - Class
+class NetworkingManagerPortfolio: ObservableObject {
     var urlString: String
+    var compPortfolioOutput = CompPortfolioOutput()
     
-    init(symbl: String) {
-        self.urlString = MakeApiStringUrl(compSymbol: symbl)
+    init(userInput: UserInput) {
+        var userInput = userInput
+        
+        self.compPortfolioOutput.compName = userInput.compName
+        self.compPortfolioOutput.compSymbol = userInput.compSymbol
+        self.compPortfolioOutput.purchaseDate = userInput.purchaseDate
+        self.compPortfolioOutput.purchaseAmount = userInput.purchaseAmount
+        
+        self.urlString = MakeApiStringUrl(compSymbol: compPortfolioOutput.compSymbol, outputSize: "full")
     }
     
-    func getData(completion: @escaping (CompData) -> ()){
+    func getData(completion: @escaping (CompPortfolioOutput) -> ()){
         
         guard let url = URL(string: self.urlString) else { return }
         
@@ -96,81 +27,91 @@ class NetworkingManager: ObservableObject {
             let welcome = try! JSONDecoder().decode(Welcome.self, from: data)
             
             DispatchQueue.main.async {
-                // taking out the latest company data
-                var compCharacteristics = welcome.compData[welcome.metaData.lastRefreshed]!
-                compCharacteristics.makeDoubles(himself: compCharacteristics)
                 
+                var workingDate = self.compPortfolioOutput.purchaseDate
                 let totDatesArr = welcome.compData.keys.sorted(by: >)
                 
-                compCharacteristics.Days100Before = welcome.compData.values(of: totDatesArr)
+                let date0D = totDatesArr[0]
+                let date1D = totDatesArr[1]
+                let date5D = totDatesArr[5]
+                let date1M = totDatesArr[22]
+                let date1Y = totDatesArr[264]
                 
-                let compToday = welcome.compData[totDatesArr[0]]!
-                let compYesterday = welcome.compData[totDatesArr[1]]!
-                let compWeekBef = welcome.compData[totDatesArr[5]]!
-                let comp30DaysBef = welcome.compData[totDatesArr[22]]!
-                let comp3MoBef = welcome.compData[totDatesArr[66]]!
+                // Make up day statistics
+                self.compPortfolioOutput.open = (welcome.compData[date0D]?.s_open)!
+                self.compPortfolioOutput.close = (welcome.compData[date0D]?.s_close)!
+                self.compPortfolioOutput.high = (welcome.compData[date0D]?.s_high)!
+                self.compPortfolioOutput.low = (welcome.compData[date0D]?.s_low)!
+                self.compPortfolioOutput.volume = (welcome.compData[date0D]?.s_volume)!
                 
-                // calc pchange
-                compCharacteristics.pchange = calcRateD(x: compCharacteristics.Days100Before[0], y: compCharacteristics.Days100Before[1])
+                // Making up watchlist data
+                self.compPortfolioOutput.priceChange1D = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1D]!.s_close)
+                self.compPortfolioOutput.priceChange5D = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date5D]!.s_close)
+                self.compPortfolioOutput.priceChange1M = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1M]!.s_close)
+                self.compPortfolioOutput.priceChange1Y = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1Y]!.s_close)
                 
-                // saving company symbol and the last data check date
-                compCharacteristics.symbol = welcome.metaData.symbol
-                compCharacteristics.lastRefreshed = welcome.metaData.lastRefreshed
+                self.compPortfolioOutput.volumeChange1D = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1D]!.s_volume)
+                self.compPortfolioOutput.volumeChange5D = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date5D]!.s_volume)
+                self.compPortfolioOutput.volumeChange1M = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1M]!.s_volume)
+                self.compPortfolioOutput.volumeChange1Y = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1Y]!.s_volume)
                 
-                // 1 Day base calculations
-                compCharacteristics.volumeDayChange = calcRateS(x: compToday.s_volume, y: compYesterday.s_volume)
                 
-                // 30 Days base [22] calculations
-                compCharacteristics.close1MChange = calcRateS(x: compToday.s_close, y: comp30DaysBef.s_close)
-                compCharacteristics.volume1MChange = calcRateS(x: compToday.s_volume, y: comp30DaysBef.s_volume)
+                // Making up portfolio data
+                while !totDatesArr.contains(workingDate) {
+                    workingDate = workingDate.convertToNextDate()
+                }
+                let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!
+                let usefulDates = Array(totDatesArr[0...thatDatePosition])
+                let prices = welcome.compData.values(of: usefulDates)
+                let thatTimePrice = prices.last!
                 
-                // weekly Days base [5] calculations
-                compCharacteristics.closeWeekChange = calcRateS(x: compToday.s_close, y: compWeekBef.s_close)
-                compCharacteristics.volumeWeekChange = calcRateS(x: compToday.s_volume, y: compWeekBef.s_volume)
+                self.compPortfolioOutput.gainHistory = self.compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
                 
-                // 3m Days base [66] calculations
-                compCharacteristics.close3MChange = calcRateS(x: compToday.s_close, y: comp3MoBef.s_close)
-                compCharacteristics.volume3MChange = calcRateS(x: compToday.s_volume, y: comp3MoBef.s_volume)
+                self.compPortfolioOutput.currentGain = calcRateD(x: prices.first!, y: prices.last!)
                 
-                completion(compCharacteristics)
+                self.compPortfolioOutput.totalInvestment = self.compPortfolioOutput.purchaseAmount * prices.last!
                 
+                self.compPortfolioOutput.purchasePrice = prices.last!
+                
+                self.compPortfolioOutput.totalCurrentValue = self.compPortfolioOutput.purchaseAmount * prices.first!
+                
+                self.compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
+                
+                self.compPortfolioOutput.priceHistory = prices
+                
+                completion(self.compPortfolioOutput)
             }
         }.resume()
     }
 }
 
 // MARK: - Sample Offline Data
-func JsonOfflineCompData() -> CompData {
+func JsonOfflineCompPortfolioOutput() -> CompPortfolioOutput {
     let url = Bundle.main.url(forResource: "AmdOfflineApiData", withExtension: ".txt")!
     let data = try! Data(contentsOf: url)
     let welcome = try! JSONDecoder().decode(Welcome.self, from: data)
     
-    var arrayOfTodayCompData = welcome.compData[welcome.metaData.lastRefreshed]!
-    arrayOfTodayCompData.makeDoubles(himself: arrayOfTodayCompData)
+    var compPortfolioOutput = CompPortfolioOutput(compName: "Apple Inc.", compSymbol: "aapl", purchaseDate: "2020-03-19", purchaseAmount: 12)
     
-    // sorting the total recieved compData
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-dd-mm"
+    let workingDate = compPortfolioOutput.purchaseDate
+    let totDatesArr = welcome.compData.keys.sorted(by: >)
     
-    let sortedCompData = welcome.compData.map { (formatter.date(from: $0)!, $0, $1) }
-        .sorted { $0.0 < $1.0 }
-        .map { ($0.1, $0.2) }
+    let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!
+    let usefulDates = Array(totDatesArr[0...thatDatePosition])
+    let prices = welcome.compData.values(of: usefulDates)
+    let thatTimePrice = prices.last!
     
-    // attaching the last 100 days prices to arrayOfTodayCompData
-    for (_, value) in sortedCompData{
-        arrayOfTodayCompData.Days100Before.append(Double(value.s_close)!)
-    }
-    arrayOfTodayCompData.Days100Before = arrayOfTodayCompData.Days100Before.reversed()
+    compPortfolioOutput.gainHistory = compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
     
-    // calc pchange
-    let todayPrice = arrayOfTodayCompData.Days100Before[0]
-    let yesterdayPrice = arrayOfTodayCompData.Days100Before[1]
-    let price_change = (todayPrice - yesterdayPrice)/yesterdayPrice * 100
-    arrayOfTodayCompData.pchange = (price_change*100).rounded()/100
+    compPortfolioOutput.currentGain = roundGoodD(x: (prices.first! - prices.last!) / prices.last!)
     
-    // saving company symbol and the last data check date
-    arrayOfTodayCompData.symbol = welcome.metaData.symbol
-    arrayOfTodayCompData.lastRefreshed = welcome.metaData.lastRefreshed
+    compPortfolioOutput.totalInvestment = compPortfolioOutput.purchaseAmount * prices.last!
     
-    return arrayOfTodayCompData
+    compPortfolioOutput.purchasePrice = prices.last!
+    
+    compPortfolioOutput.totalCurrentValue = compPortfolioOutput.purchaseAmount * prices.first!
+    
+    compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
+    
+    return compPortfolioOutput
 }

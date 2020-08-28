@@ -1,14 +1,14 @@
 //
-//  PortfolioView.swift
+//  SwiftUIView.swift
 //  url_swiftUi-bilder
 //
-//  Created by Khashayar Abri on 08.08.20.
+//  Created by Khashayar Abri on 31.07.20.
 //  Copyright © 2020 Khashayar Abri. All rights reserved.
 //
 
 import SwiftUI
 
-var compPortfolioOutputOfflineSample = JsonOfflineCompPortfolioOutput()
+var settingsForPreview = UserSettings()
 
 var totalGainHistory: [Double] = []
 var lastRefreshed = ""
@@ -18,7 +18,7 @@ var rendite = 0.0
 var renditePercent = 0.0
 var isLoading = false
 
-struct PortfolioView: View {
+struct ContentView: View {
     
     //    @State var userData = [settingsForPreview.samplePortInput3]
     
@@ -36,23 +36,36 @@ struct PortfolioView: View {
     @EnvironmentObject var settings: UserSettings
     
     var body: some View {
-        NavigationView{
-            VStack{
-                List() {
-                    
-                    ForEach(portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
+        TabView {
+            NavigationView{
+                VStack{
+                    List() {
                         
-                        RowViewPortfolio(dataEntries: self.companiesEntriesDict[key]! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
+                        ForEach(portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
+                            
+                            RowViewPortfolio(dataEntries: self.companiesEntriesDict[key]! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
+                        }
+                        .onDelete(perform: self.deleteRow)
+                        //                    .onMove(perform: self.move)
                     }
-                    .onDelete(perform: self.deleteRow)
-//                    .onMove(perform: self.move)
+                    .onAppear { self.buildElements() }
+                    .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
+                    
+                    totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: isLoading)
                 }
-                .onAppear { self.buildElements() }
-                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
-                
-                totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: isLoading)
+                .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
             }
-            .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
+                
+            .tabItem {
+                Image(systemName: "person.crop.circle")
+                Text("Portfolio")
+            }
+            
+            SettingView()
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+            }
         }
     }
     
@@ -131,7 +144,7 @@ struct PortfolioView: View {
         for entry in companiesEntriesDict[removedKey]!{
             totalGainHistory = totalGainHistory - entry.gainHistory
         }
-
+        
         totalInvestment -= portfolioListInvestDict[removedKey]!
         totalValue -= (portfolioListInvestDict[removedKey]! + portfolioListGainDict[removedKey]!)
         rendite -= portfolioListGainDict[removedKey]!
@@ -145,16 +158,12 @@ struct PortfolioView: View {
         
         self.settings.portfolio.remove(atOffsets: indexSet)
     }
-//    
-//    private func move(from source: IndexSet, to destination: Int) {
-//        wholeData.move(fromOffsets: source, toOffset: destination)
-//    }
-    
 }
 
-struct PortfolioView_Previews: PreviewProvider {
+
+struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        PortfolioView().environmentObject(settingsForPreview)
+        ContentView().environmentObject(settingsForPreview)
     }
 }
 
@@ -283,3 +292,4 @@ struct ActivityIndicator: View {
     }
     
 }
+
