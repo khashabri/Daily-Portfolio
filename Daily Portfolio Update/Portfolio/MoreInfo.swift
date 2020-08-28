@@ -33,6 +33,9 @@ struct MoreInfo: View {
                 Spacer()
                 InfoSheet(dataEntries: dataEntries)
             }
+            .minimumScaleFactor(0.1)
+            .lineLimit(1)
+                
             .navigationBarTitle("Overview", displayMode: .inline)
             .navigationBarItems(trailing: Button(action: { self.presentationMode.wrappedValue.dismiss()
             }) {

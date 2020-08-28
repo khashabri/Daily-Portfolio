@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import SwiftUICharts
 
 struct InfoSheet: View {
     
@@ -88,7 +87,11 @@ struct MarketPerformance: View {
                                 Text(String(dataEntries[0].priceChange1Y)+" %").foregroundColor(.red).bold()
                             }
                         }
-                    }.offset(x: 10.5, y: 0)
+                    }
+                    .padding(.horizontal)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.1)
+
                     Spacer()
                     Text(currencyString(x: dataEntries[0].priceHistory[0]))
                         .minimumScaleFactor(0.5)
@@ -107,7 +110,7 @@ struct MarketPerformance: View {
                 }
                 HStack {
                     Text("Volume").bold()
-                    
+                    Spacer()
                     VStack(alignment: .leading){
                         HStack{
                             Text("Daily: ")
@@ -151,8 +154,11 @@ struct MarketPerformance: View {
                         }
                         
                     }
-                    .offset(x: 20, y: 0)
-                    .minimumScaleFactor(0.5)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.1)
+                        .padding(.horizontal)
+                        
+
                     
                     Spacer()
                     Text(currencyString(x: dataEntries[0].volume, symbol: "").dropLast(3))
