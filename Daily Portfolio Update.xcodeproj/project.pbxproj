@@ -26,6 +26,7 @@
 		84B6CD4A24D9984E002716C2 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B6CD4924D9984E002716C2 /* SearchView.swift */; };
 		84BE0D7124F33533006EAA59 /* RowViewPortfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE0D7024F33533006EAA59 /* RowViewPortfolio.swift */; };
 		84BE0D7624F3C1BF006EAA59 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE0D7524F3C1BF006EAA59 /* Extentions.swift */; };
+		84C1312324F890BC00E8A403 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C1312224F890BC00E8A403 /* Default-568h@2x.png */; };
 		84C894DC24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C894DB24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift */; };
 		84E0760F24DD80A600DE4061 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E0760E24DD80A600DE4061 /* NetworkingManager.swift */; };
 		84F8F5D224D3AB570058C4D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */; };
@@ -55,9 +56,10 @@
 		84B6CD4924D9984E002716C2 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		84BE0D7024F33533006EAA59 /* RowViewPortfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowViewPortfolio.swift; sourceTree = "<group>"; };
 		84BE0D7524F3C1BF006EAA59 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
+		84C1312224F890BC00E8A403 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		84C894DB24F2D8BC0044C27D /* NetworkingManagerPortfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManagerPortfolio.swift; sourceTree = "<group>"; };
 		84E0760E24DD80A600DE4061 /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
-		84F8F5CE24D3AB570058C4D3 /* url_swiftUi-bilder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "url_swiftUi-bilder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		84F8F5CE24D3AB570058C4D3 /* Daily Portfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily Portfolio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84F8F5D324D3AB570058C4D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,7 +107,8 @@
 		84F8F5C524D3AB570058C4D3 = {
 			isa = PBXGroup;
 			children = (
-				84F8F5D024D3AB570058C4D3 /* url_swiftUi-bilder */,
+				84C1312224F890BC00E8A403 /* Default-568h@2x.png */,
+				84F8F5D024D3AB570058C4D3 /* Daily Portfolio Update */,
 				84F8F5CF24D3AB570058C4D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,12 +116,12 @@
 		84F8F5CF24D3AB570058C4D3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				84F8F5CE24D3AB570058C4D3 /* url_swiftUi-bilder.app */,
+				84F8F5CE24D3AB570058C4D3 /* Daily Portfolio.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		84F8F5D024D3AB570058C4D3 /* url_swiftUi-bilder */ = {
+		84F8F5D024D3AB570058C4D3 /* Daily Portfolio Update */ = {
 			isa = PBXGroup;
 			children = (
 				84F8F5DF24D3AB5C0058C4D3 /* Info.plist */,
@@ -141,7 +144,7 @@
 				84C894DA24F2D8740044C27D /* Portfolio */,
 				84F8F5D924D3AB5B0058C4D3 /* Preview Content */,
 			);
-			path = "url_swiftUi-bilder";
+			path = "Daily Portfolio Update";
 			sourceTree = "<group>";
 		};
 		84F8F5D924D3AB5B0058C4D3 /* Preview Content */ = {
@@ -155,9 +158,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		84F8F5CD24D3AB570058C4D3 /* url_swiftUi-bilder */ = {
+		84F8F5CD24D3AB570058C4D3 /* Daily Portfolio Update */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "url_swiftUi-bilder" */;
+			buildConfigurationList = 84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "Daily Portfolio Update" */;
 			buildPhases = (
 				84F8F5CA24D3AB570058C4D3 /* Sources */,
 				84F8F5CB24D3AB570058C4D3 /* Frameworks */,
@@ -167,13 +170,13 @@
 			);
 			dependencies = (
 			);
-			name = "url_swiftUi-bilder";
+			name = "Daily Portfolio Update";
 			packageProductDependencies = (
 				84F8F5E624D3AC5F0058C4D3 /* URLImage */,
 				841E873C24DCA6F10098C9EA /* SwiftUICharts */,
 			);
 			productName = "url_swiftUi-bilder";
-			productReference = 84F8F5CE24D3AB570058C4D3 /* url_swiftUi-bilder.app */;
+			productReference = 84F8F5CE24D3AB570058C4D3 /* Daily Portfolio.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -191,7 +194,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "url_swiftUi-bilder" */;
+			buildConfigurationList = 84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "Daily Portfolio Update" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -208,7 +211,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				84F8F5CD24D3AB570058C4D3 /* url_swiftUi-bilder */,
+				84F8F5CD24D3AB570058C4D3 /* Daily Portfolio Update */,
 			);
 		};
 /* End PBXProject section */
@@ -221,6 +224,7 @@
 				84A1EE6324DDD1D200FA945B /* AmdOfflineApiData.txt in Resources */,
 				84F8F5DE24D3AB5C0058C4D3 /* LaunchScreen.storyboard in Resources */,
 				84F8F5DB24D3AB5B0058C4D3 /* Preview Assets.xcassets in Resources */,
+				84C1312324F890BC00E8A403 /* Default-568h@2x.png in Resources */,
 				84F8F5D824D3AB5B0058C4D3 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,16 +393,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"url_swiftUi-bilder/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Daily Portfolio Update/Preview Content\"";
 				DEVELOPMENT_TEAM = BZKC3LWB2Z;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "url_swiftUi-bilder/Info.plist";
+				INFOPLIST_FILE = "Daily Portfolio Update/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.url-swiftUi-bilder";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Daily Portfolio";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -409,16 +413,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"url_swiftUi-bilder/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Daily Portfolio Update/Preview Content\"";
 				DEVELOPMENT_TEAM = BZKC3LWB2Z;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "url_swiftUi-bilder/Info.plist";
+				INFOPLIST_FILE = "Daily Portfolio Update/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.url-swiftUi-bilder";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Daily Portfolio";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -427,7 +431,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "url_swiftUi-bilder" */ = {
+		84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "Daily Portfolio Update" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84F8F5E024D3AB5C0058C4D3 /* Debug */,
@@ -436,7 +440,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "url_swiftUi-bilder" */ = {
+		84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "Daily Portfolio Update" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84F8F5E324D3AB5C0058C4D3 /* Debug */,
