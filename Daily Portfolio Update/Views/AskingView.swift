@@ -46,7 +46,7 @@ struct AskingView: View {
                         TextField("Purchased amount", text: $amountOfStock)
                             .keyboardType(.decimalPad)
                             .onReceive(Just(amountOfStock)) { newValue in
-                                let filtered = newValue.filter { ".0123456789".contains($0) }
+                                let filtered = newValue.filter { ",.0123456789".contains($0) }
                                 if filtered != newValue {
                                     self.amountOfStock = filtered
                                 }
@@ -63,7 +63,7 @@ struct AskingView: View {
                     TextField("Price per share", text: $manualPurchasedPrice)
                         .keyboardType(.decimalPad)
                         .onReceive(Just(manualPurchasedPrice)) { newValue in
-                            let filtered = newValue.filter { ".0123456789".contains($0) }
+                            let filtered = newValue.filter { ",.0123456789".contains($0) }
                             if filtered != newValue {
                                 self.manualPurchasedPrice = filtered
                             }
@@ -78,6 +78,10 @@ struct AskingView: View {
                         let date = df.string(from: self.selectedDate)
                         
                         let userInput: UserInput
+                        
+                        self.amountOfStock = self.amountOfStock.replacingOccurrences(of: ",", with: ".")
+                        self.manualPurchasedPrice = self.manualPurchasedPrice.replacingOccurrences(of: ",", with: ".")
+                        
                         if self.toggleOn && self.manualPurchasedPrice != ""{
                             userInput = UserInput(compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!, manualPurchasedPrice: Double(self.manualPurchasedPrice)!)
                         }
