@@ -72,7 +72,7 @@ struct AskingView: View {
                 
                 Section(footer: Text("If you don't set the price manually the purchased price will be the close price of the purchase date.")){
                     Button(action: {
-                        isLoading = true
+                        settingsForPreview.isLoading = true
                         let df = DateFormatter()
                         df.dateFormat = "yyyy-MM-dd"
                         let date = df.string(from: self.selectedDate)

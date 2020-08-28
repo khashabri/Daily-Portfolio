@@ -12,6 +12,7 @@ import SwiftUI
 class UserSettings: ObservableObject {
     @Published var compNames = ["AAPL", "SNAP"]
     @Published var portfolio = [UserInput]()
+    @Published var isLoading = true
     
     init() {
         //        let samplePortInput1 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)

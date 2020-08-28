@@ -16,7 +16,6 @@ var totalInvestment = 0.0
 var totalValue = 0.0
 var rendite = 0.0
 var renditePercent = 0.0
-var isLoading = false
 
 struct ContentView: View {
     
@@ -51,7 +50,7 @@ struct ContentView: View {
                     .onAppear { self.buildElements() }
                     .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
                     
-                    totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: isLoading)
+                    totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: settingsForPreview.isLoading)
                 }
                 .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
             }
@@ -118,7 +117,7 @@ struct ContentView: View {
         }
         
         withAnimation{
-            isLoading = false
+            settingsForPreview.isLoading = false
         }
     }
     
