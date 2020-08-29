@@ -8,6 +8,8 @@
 
 import Foundation
 
+let pass: Any = ()
+
 func get_today() -> String {
     let lastDayDate = Calendar.current.date(byAdding: .day, value: 0, to: Date())!
     let dateFormatter = DateFormatter()
@@ -71,12 +73,12 @@ func roundGoodS (x: String) -> String {
 func calcRateS (x: String, y: String) -> Double {
     let x = Double(x)!
     let y = Double(y)!
-    if y.isZero {return 0}
+    if (y < 0.0009) {return 0}
     return roundGoodD(x: (x-y)/y*100)
 }
 
 func calcRateD (x: Double, y: Double) -> Double {
-    if y.isZero {return 0}
+    if (y < 0.0009) {return 0}
     return roundGoodD(x: (x-y)/y*100)
 }
 
