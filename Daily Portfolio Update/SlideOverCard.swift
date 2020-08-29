@@ -67,6 +67,7 @@ enum DragState {
 
 
 struct Card: ViewModifier {
+    
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @GestureState var dragState: DragState = .inactive
     @Binding var position : CardPosition
@@ -74,7 +75,7 @@ struct Card: ViewModifier {
     @State var offset: CGSize = CGSize.zero
     
     var animation: Animation {
-        Animation.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0)
+        Animation.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 20.0)
     }
     
     var timer: Timer? {
@@ -111,7 +112,7 @@ struct Card: ViewModifier {
                 }
 
                 Handle()
-                content.padding(.top, 15)
+                content.padding(.top, 20)
             }
             .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .scaleEffect(x: 1, y: 1, anchor: .center)
@@ -136,7 +137,8 @@ struct Card: ViewModifier {
         
         // Determining whether drawer is above or below `.partiallyRevealed` threshold for snapping behavior.
         if offsetFromTopOfView <= CardPosition.middle.offsetFromTop() {
-            higherStop = .top
+//            higherStop = .top
+            higherStop = .middle
             lowerStop = .middle
         } else {
             higherStop = .middle
@@ -164,7 +166,7 @@ struct Card: ViewModifier {
 }
 
 @available(iOS 13.0, *)
-struct BlurView: UIViewRepresentable {
+struct BlurView: UIViewRepresentable, Equatable {
     let style: UIBlurEffect.Style
 
     func makeUIView(context: UIViewRepresentableContext<BlurView>) -> UIView {
