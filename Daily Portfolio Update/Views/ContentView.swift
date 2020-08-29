@@ -138,13 +138,10 @@ struct ContentView: View {
         for elementOrgArr in OrgArr{
             var gefunden = false
             for elementdelArr in delArr{
-                if elementOrgArr.0 == elementdelArr.0{
-                    gefunden = true
-                }
+                (elementOrgArr.0 == elementdelArr.0) ? (gefunden = true) : ()
             }
-            if gefunden == false{
-                removedKey = elementOrgArr.0
-            }
+            
+            (gefunden == false) ? (removedKey = elementOrgArr.0) : ()
         }
         
         for entry in companiesEntriesDict[removedKey]!{
@@ -191,22 +188,22 @@ struct totalInfoSubview: View, Equatable {
                     HStack {
                         Text("Investment")
                         Spacer()
-                        Text(currencyString(x: totalInvestment))
+                        Text(currencyString(totalInvestment))
                     }
                     HStack {
                         Text("Current Value")
                         Spacer()
-                        Text(currencyString(x: totalValue))
+                        Text(currencyString(totalValue))
                     }
                     HStack {
                         Text("Rendite")
                         Spacer()
-                        if roundGoodD(x: rendite) < 0 {
-                            Text(currencyString(x: rendite) + " (" + String(abs(renditePercent)) + "%)")
+                        if roundGoodD(rendite) < 0 {
+                            Text(currencyString(rendite) + " (" + String(abs(renditePercent)) + "%)")
                                 .foregroundColor(Color.red)
                         }
                         else {
-                            Text("+" + currencyString(x: rendite) + " (" + String(renditePercent) + "%)")
+                            Text("+" + currencyString(rendite) + " (" + String(renditePercent) + "%)")
                                 .foregroundColor(Color.green)
                         }
                     }

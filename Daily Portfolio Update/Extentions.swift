@@ -29,7 +29,7 @@ extension Array where Element == Double {
     // [Double] - 2
     public static func - (left: [Double], right: Double) -> [Double] {
         
-        return left.map { roundGoodD(x: ($0 - right)) }
+        return left.map { roundGoodD(($0 - right)) }
     }
     
     // [Double] + [Double]
@@ -42,12 +42,7 @@ extension Array where Element == Double {
         let padding = [Double](repeating: 0.0, count: lenDiff)
         
         // += merges two arrays. + adds them elementarwise
-        if left.count < right.count{
-            left += padding
-        }
-        else{
-            right += padding
-        }
+        (left.count < right.count) ? (left += padding) : (right += padding)
         
         return zip(left,right).map(+)
     }
@@ -61,12 +56,7 @@ extension Array where Element == Double {
         let lenDiff = abs(left.count-right.count)
         let padding = [Double](repeating: 0.0, count: lenDiff)
         
-        if left.count < right.count{
-            left += padding
-        }
-        else{
-            right += padding
-        }
+        (left.count < right.count) ? (left += padding) : (right += padding)
         
         return zip(left,right).map(-)
     }

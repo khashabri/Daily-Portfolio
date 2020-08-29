@@ -62,11 +62,11 @@ func getKey(value: String) -> String {
     return key
 }
 
-func roundGoodD (x: Double) -> Double {
+func roundGoodD (_ x: Double) -> Double {
     return round(100 * x) / 100
 }
 
-func roundGoodS (x: String) -> String {
+func roundGoodS (_ x: String) -> String {
     return String(round(100 * Double(x)!) / 100)
 }
 
@@ -74,16 +74,16 @@ func calcRateS (x: String, y: String) -> Double {
     let x = Double(x)!
     let y = Double(y)!
     if (y < 0.0009) {return 0}
-    return roundGoodD(x: (x-y)/y*100)
+    return roundGoodD((x-y)/y*100)
 }
 
 func calcRateD (x: Double, y: Double) -> Double {
     if (y < 0.0009) {return 0}
-    return roundGoodD(x: (x-y)/y*100)
+    return roundGoodD((x-y)/y*100)
 }
 
 // 223.436 -> 223,44 $"
-func currencyString(x: Double, symbol: String = " $") -> String{
+func currencyString(_ x: Double, symbol: String = " $") -> String{
     let formatter = NumberFormatter()
     formatter.numberStyle = .currencyPlural
     formatter.locale = Locale(identifier: "en_US")
@@ -93,7 +93,7 @@ func currencyString(x: Double, symbol: String = " $") -> String{
     return numFormated+symbol
 }
 
-func currencyString(x: String, symbol: String = " $") -> String{
+func currencyString(_ x: String, symbol: String = " $") -> String{
     let x = Double(x)!
     let formatter = NumberFormatter()
     formatter.numberStyle = .currencyPlural

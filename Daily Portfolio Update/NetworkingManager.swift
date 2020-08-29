@@ -107,7 +107,7 @@ func JsonOfflineCompPortfolioOutput() -> CompPortfolioOutput {
     
     compPortfolioOutput.gainHistory = compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
     
-    compPortfolioOutput.currentGain = roundGoodD(x: (prices.first! - prices.last!) / prices.last!)
+    compPortfolioOutput.currentGain = roundGoodD((prices.first! - prices.last!) / prices.last!)
     
     compPortfolioOutput.totalInvestment = compPortfolioOutput.purchaseAmount * prices.last!
     
