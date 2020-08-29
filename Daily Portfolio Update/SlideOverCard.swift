@@ -33,7 +33,7 @@ public enum CardPosition: CGFloat {
 //            return UIScreen.main.bounds.height - 80
             return UIScreen.main.bounds.height/1.3 //direkt nach untere Safe area
         case .middle:
-            return UIScreen.main.bounds.height/2
+            return UIScreen.main.bounds.height/2.3
         case .top:
             return 80 // 0 oberste Rand vor dem Safe Area
         }
@@ -117,7 +117,7 @@ struct Card: ViewModifier {
             .scaleEffect(x: 1, y: 1, anchor: .center)
         }
         .offset(y:  max(0, self.position.offsetFromTop() + self.dragState.translation.height))
-        .animation((self.dragState.isDragging ? nil : animation))
+        .animation((self.dragState.isDragging ? animation : animation))
         .gesture(drag)
     }
     
