@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		840B4EE924FAAE8100D706AB /* SlideOverCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840B4EE824FAAE8100D706AB /* SlideOverCard.swift */; };
 		840D416A24D43B2700394CA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D416924D43B2700394CA8 /* ContentView.swift */; };
 		841E873D24DCA6F10098C9EA /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 841E873C24DCA6F10098C9EA /* SwiftUICharts */; };
 		84366F7524F3DBFB0099BD6B /* MoreInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366F7424F3DBFB0099BD6B /* MoreInfo.swift */; };
@@ -32,6 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		840B4EE824FAAE8100D706AB /* SlideOverCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SlideOverCard.swift; path = "Daily Portfolio Update/SlideOverCard.swift"; sourceTree = SOURCE_ROOT; };
 		840D416924D43B2700394CA8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		84366F7424F3DBFB0099BD6B /* MoreInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfo.swift; sourceTree = "<group>"; };
 		8436977E24DEA70D0006F331 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				84BE0D7524F3C1BF006EAA59 /* Extentions.swift */,
 				8461AEE324F919520011763C /* SearchBar.swift */,
 				84C894DB24F2D8BC0044C27D /* NetworkingManager.swift */,
+				840B4EE824FAAE8100D706AB /* SlideOverCard.swift */,
 				84E6074A24F9184B0022AE64 /* Views */,
 				84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */,
 				84BE0D7324F3C12C006EAA59 /* Attachments */,
@@ -223,6 +226,7 @@
 				84F8F5D224D3AB570058C4D3 /* AppDelegate.swift in Sources */,
 				84649DE224F6874D00F12DAE /* AskingView.swift in Sources */,
 				84E6074924F916640022AE64 /* DataTypes.swift in Sources */,
+				840B4EE924FAAE8100D706AB /* SlideOverCard.swift in Sources */,
 				8461AEE424F919520011763C /* SearchBar.swift in Sources */,
 				8436977F24DEA70D0006F331 /* SettingView.swift in Sources */,
 				84B6CD4424D96ACF002716C2 /* DataBank.swift in Sources */,

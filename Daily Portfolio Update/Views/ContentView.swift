@@ -33,11 +33,14 @@ struct ContentView: View {
     @State private var showModal = false
     // shared variable between add and this view to exchange objects
     @EnvironmentObject var settings: UserSettings
+    // for SlideOverCard
+    @State private var position = CardPosition.middle
+    @State private var background = BackgroundStyle.blur
     
     var body: some View {
         TabView {
             NavigationView{
-                VStack{
+                ZStack(alignment: Alignment.top){
                     List() {
                         
                         ForEach(portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
@@ -48,10 +51,15 @@ struct ContentView: View {
                         //                    .onMove(perform: self.move)
                     }
                     .onAppear { self.buildElements() }
-                    .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
                     
-                    totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: settingsForPreview.isLoading)
+                    SlideOverCard($position, backgroundStyle: $background) {
+                        VStack {
+                            totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: settingsForPreview.isLoading)
+                        }
+                    }
                 }
+                    
+                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
                 .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
             }
                 
@@ -165,14 +173,6 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct ListHeader: View {
-    var body: some View {
-        HStack {
-            Image(systemName: "sum")
-            Text("Total Result")
-        }
-    }
-}
 
 struct totalInfoSubview: View, Equatable {
     let lastRefreshed: String
@@ -187,7 +187,7 @@ struct totalInfoSubview: View, Equatable {
         VStack{
             Form{
                 
-                Section(header: ListHeader(), footer: Text("Last database update on: " + lastRefreshed)) {
+                Section(header: ListHeader(isLoading: isLoading), footer: Text("Last database update on: " + lastRefreshed)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -212,16 +212,22 @@ struct totalInfoSubview: View, Equatable {
                     }
                 }
             }
-            .padding(.bottom, -200)
-            .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: -50)
-            
+            Spacer()
+        }
+    }
+}
+
+
+struct ListHeader: View {
+    let isLoading: Bool
+    var body: some View {
+        HStack {
+            Image(systemName: "sum")
+            Text("Total Result")
             Spacer()
             if(isLoading){
-                HStack{
-                    ActivityIndicator().frame(width: 25, height: 25)
-                    Text("Loading...")
-                }.padding(15)
-                    .transition(.scale)
+                ActivityIndicator().frame(width: 23, height: 23)
+                Text("Loading...").bold()
             }
         }
     }
