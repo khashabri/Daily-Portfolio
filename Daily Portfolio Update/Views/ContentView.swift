@@ -306,7 +306,6 @@ struct totalInfoFooter: View {
                 HStack{
                     Image(systemName: "paintbrush")
                     Text("Chart")
-                    .background(LinearGradient(gradient: Gradient(colors: [Color("DarkGreen"), Color("LightGreen")]), startPoint: .leading, endPoint: .trailing))
                     }
                 .sheet(isPresented: $showPlot) {ChartView()}
             }
