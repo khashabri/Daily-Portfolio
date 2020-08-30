@@ -33,7 +33,7 @@ public enum CardPosition: CGFloat {
 //            return UIScreen.main.bounds.height - 80
             return UIScreen.main.bounds.height/1.3 //direkt nach untere Safe area
         case .middle:
-            return UIScreen.main.bounds.height/2.3
+            return UIScreen.main.bounds.height/2.5
         case .top:
             return 80 // 0 oberste Rand vor dem Safe Area
         }

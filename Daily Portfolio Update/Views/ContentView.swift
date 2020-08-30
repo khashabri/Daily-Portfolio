@@ -184,7 +184,7 @@ struct totalInfoSubview: View, Equatable {
         VStack{
             Form{
                 
-                Section(header: ListHeader(isLoading: isLoading), footer: Text("Last database update on: " + lastRefreshed)) {
+                Section(header: ListHeader(isLoading: isLoading), footer: totalInfoFooter(lastRefreshed: lastRefreshed)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -294,3 +294,22 @@ struct ActivityIndicator: View {
     
 }
 
+struct totalInfoFooter: View {
+    let lastRefreshed: String
+    @State var showPlot = false
+    
+    var body: some View {
+        HStack {
+            Text("Last database update on: " + lastRefreshed)
+            Spacer()
+            Button(action: { self.showPlot.toggle()}){
+                HStack{
+                    Image(systemName: "paintbrush")
+                    Text("Chart")
+                    .background(LinearGradient(gradient: Gradient(colors: [Color("DarkGreen"), Color("LightGreen")]), startPoint: .leading, endPoint: .trailing))
+                    }
+                .sheet(isPresented: $showPlot) {ChartView()}
+            }
+        }
+    }
+}
