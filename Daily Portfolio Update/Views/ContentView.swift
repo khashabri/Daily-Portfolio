@@ -20,7 +20,6 @@ var renditePercent = 0.0
 struct ContentView: View {
     
     //    @State var userData = [settingsForPreview.samplePortInput3]
-    
     @State var existingInputs: [UserInput] = []
     @State var wholeData: [CompPortfolioOutput] = []
     @State var companiesEntriesDict = [String : [CompPortfolioOutput]]()
@@ -163,13 +162,28 @@ struct ContentView: View {
     }
 }
 
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environmentObject(settingsForPreview)
     }
 }
 
+struct AddButton<Destination : View>: View {
+    var destination:  Destination
+    
+    var body: some View {
+        NavigationLink(destination: self.destination) {
+            Image(systemName: "plus")
+                .resizable()
+                .padding(6)
+                .frame(width: 30, height: 30)
+                .background(Color.blue)
+                .clipShape(Circle())
+                .foregroundColor(.white)
+                .offset(x: -5, y: 0)
+        }
+    }
+}
 
 struct totalInfoSubview: View, Equatable {
     let lastRefreshed: String
@@ -179,12 +193,11 @@ struct totalInfoSubview: View, Equatable {
     let renditePercent: Double
     let isLoading: Bool
     
-    
     var body: some View {
         VStack{
             Form{
                 
-                Section(header: ListHeader(isLoading: isLoading), footer: totalInfoFooter(lastRefreshed: lastRefreshed)) {
+                Section(header: totalInfoHeader(isLoading: isLoading), footer: totalInfoFooter(lastRefreshed: lastRefreshed)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -215,7 +228,7 @@ struct totalInfoSubview: View, Equatable {
 }
 
 
-struct ListHeader: View {
+struct totalInfoHeader: View {
     let isLoading: Bool
     @State var showPlot = false
     
@@ -233,7 +246,7 @@ struct ListHeader: View {
                     HStack{
                         Image(systemName: "paintbrush")
                         Text("Chart")
-                        }
+                    }
                     .sheet(isPresented: $showPlot) {ChartView()}
                 }
             }
@@ -241,29 +254,27 @@ struct ListHeader: View {
     }
 }
 
-struct AddButton<Destination : View>: View {
-    
-    var destination:  Destination
+struct totalInfoFooter: View {
+    let lastRefreshed: String
+    @State var showLogs = false
     
     var body: some View {
-        NavigationLink(destination: self.destination) {
-            Image(systemName: "plus")
-                .resizable()
-                .padding(6)
-                .frame(width: 30, height: 30)
-                .background(Color.blue)
-                .clipShape(Circle())
-                .foregroundColor(.white)
-                .offset(x: -5, y: 0)
+        HStack {
+            Text("Last database update on: " + lastRefreshed)
+            Spacer()
+            Button(action: { self.showLogs.toggle()}){
+                HStack{
+                    Image(systemName: "trash")
+                    Text("View Logs")
+                }
+                .sheet(isPresented: $showLogs) {LogsView()}
+            }
         }
     }
 }
 
 struct ActivityIndicator: View {
-    
     @State private var isAnimating: Bool = false
-    
-    
     
     var body: some View {
         
@@ -303,23 +314,4 @@ struct ActivityIndicator: View {
         
     }
     
-}
-
-struct totalInfoFooter: View {
-    let lastRefreshed: String
-    @State var showLogs = false
-    
-    var body: some View {
-        HStack {
-            Text("Last database update on: " + lastRefreshed)
-            Spacer()
-            Button(action: { self.showLogs.toggle()}){
-                HStack{
-                    Image(systemName: "trash")
-                    Text("View Logs")
-                    }
-                .sheet(isPresented: $showLogs) {LogsView()}
-            }
-        }
-    }
 }
