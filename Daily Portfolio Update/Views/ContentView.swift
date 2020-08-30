@@ -217,6 +217,8 @@ struct totalInfoSubview: View, Equatable {
 
 struct ListHeader: View {
     let isLoading: Bool
+    @State var showPlot = false
+    
     var body: some View {
         HStack {
             Image(systemName: "sum")
@@ -225,6 +227,15 @@ struct ListHeader: View {
             if(isLoading){
                 ActivityIndicator().frame(width: 23, height: 23)
                 Text("Loading...").bold()
+            }
+            else{
+                Button(action: { self.showPlot.toggle()}){
+                    HStack{
+                        Image(systemName: "paintbrush")
+                        Text("Chart")
+                        }
+                    .sheet(isPresented: $showPlot) {ChartView()}
+                }
             }
         }
     }
@@ -296,18 +307,18 @@ struct ActivityIndicator: View {
 
 struct totalInfoFooter: View {
     let lastRefreshed: String
-    @State var showPlot = false
+    @State var showLogs = false
     
     var body: some View {
         HStack {
             Text("Last database update on: " + lastRefreshed)
             Spacer()
-            Button(action: { self.showPlot.toggle()}){
+            Button(action: { self.showLogs.toggle()}){
                 HStack{
-                    Image(systemName: "paintbrush")
-                    Text("Chart")
+                    Image(systemName: "trash")
+                    Text("View Logs")
                     }
-                .sheet(isPresented: $showPlot) {ChartView()}
+                .sheet(isPresented: $showLogs) {LogsView()}
             }
         }
     }
