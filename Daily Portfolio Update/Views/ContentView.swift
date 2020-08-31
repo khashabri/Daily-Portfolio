@@ -10,28 +10,18 @@ import SwiftUI
 
 var settingsForPreview = UserSettings()
 
-var totalGainHistory: [Double] = []
-var lastRefreshed = ""
-var totalInvestment = 0.0
-var totalValue = 0.0
-var rendite = 0.0
-var renditePercent = 0.0
-
 struct ContentView: View {
     
-    //    @State var userData = [settingsForPreview.samplePortInput3]
     @State var existingInputs: [UserInput] = []
-    @State var wholeData: [CompPortfolioOutput] = []
-    @State var companiesEntriesDict = [String : [CompPortfolioOutput]]()
-    @State var portfolioListInvestDict = [String : Double]()
-    @State var portfolioListGainDict = [String : Double]()
-    @State var portfolioListPercentageDict = [String : Double]()
-    @State var portfolioListShareNumberDict = [String : Double]()
-    
+    @State var handelDicts = HandelDicts()
+    @State var totalNumbers = TotalNumbers()
+
     // For add button
     @State private var showModal = false
+    
     // shared variable between add and this view to exchange objects
     @EnvironmentObject var settings: UserSettings
+    
     // for SlideOverCard
     @State private var position = CardPosition.middle
     @State private var background = BackgroundStyle.blur
@@ -42,9 +32,9 @@ struct ContentView: View {
                 ZStack(alignment: Alignment.top){
                     List() {
                         
-                        ForEach(portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
+                        ForEach(self.handelDicts.portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
                             
-                            RowViewPortfolio(dataEntries: self.companiesEntriesDict[key]! ,Name: (self.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.portfolioListInvestDict[key]!, portfolioListGainDict: self.portfolioListGainDict[key]!, portfolioListPercentageDict: self.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.portfolioListShareNumberDict[key]!)
+                            RowViewPortfolio(dataEntries: self.handelDicts.companiesEntriesDict[key]! ,Name: (self.handelDicts.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.handelDicts.portfolioListInvestDict[key]!, portfolioListGainDict: self.handelDicts.portfolioListGainDict[key]!, portfolioListPercentageDict: self.handelDicts.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.handelDicts.portfolioListShareNumberDict[key]!)
                         }
                         .onDelete(perform: self.deleteRow)
                         //                    .onMove(perform: self.move)
@@ -53,7 +43,7 @@ struct ContentView: View {
                     
                     SlideOverCard($position, backgroundStyle: $background) {
                         VStack {
-                            totalInfoSubview(lastRefreshed: lastRefreshed, totalInvestment: totalInvestment, totalValue: totalValue, rendite: rendite, renditePercent: renditePercent, isLoading: settingsForPreview.isLoading)
+                            totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: settingsForPreview.isLoading)
                         }
                     }
                 }
@@ -85,51 +75,43 @@ struct ContentView: View {
                     
                     // Catching Data of companies
                     let key = compPortfolioOutput.compSymbol
-                    if self.companiesEntriesDict.keys.contains(key){
+                    if self.handelDicts.companiesEntriesDict.keys.contains(key){
                         
-                        self.companiesEntriesDict[key]?.append(compPortfolioOutput)
-                        self.portfolioListInvestDict[key]! += compPortfolioOutput.totalInvestment
-                        self.portfolioListGainDict[key]! += compPortfolioOutput.gainHistory[0]
-                        self.portfolioListShareNumberDict[key]! += compPortfolioOutput.purchaseAmount
+                        self.handelDicts.companiesEntriesDict[key]?.append(compPortfolioOutput)
+                        self.handelDicts.portfolioListInvestDict[key]! += compPortfolioOutput.totalInvestment
+                        self.handelDicts.portfolioListGainDict[key]! += compPortfolioOutput.gainHistory[0]
+                        self.handelDicts.portfolioListShareNumberDict[key]! += compPortfolioOutput.purchaseAmount
                         
                     }
                     else{
-                        self.companiesEntriesDict[key] = [compPortfolioOutput]
-                        self.portfolioListInvestDict[key] = compPortfolioOutput.totalInvestment
-                        self.portfolioListGainDict[key] = compPortfolioOutput.gainHistory[0]
-                        self.portfolioListShareNumberDict[key] = compPortfolioOutput.purchaseAmount
+                        self.handelDicts.companiesEntriesDict[key] = [compPortfolioOutput]
+                        self.handelDicts.portfolioListInvestDict[key] = compPortfolioOutput.totalInvestment
+                        self.handelDicts.portfolioListGainDict[key] = compPortfolioOutput.gainHistory[0]
+                        self.handelDicts.portfolioListShareNumberDict[key] = compPortfolioOutput.purchaseAmount
                         
                     }
                     
                     let currentPrice = compPortfolioOutput.priceHistory[0]
                     // Catching data for the Portfolio List (some are above)
-                    self.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.portfolioListShareNumberDict[key]!, y: self.portfolioListInvestDict[key]!)
+                    self.handelDicts.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.handelDicts.portfolioListShareNumberDict[key]!, y: self.handelDicts.portfolioListInvestDict[key]!)
                     
                     // Calc data for "Total Result" section
-                    totalInvestment += compPortfolioOutput.totalInvestment
-                    totalValue += compPortfolioOutput.totalCurrentValue
-                    rendite = totalValue - totalInvestment
-                    renditePercent = calcRateD(x: totalValue, y: totalInvestment)
-                    totalGainHistory = totalGainHistory + compPortfolioOutput.gainHistory
-                    lastRefreshed = compPortfolioOutput.lastRefreshed
+                    self.totalNumbers.totalInvestment += compPortfolioOutput.totalInvestment
+                    self.totalNumbers.totalValue += compPortfolioOutput.totalCurrentValue
+                    self.totalNumbers.rendite = self.totalNumbers.totalValue - self.totalNumbers.totalInvestment
+                    self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
+                    self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory + compPortfolioOutput.gainHistory
+                    self.totalNumbers.lastRefreshed = compPortfolioOutput.lastRefreshed
                     
-                    
-                    print(self.companiesEntriesDict)
-                    print(self.portfolioListInvestDict)
-                    print(self.portfolioListGainDict)
-                    print(self.portfolioListPercentageDict)
-                    print(self.portfolioListShareNumberDict)
                 }
             }
         }
         
-        withAnimation{
-            settingsForPreview.isLoading = false
-        }
+        withAnimation{ settingsForPreview.isLoading = false }
     }
     
     private func deleteRow(at indexSet: IndexSet) {
-        var delArr = self.portfolioListInvestDict.sorted(by: <)
+        var delArr = self.handelDicts.portfolioListInvestDict.sorted(by: <)
         let OrgArr = delArr
         delArr.remove(atOffsets: indexSet)
         var removedKey = ""
@@ -143,20 +125,20 @@ struct ContentView: View {
             (gefunden == false) ? (removedKey = elementOrgArr.0) : ()
         }
         
-        for entry in companiesEntriesDict[removedKey]!{
-            totalGainHistory = totalGainHistory - entry.gainHistory
+        for entry in self.handelDicts.companiesEntriesDict[removedKey]!{
+            self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory - entry.gainHistory
         }
         
-        totalInvestment -= portfolioListInvestDict[removedKey]!
-        totalValue -= (portfolioListInvestDict[removedKey]! + portfolioListGainDict[removedKey]!)
-        rendite -= portfolioListGainDict[removedKey]!
-        renditePercent = calcRateD(x: totalValue, y: totalInvestment)
+        self.totalNumbers.totalInvestment -= handelDicts.portfolioListInvestDict[removedKey]!
+        self.totalNumbers.totalValue -= (handelDicts.portfolioListInvestDict[removedKey]! + handelDicts.portfolioListGainDict[removedKey]!)
+        self.totalNumbers.rendite -= handelDicts.portfolioListGainDict[removedKey]!
+        self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
         
-        self.companiesEntriesDict[removedKey] = nil
-        self.portfolioListInvestDict[removedKey] = nil
-        self.portfolioListGainDict[removedKey] = nil
-        self.portfolioListPercentageDict[removedKey] = nil
-        self.portfolioListShareNumberDict[removedKey] = nil
+        self.handelDicts.companiesEntriesDict[removedKey] = nil
+        self.handelDicts.portfolioListInvestDict[removedKey] = nil
+        self.handelDicts.portfolioListGainDict[removedKey] = nil
+        self.handelDicts.portfolioListPercentageDict[removedKey] = nil
+        self.handelDicts.portfolioListShareNumberDict[removedKey] = nil
         
         self.settings.portfolio.remove(atOffsets: indexSet)
     }
@@ -185,38 +167,35 @@ struct AddButton<Destination : View>: View {
     }
 }
 
-struct totalInfoSubview: View, Equatable {
-    let lastRefreshed: String
-    let totalInvestment: Double
-    let totalValue: Double
-    let rendite: Double
-    let renditePercent: Double
+struct totalInfoSubview: View {
+    @Binding var totalNumbers: TotalNumbers
+    @Binding var handelDicts: HandelDicts
     let isLoading: Bool
     
     var body: some View {
         VStack{
             Form{
                 
-                Section(header: totalInfoHeader(isLoading: isLoading), footer: totalInfoFooter(lastRefreshed: lastRefreshed)) {
+                Section(header: totalInfoHeader(isLoading: isLoading), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
                     HStack {
                         Text("Investment")
                         Spacer()
-                        Text(currencyString(totalInvestment))
+                        Text(currencyString(totalNumbers.totalInvestment))
                     }
                     HStack {
                         Text("Current Value")
                         Spacer()
-                        Text(currencyString(totalValue))
+                        Text(currencyString(totalNumbers.totalValue))
                     }
                     HStack {
                         Text("Rendite")
                         Spacer()
-                        if roundGoodD(rendite) < 0 {
-                            Text(currencyString(rendite) + " (" + String(abs(renditePercent)) + "%)")
+                        if roundGoodD(totalNumbers.rendite) < 0 {
+                            Text(currencyString(totalNumbers.rendite) + " (" + String(abs(totalNumbers.renditePercent)) + "%)")
                                 .foregroundColor(Color.red)
                         }
                         else {
-                            Text("+" + currencyString(rendite) + " (" + String(renditePercent) + "%)")
+                            Text("+" + currencyString(totalNumbers.rendite) + " (" + String(totalNumbers.renditePercent) + "%)")
                                 .foregroundColor(Color.green)
                         }
                     }
@@ -255,19 +234,21 @@ struct totalInfoHeader: View {
 }
 
 struct totalInfoFooter: View {
-    let lastRefreshed: String
+    @Binding var totalNumbers: TotalNumbers
+    @Binding var handelDicts: HandelDicts
+    
     @State var showLogs = false
     
     var body: some View {
         HStack {
-            Text("Last database update on: " + lastRefreshed)
+            Text("Last database update on: " + totalNumbers.lastRefreshed)
             Spacer()
             Button(action: { self.showLogs.toggle()}){
                 HStack{
-                    Image(systemName: "trash")
+                    Image(systemName: "pencil.and.ellipsis.rectangle")
                     Text("View Logs")
                 }
-                .sheet(isPresented: $showLogs) {LogsView()}
+                .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)}
             }
         }
     }

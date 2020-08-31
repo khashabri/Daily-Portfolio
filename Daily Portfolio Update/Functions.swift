@@ -103,3 +103,7 @@ func currencyString(_ x: String, symbol: String = " $") -> String{
     if (numFormated == "-0.00") {numFormated = "0.00"}
     return numFormated+symbol
 }
+
+func isAboutZero(_ x: Double) -> Bool{
+    return (x < 0.0009)
+}

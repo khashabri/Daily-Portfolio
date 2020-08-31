@@ -97,7 +97,7 @@ struct UserInput: Identifiable, Equatable{
 }
 
 // MARK: - Company Portfolio Output
-struct CompPortfolioOutput: Identifiable{
+struct CompPortfolioOutput: Identifiable, Hashable{
     var id = UUID()
     var lastRefreshed: String = ""
     var compName: String = ""
@@ -129,4 +129,21 @@ struct CompPortfolioOutput: Identifiable{
     var volumeChange5D: Double = 0
     var volumeChange1M: Double = 0
     var volumeChange1Y: Double = 0
+}
+
+struct TotalNumbers: Equatable{
+    var totalGainHistory: [Double] = []
+    var lastRefreshed = ""
+    var totalInvestment = 0.0
+    var totalValue = 0.0
+    var rendite = 0.0
+    var renditePercent = 0.0
+}
+
+struct HandelDicts: Equatable {
+    var companiesEntriesDict = [String : [CompPortfolioOutput]]()
+    var portfolioListInvestDict = [String : Double]()
+    var portfolioListGainDict = [String : Double]()
+    var portfolioListPercentageDict = [String : Double]()
+    var portfolioListShareNumberDict = [String : Double]()
 }
