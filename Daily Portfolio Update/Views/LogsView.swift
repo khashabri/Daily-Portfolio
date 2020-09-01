@@ -62,16 +62,10 @@ struct LogsView: View {
             self.handelDicts.companiesEntriesDict.removeValue(forKey: category)
         }
         
-        if (isAboutZero(self.handelDicts.portfolioListInvestDict[category]!)) {
-            self.handelDicts.portfolioListInvestDict.removeValue(forKey: category)
-        }
-        
-        if (isAboutZero(self.handelDicts.portfolioListGainDict[category]!)) {
-            self.handelDicts.portfolioListGainDict.removeValue(forKey: category)
-        }
-        
-        if (isAboutZero(self.handelDicts.portfolioListShareNumberDict[category]!)) {
+        if (isAboutZero(self.handelDicts.portfolioListShareNumberDict[category]!) && isAboutZero(self.handelDicts.portfolioListInvestDict[category]!)) {
             self.handelDicts.portfolioListShareNumberDict.removeValue(forKey: category)
+            self.handelDicts.portfolioListGainDict.removeValue(forKey: category)
+            self.handelDicts.portfolioListInvestDict.removeValue(forKey: category)
         }
         
         // MARK - TODO: UserSettings und existingInputs leer machen!
