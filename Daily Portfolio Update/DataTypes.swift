@@ -71,8 +71,8 @@ struct CompData: Codable & Identifiable & Decodable {
         case s_open = "1. open"
         case s_high = "2. high"
         case s_low = "3. low"
-        case s_close = "4. close"
-        case s_volume = "5. volume"
+        case s_close = "5. adjusted close"
+        case s_volume = "6. volume"
         
     }
     

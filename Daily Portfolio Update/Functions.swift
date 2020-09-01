@@ -41,7 +41,7 @@ func get_before_yesterday() -> String {
 }
 
 func MakeApiStringUrl(compSymbol: String, outputSize: String = "compact") -> String {
-    let part1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="
+    let part1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol="
     let part2 = compSymbol
     let part3 = "&outputsize="
     let part4 = outputSize
@@ -105,5 +105,5 @@ func currencyString(_ x: String, symbol: String = " $") -> String{
 }
 
 func isAboutZero(_ x: Double) -> Bool{
-    return (x < 0.0009)
+    return (abs(x) < 0.0009)
 }

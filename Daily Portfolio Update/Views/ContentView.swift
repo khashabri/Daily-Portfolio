@@ -176,7 +176,7 @@ struct totalInfoSubview: View {
         VStack{
             Form{
                 
-                Section(header: totalInfoHeader(isLoading: isLoading), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
+                Section(header: totalInfoHeader(isLoading: isLoading, totalNumbers: $totalNumbers), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -209,6 +209,7 @@ struct totalInfoSubview: View {
 
 struct totalInfoHeader: View {
     let isLoading: Bool
+    @Binding var totalNumbers: TotalNumbers
     @State var showPlot = false
     
     var body: some View {
@@ -226,7 +227,7 @@ struct totalInfoHeader: View {
                         Image(systemName: "paintbrush")
                         Text("Chart")
                     }
-                    .sheet(isPresented: $showPlot) {ChartView()}
+                    .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers)}
                 }
             }
         }
