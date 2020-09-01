@@ -128,6 +128,9 @@ struct ContentView: View {
         for entry in self.handelDicts.companiesEntriesDict[removedKey]!{
             self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory - entry.gainHistory
         }
+        // removing zeros which may be there because of deleting an earlier purchase
+        self.totalNumbers.totalGainHistory = removeEndZeros(self.totalNumbers.totalGainHistory)
+        (self.totalNumbers.totalGainHistory.last != 0) ? self.totalNumbers.totalGainHistory.append(0) : () // gain should begin from a 0
         
         self.totalNumbers.totalInvestment -= handelDicts.portfolioListInvestDict[removedKey]!
         self.totalNumbers.totalValue -= (handelDicts.portfolioListInvestDict[removedKey]! + handelDicts.portfolioListGainDict[removedKey]!)

@@ -45,7 +45,11 @@ struct LogsView: View {
         //        self.samples[category]! = x
         //
         
+        // removing zeros which may be there because of deleting an earlier purchase
         self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory - removedEntry.gainHistory
+        self.totalNumbers.totalGainHistory = removeEndZeros(self.totalNumbers.totalGainHistory)
+        (self.totalNumbers.totalGainHistory.last != 0) ? self.totalNumbers.totalGainHistory.append(0) : () // gain should begin from a 0
+        
         self.totalNumbers.totalInvestment -= removedEntry.totalInvestment
         self.totalNumbers.totalValue -= removedEntry.totalCurrentValue
         self.totalNumbers.rendite = self.totalNumbers.totalValue - self.totalNumbers.totalInvestment
