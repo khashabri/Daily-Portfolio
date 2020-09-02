@@ -113,3 +113,8 @@ func removeEndZeros(_ arr: [Double]) -> [Double]{
     let indx = binary.lastIndex(of: false) ?? 0
     return Array(arr[0...indx])
 }
+
+func isInt(_ x: String) -> Bool{
+    let x = Double(x)
+    return floor(x ?? 0) == x
+}

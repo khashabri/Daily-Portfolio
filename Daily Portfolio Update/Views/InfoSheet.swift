@@ -172,6 +172,13 @@ struct MarketPerformance: View {
                 dividendSubView(compPortfolioOutput: dataEntries[0])
             }
             
+            if dataEntries[0].splitsDict.keys.isEmpty {
+                noSplitSubView()
+            }
+            else{
+                splitSubView(compPortfolioOutput: dataEntries[0])
+            }
+            
             purchaseDatesSubView(dataEntries: dataEntries)
         }
     }
@@ -228,8 +235,7 @@ struct dividendSubView: View {
                     HStack(){
                         Text(currencyString(self.compPortfolioOutput.dividendDict[key]!))
                         
-                    }.lineLimit(1)
-                        .minimumScaleFactor(0.1)
+                    }
                 }
             }
         }
@@ -251,3 +257,43 @@ struct noDividendSubView: View {
     }
 }
 
+struct splitSubView: View {
+    @State var compPortfolioOutput: CompPortfolioOutput
+    
+    var body: some View {
+        Section(
+            header: HStack {
+                Image(systemName: "rectangle.split.3x1")
+                Text("Historical share splits")
+        }) {
+            ForEach(self.compPortfolioOutput.splitsDict.keys.sorted(by: >), id: \.self) { key in
+                HStack{
+                    Text(key)
+                    
+                    Spacer()
+                    
+                    HStack(){
+                        Text(currencyString(self.compPortfolioOutput.splitsDict[key]!, symbol: "")+"-for-1")
+                        
+                    }.lineLimit(1)
+                        .minimumScaleFactor(0.1)
+                }
+            }
+        }
+    }
+}
+
+struct noSplitSubView: View {
+    var body: some View {
+        Section(
+            header: HStack {
+                Image(systemName: "rectangle.split.3x1")
+                Text("Historical share splits")})
+        {
+            Text("No split data das been registered.")
+                .lineLimit(1)
+                .minimumScaleFactor(0.1)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+        }
+    }
+}

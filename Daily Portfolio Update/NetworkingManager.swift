@@ -84,13 +84,23 @@ class NetworkingManagerPortfolio: ObservableObject {
                 self.compPortfolioOutput.priceHistory = prices
                 
                 // get max last 5 dividends
-                let maxN = 5
-                let filteredDict = welcome.compData.filter{ Double($0.value.s_dividend) != 0 }
+                var maxN = 5
+                var filteredDict = welcome.compData.filter{ Double($0.value.s_dividend) != 0 }
                 var keys = filteredDict.keys.sorted(by: >)
                 (keys.count > maxN) ? keys = Array(keys[0...maxN]) : ()
 
                 for key in keys{
                     self.compPortfolioOutput.dividendDict[key] = filteredDict[key]?.s_dividend
+                }
+                
+                // get max last 3 splits
+                maxN = 2
+                filteredDict = welcome.compData.filter{ Double($0.value.s_split_coeff) != 1 }
+                keys = filteredDict.keys.sorted(by: >)
+                (keys.count > maxN) ? keys = Array(keys[0...maxN]) : ()
+
+                for key in keys{
+                    self.compPortfolioOutput.splitsDict[key] = filteredDict[key]?.s_split_coeff
                 }
                 
                 
