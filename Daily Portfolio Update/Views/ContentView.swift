@@ -107,7 +107,7 @@ struct ContentView: View {
             }
         }
         
-        withAnimation{ settingsForPreview.isLoading = false }
+        settingsForPreview.isLoading = false
     }
     
     private func deleteRow(at indexSet: IndexSet) {
