@@ -165,11 +165,17 @@ struct MarketPerformance: View {
                 }
             }
             
+            if dataEntries[0].dividendDict.keys.isEmpty {
+                noDividendSubView()
+            }
+            else{
+                dividendSubView(compPortfolioOutput: dataEntries[0])
+            }
+            
             purchaseDatesSubView(dataEntries: dataEntries)
         }
     }
 }
-
 
 struct InfoSheet_Previews: PreviewProvider {
     static var previews: some View {
@@ -203,3 +209,45 @@ struct purchaseDatesSubView: View {
         }
     }
 }
+
+struct dividendSubView: View {
+    @State var compPortfolioOutput: CompPortfolioOutput
+    
+    var body: some View {
+        Section(
+            header: HStack {
+                Image(systemName: "creditcard")
+                Text("Some of last devidend dates")
+        }) {
+            ForEach(self.compPortfolioOutput.dividendDict.keys.sorted(by: >), id: \.self) { key in
+                HStack{
+                    Text(key)
+                    
+                    Spacer()
+                    
+                    HStack(){
+                        Text(currencyString(self.compPortfolioOutput.dividendDict[key]!))
+                        
+                    }.lineLimit(1)
+                        .minimumScaleFactor(0.1)
+                }
+            }
+        }
+    }
+}
+
+struct noDividendSubView: View {
+    var body: some View {
+        Section(
+            header: HStack {
+                Image(systemName: "dollarsign.circle")
+                Text("Some of last devidend dates")})
+        {
+            Text("No dividend das been registered.")
+                .lineLimit(1)
+                .minimumScaleFactor(0.1)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+        }
+    }
+}
+

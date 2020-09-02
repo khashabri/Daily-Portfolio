@@ -37,7 +37,7 @@ struct MetaData: Codable & Decodable {
 // MARK: - TimeSeriesDaily
 struct CompData: Codable & Identifiable & Decodable {
     var id = UUID()
-    var s_open, s_high, s_low, s_close, s_volume: String
+    var s_open, s_high, s_low, s_close, s_volume, s_dividend: String
     
     var symbol: String = ""
     var lastRefreshed: String = ""
@@ -73,6 +73,7 @@ struct CompData: Codable & Identifiable & Decodable {
         case s_low = "3. low"
         case s_close = "5. adjusted close"
         case s_volume = "6. volume"
+        case s_dividend = "7. dividend amount"
         
     }
     
@@ -129,6 +130,9 @@ struct CompPortfolioOutput: Identifiable, Hashable{
     var volumeChange5D: Double = 0
     var volumeChange1M: Double = 0
     var volumeChange1Y: Double = 0
+    
+    // Dividende
+    var dividendDict = [String: String]()
 }
 
 struct TotalNumbers: Equatable{
