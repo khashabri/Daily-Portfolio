@@ -43,7 +43,7 @@ class NetworkingManagerPortfolio: ObservableObject {
     func getData(completion: @escaping (CompPortfolioOutput) -> ()){
         
         if let loadedCompPortfolioOutput = load_CompPortfolioOutput(fileName: compPortfolioOutput.savingKey){
-            if loadedCompPortfolioOutput.lastRefreshed == "2020-09-04"{
+            if loadedCompPortfolioOutput.lastRefreshed == "2020-09-043"{
                 print("Jumping out because data are already uptodate.")
                 completion(loadedCompPortfolioOutput)
                 return

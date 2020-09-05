@@ -16,6 +16,7 @@ struct AskingView: View {
     @State private var amountOfStock = ""
     @State private var manualPurchasedPrice = ""
     @State private var today = get_today()
+    @Binding var isLoading: Bool
     
     // this variable is somit shared through all views with this line
     @EnvironmentObject var settings: UserSettings
@@ -72,7 +73,7 @@ struct AskingView: View {
                 
                 Section(footer: Text("If you don't set the price manually the purchased price will be the close price of the purchase date.")){
                     Button(action: {
-                        settingsForPreview.isLoading = true
+                        self.isLoading = true
                         let df = DateFormatter()
                         df.dateFormat = "yyyy-MM-dd"
                         let date = df.string(from: self.selectedDate)
@@ -130,8 +131,8 @@ struct AskingView: View {
 }
 
 // to use this first comment out @Binding var shouldPopToRootView : Bool
-struct AskingView_Previews: PreviewProvider {
-    static var previews: some View {
-        AskingView(compName: "Apple Inc.")
-    }
-}
+//struct AskingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AskingView(compName: "Apple Inc.", isLoading: <#Binding<Bool>#>)
+//    }
+//}

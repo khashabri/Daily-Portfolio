@@ -77,11 +77,11 @@ struct LogsView: View {
     }
 }
 
-struct LogsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct LogsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LogsView()
+//    }
+//}
 
 struct TaskRow: View {
     var aValue: CompPortfolioOutput

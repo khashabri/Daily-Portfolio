@@ -15,7 +15,8 @@ struct ContentView: View {
     @State var existingInputs: [UserInput] = []
     @State var handelDicts = HandelDicts()
     @State var totalNumbers = TotalNumbers()
-
+    @State var isLoading: Bool
+    
     // For add button
     @State private var showModal = false
     
@@ -43,12 +44,12 @@ struct ContentView: View {
                     
                     SlideOverCard($position, backgroundStyle: $background) {
                         VStack {
-                            totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: settingsForPreview.isLoading)
+                            totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: self.$isLoading)
                         }
                     }
                 }
                     
-                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
+                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView(isLoading: self.$isLoading)))
                 .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
             }
                 
@@ -66,7 +67,11 @@ struct ContentView: View {
     }
     
     private func buildElements() {
+        let myGroup = DispatchGroup()
+        
         for input in settings.portfolio {
+            myGroup.enter()
+            
             if !self.existingInputs.contains(input){
                 existingInputs.append(input)
                 NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
@@ -103,11 +108,16 @@ struct ContentView: View {
                     self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory + compPortfolioOutput.gainHistory
                     self.totalNumbers.lastRefreshed = compPortfolioOutput.lastRefreshed
                     
+                    myGroup.leave()
                 }
+            }else{
+                myGroup.leave() // you can't remove these because otherwise it will done before dispatch
             }
         }
         
-        settingsForPreview.isLoading = false
+        myGroup.notify(queue: .main) {
+            self.isLoading = false
+        }
     }
     
     private func deleteRow(at indexSet: IndexSet) {
@@ -149,7 +159,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(settingsForPreview)
+        ContentView(isLoading: true).environmentObject(settingsForPreview)
     }
 }
 
@@ -173,13 +183,13 @@ struct AddButton<Destination : View>: View {
 struct totalInfoSubview: View {
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
-    let isLoading: Bool
+    @Binding var isLoading: Bool
     
     var body: some View {
         VStack{
             Form{
                 
-                Section(header: totalInfoHeader(isLoading: isLoading, totalNumbers: $totalNumbers), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
+                Section(header: totalInfoHeader(isLoading: $isLoading, totalNumbers: $totalNumbers), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -211,7 +221,7 @@ struct totalInfoSubview: View {
 
 
 struct totalInfoHeader: View {
-    let isLoading: Bool
+    @Binding var isLoading: Bool
     @Binding var totalNumbers: TotalNumbers
     @State var showPlot = false
     
