@@ -131,8 +131,8 @@ struct AskingView: View {
 }
 
 // to use this first comment out @Binding var shouldPopToRootView : Bool
-//struct AskingView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AskingView(compName: "Apple Inc.", isLoading: <#Binding<Bool>#>)
-//    }
-//}
+struct AskingView_Previews: PreviewProvider {
+    static var previews: some View {
+        AskingView(compName: "Apple Inc.", isLoading: .constant(false))
+    }
+}
