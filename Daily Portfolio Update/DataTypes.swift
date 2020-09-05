@@ -89,7 +89,7 @@ struct CompData: Codable & Identifiable & Decodable {
 
 // MARK: - User Input
 struct UserInput: Identifiable, Equatable, Codable{
-    let id = UUID()
+    let id: UUID
     let compName: String
     lazy var compSymbol = getKey(value: compName)
     let purchaseDate: String
