@@ -10,6 +10,7 @@ class NetworkingManagerPortfolio: ObservableObject {
     init(userInput: UserInput) {
         var userInput = userInput
         
+        self.compPortfolioOutput.savingKey = savingKeyMaker(userInput)
         self.compPortfolioOutput.compName = userInput.compName
         self.compPortfolioOutput.compSymbol = userInput.compSymbol
         self.compPortfolioOutput.purchaseDate = userInput.purchaseDate
@@ -20,7 +21,34 @@ class NetworkingManagerPortfolio: ObservableObject {
         if !userInput.manualPurchasedPrice.isZero { self.manualPurchasedPrice = userInput.manualPurchasedPrice }
     }
     
+//    func save() {
+//        if let encoded = try? JSONEncoder().encode(self.compPortfolioOutput) {
+//            UserDefaults.standard.set(encoded, forKey: self.compPortfolioOutput.savingKey)
+//        }
+//    }
+//    
+//    func load() -> CompPortfolioOutput {
+//        if let data = UserDefaults.standard.data(forKey: self.compPortfolioOutput.savingKey) {
+//            if let decoded = try? JSONDecoder().decode(CompPortfolioOutput.self, from: data) {
+//                self.compPortfolioOutput = decoded
+//                
+//                print("####### Loaded Data #######")
+//                //                print(compPortfolioOutput)
+//                return compPortfolioOutput
+//            }
+//        }
+//        return CompPortfolioOutput()
+//    }
+    
     func getData(completion: @escaping (CompPortfolioOutput) -> ()){
+        
+        if let loadedCompPortfolioOutput = load_CompPortfolioOutput(fileName: compPortfolioOutput.savingKey){
+            if loadedCompPortfolioOutput.lastRefreshed == "2020-09-04"{
+                print("Jumping out because data are already uptodate.")
+                completion(loadedCompPortfolioOutput)
+                return
+            }
+        }
         
         guard let url = URL(string: self.urlString) else { return }
         
@@ -88,7 +116,7 @@ class NetworkingManagerPortfolio: ObservableObject {
                 var filteredDict = welcome.compData.filter{ Double($0.value.s_dividend) != 0 }
                 var keys = filteredDict.keys.sorted(by: >)
                 (keys.count > maxN) ? keys = Array(keys[0...maxN]) : ()
-
+                
                 for key in keys{
                     self.compPortfolioOutput.dividendDict[key] = filteredDict[key]?.s_dividend
                 }
@@ -98,13 +126,16 @@ class NetworkingManagerPortfolio: ObservableObject {
                 filteredDict = welcome.compData.filter{ Double($0.value.s_split_coeff) != 1 }
                 keys = filteredDict.keys.sorted(by: >)
                 (keys.count > maxN) ? keys = Array(keys[0...maxN]) : ()
-
+                
                 for key in keys{
                     self.compPortfolioOutput.splitsDict[key] = filteredDict[key]?.s_split_coeff
                 }
                 
+                save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
+                print("####### Saved Data #######")
                 
                 completion(self.compPortfolioOutput)
+                
             }
         }.resume()
     }

@@ -98,8 +98,9 @@ struct UserInput: Identifiable, Equatable{
 }
 
 // MARK: - Company Portfolio Output
-struct CompPortfolioOutput: Identifiable, Hashable{
+struct CompPortfolioOutput: Identifiable, Hashable, Codable{
     var id = UUID()
+    var savingKey = ""
     var lastRefreshed: String = ""
     var compName: String = ""
     var compSymbol: String = ""

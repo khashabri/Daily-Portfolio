@@ -118,3 +118,30 @@ func isInt(_ x: String) -> Bool{
     let x = Double(x)
     return floor(x ?? 0) == x
 }
+
+func savingKeyMaker(_ userInput: UserInput) -> String{
+    var userInput = userInput
+    return userInput.compSymbol + userInput.purchaseDate + String(userInput.purchaseAmount) + String(userInput.manualPurchasedPrice)
+}
+
+func save_CompPortfolioOutput(compPortfolioOutput: CompPortfolioOutput, fileName: String){
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+
+    let propertyListEncoder = PropertyListEncoder()
+    let encodedComp = try? propertyListEncoder.encode(compPortfolioOutput)
+    try? encodedComp!.write(to: archiveURL, options: .noFileProtection)
+}
+
+func load_CompPortfolioOutput(fileName: String) -> CompPortfolioOutput?{
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListDecoder = PropertyListDecoder()
+    guard let retrievedCompData = try? Data(contentsOf: archiveURL) else { return nil }
+    if let decodedComp = try? propertyListDecoder.decode(CompPortfolioOutput.self, from: retrievedCompData){
+        return decodedComp
+    }
+    
+    return nil
+}
