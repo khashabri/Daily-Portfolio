@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct LogsView: View {
-    @State var samples = SampledataEntry
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
     
@@ -38,12 +37,6 @@ struct LogsView: View {
         let index = Int(offsets.first!)
         let removedEntry = self.handelDicts.companiesEntriesDict[category]![index]
         self.handelDicts.companiesEntriesDict[category]!.remove(at: index)
-        //        var x = self.samples[category]!
-        //        print(self.samples)
-        //        x.remove(atOffsets: offsets)
-        //
-        //        self.samples[category]! = x
-        //
         
         // removing zeros which may be there because of deleting an earlier purchase
         self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory - removedEntry.gainHistory
@@ -72,7 +65,6 @@ struct LogsView: View {
             self.handelDicts.portfolioListInvestDict.removeValue(forKey: category)
         }
         
-        // MARK - TODO: UserSettings und existingInputs leer machen!
         
     }
 }

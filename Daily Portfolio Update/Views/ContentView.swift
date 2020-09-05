@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-var settingsForPreview = UserSettings()
-
 struct ContentView: View {
     
     @State var existingInputs: [UserInput] = []
@@ -158,8 +156,11 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    // doomy object for making the preview visible
+    static var settingsForPreview = UserSettings()
+    
     static var previews: some View {
-        ContentView(isLoading: true).environmentObject(settingsForPreview)
+        ContentView(isLoading: true).environmentObject(self.settingsForPreview)
     }
 }
 

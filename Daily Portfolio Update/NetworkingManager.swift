@@ -10,6 +10,7 @@ class NetworkingManagerPortfolio: ObservableObject {
     init(userInput: UserInput) {
         var userInput = userInput
         
+        self.compPortfolioOutput.id = userInput.id // bijectiv relation
         self.compPortfolioOutput.savingKey = savingKeyMaker(userInput)
         self.compPortfolioOutput.compName = userInput.compName
         self.compPortfolioOutput.compSymbol = userInput.compSymbol
@@ -43,8 +44,7 @@ class NetworkingManagerPortfolio: ObservableObject {
     func getData(completion: @escaping (CompPortfolioOutput) -> ()){
         
         if let loadedCompPortfolioOutput = load_CompPortfolioOutput(fileName: compPortfolioOutput.savingKey){
-            if loadedCompPortfolioOutput.lastRefreshed == "2020-09-043"{
-                print("Jumping out because data are already uptodate.")
+            if loadedCompPortfolioOutput.lastRefreshed == "2020-09-04"{
                 completion(loadedCompPortfolioOutput)
                 return
             }

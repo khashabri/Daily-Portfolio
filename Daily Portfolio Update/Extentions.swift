@@ -62,6 +62,12 @@ extension Array where Element == Double {
     }
 }
 
+extension Array where Element == UserInput{
+    mutating func findByID(id: UUID) -> Int?{
+        return self.firstIndex{ $0.id == id}
+    }
+}
+
 extension Dictionary where Key == String , Value == CompData {
     // get values for multiple keys
     func values(of: [String]) -> [Double]{

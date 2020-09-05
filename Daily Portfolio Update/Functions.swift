@@ -163,8 +163,8 @@ func load_UserInputs() -> [UserInput]{
     let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
     
     let propertyListDecoder = PropertyListDecoder()
-    let retrievedUserInputs = try? Data(contentsOf: archiveURL)
-    if let decodedUserInputs = try? propertyListDecoder.decode(Array<UserInput>.self, from: retrievedUserInputs!){
+    guard let retrievedUserInputs = try? Data(contentsOf: archiveURL) else { return [] }
+    if let decodedUserInputs = try? propertyListDecoder.decode(Array<UserInput>.self, from: retrievedUserInputs){
         return decodedUserInputs
     }
     

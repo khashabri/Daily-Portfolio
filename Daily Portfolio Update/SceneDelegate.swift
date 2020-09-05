@@ -10,19 +10,18 @@ import UIKit
 import SwiftUI
 
 class UserSettings: ObservableObject {
-    @Published var compNames = ["AAPL", "SNAP"]
-    @Published var portfolio = [UserInput]()
+    @Published var portfolio = load_UserInputs()
     
-    init() {
-//        let samplePortInput1 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
-        let samplePortInput2 = UserInput(compName: "Snap Inc.", purchaseDate: "2020-08-20", purchaseAmount: 15)
-        let samplePortInput3 = UserInput(compName: "Intel Corporation", purchaseDate: "2020-01-01", purchaseAmount: 19)
-//        let samplePortInput4 = UserInput(compName: "Apple Inc.", purchaseDate: "2020-01-23", purchaseAmount: 4)
-        self.portfolio.append(samplePortInput2)
-        self.portfolio.append(samplePortInput3)
-//        self.portfolio.append(samplePortInput1)
-//        self.portfolio.append(samplePortInput4)
-    }
+//    init() {
+////        let samplePortInput1 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
+//        let samplePortInput2 = UserInput(compName: "Snap Inc.", purchaseDate: "2020-08-20", purchaseAmount: 15)
+//        let samplePortInput3 = UserInput(compName: "Intel Corporation", purchaseDate: "2020-01-01", purchaseAmount: 19)
+////        let samplePortInput4 = UserInput(compName: "Apple Inc.", purchaseDate: "2020-01-23", purchaseAmount: 4)
+//        self.portfolio.append(samplePortInput2)
+//        self.portfolio.append(samplePortInput3)
+////        self.portfolio.append(samplePortInput1)
+////        self.portfolio.append(samplePortInput4)
+//    }
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -52,6 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
+        save_UserInputs(userInputs: settings.portfolio)
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -73,6 +73,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        save_UserInputs(userInputs: settings.portfolio)
     }
     
     
