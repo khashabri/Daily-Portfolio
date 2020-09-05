@@ -145,3 +145,28 @@ func load_CompPortfolioOutput(fileName: String) -> CompPortfolioOutput?{
     
     return nil
 }
+
+func save_UserInputs(userInputs: [UserInput]){
+    let fileName = "userInputs"
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListEncoder = PropertyListEncoder()
+    let encodedUserInputs = try? propertyListEncoder.encode(userInputs)
+    
+    try? encodedUserInputs!.write(to: archiveURL, options: .noFileProtection)
+}
+
+func load_UserInputs() -> [UserInput]{
+    let fileName = "userInputs"
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListDecoder = PropertyListDecoder()
+    let retrievedUserInputs = try? Data(contentsOf: archiveURL)
+    if let decodedUserInputs = try? propertyListDecoder.decode(Array<UserInput>.self, from: retrievedUserInputs!){
+        return decodedUserInputs
+    }
+    
+    return []
+}

@@ -67,7 +67,7 @@ struct CompData: Codable & Identifiable & Decodable {
     
     var Days100Before: [Double]  = []
     
-    enum CodingKeys: String, CodingKey, Decodable {
+    enum CodingKeys: String, CodingKey, Codable {
         case s_open = "1. open"
         case s_high = "2. high"
         case s_low = "3. low"
@@ -88,7 +88,7 @@ struct CompData: Codable & Identifiable & Decodable {
 
 
 // MARK: - User Input
-struct UserInput: Identifiable, Equatable{
+struct UserInput: Identifiable, Equatable, Codable{
     let id = UUID()
     let compName: String
     lazy var compSymbol = getKey(value: compName)
