@@ -26,9 +26,6 @@ struct SearchingView: View {
                         word.localizedCaseInsensitiveContains(self.searchTerm)}, id: \.self) {value in
                             NavigationLink(destination: AskingView(compName: value, isLoading: self.$isLoading )){
                                 HStack{
-                                    //                                        Image(myDic_Symb2Img[getKey(value: value)]!)
-                                    //                                            .resizable()
-                                    //                                            .frame(minWidth: 0, idealWidth: 32, maxWidth: 45, minHeight: 32, idealHeight: 32, maxHeight: 32, alignment: .leading)
                                     Text(value)
                                 }
                             }

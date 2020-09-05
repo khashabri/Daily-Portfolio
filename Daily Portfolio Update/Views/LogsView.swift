@@ -12,6 +12,7 @@ struct LogsView: View {
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
     
+    @EnvironmentObject var settings: UserSettings
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
@@ -65,7 +66,10 @@ struct LogsView: View {
             self.handelDicts.portfolioListInvestDict.removeValue(forKey: category)
         }
         
+        let tmpIndx = self.settings.portfolio.findByID(id: removedEntry.id)
+        self.settings.portfolio.remove(at: tmpIndx!)
         
+        // MARK - TODO: existingInputs leer machen!
     }
 }
 

@@ -253,6 +253,7 @@ struct totalInfoFooter: View {
     @Binding var handelDicts: HandelDicts
     
     @State var showLogs = false
+    @EnvironmentObject var settings: UserSettings
     
     var body: some View {
         HStack {
@@ -263,7 +264,7 @@ struct totalInfoFooter: View {
                     Image(systemName: "pencil.and.ellipsis.rectangle")
                     Text("View Logs")
                 }
-                .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)}
+                .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)}
             }
         }
     }
