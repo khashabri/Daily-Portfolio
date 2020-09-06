@@ -57,6 +57,11 @@ struct SettingView: View {
                     }) {
                         Text("Reset All Settings")
                     }
+                    Button(action: {
+                        clearDirectoryFolder()
+                    }) {
+                        Text("Reset Catched Server Data")
+                    }
                 }
             }
             .navigationBarTitle("Settings")
