@@ -33,10 +33,11 @@ struct ContentView: View {
                         
                         ForEach(self.handelDicts.portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
                             
-                            RowViewPortfolio(dataEntries: self.handelDicts.companiesEntriesDict[key]! ,Name: (self.handelDicts.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.handelDicts.portfolioListInvestDict[key]!, portfolioListGainDict: self.handelDicts.portfolioListGainDict[key]!, portfolioListPercentageDict: self.handelDicts.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.handelDicts.portfolioListShareNumberDict[key]!)
+                            NavigationLink(destination: MoreInfo(dataEntries: self.handelDicts.companiesEntriesDict[key]!)) {
+                                RowViewPortfolio(dataEntries: self.handelDicts.companiesEntriesDict[key]! ,Name: (self.handelDicts.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.handelDicts.portfolioListInvestDict[key]!, portfolioListGainDict: self.handelDicts.portfolioListGainDict[key]!, portfolioListPercentageDict: self.handelDicts.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.handelDicts.portfolioListShareNumberDict[key]!)
+                            }
                         }
                         .onDelete(perform: self.deleteRow)
-                        //                    .onMove(perform: self.move)
                     }
                     .onAppear { self.buildElements() }
                     

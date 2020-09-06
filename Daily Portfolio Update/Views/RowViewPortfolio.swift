@@ -60,14 +60,14 @@ struct RowViewPortfolio: View {
                         .foregroundColor(Color.green)
                 }
             }
-            Button(action: {
-                self.showingDetail.toggle()
-            }) {
-                Image(systemName: "info.circle")
-                    .foregroundColor(.accentColor)
-            }.sheet(isPresented: $showingDetail) {
-                MoreInfo(dataEntries: self.dataEntries)
-            }
+//            Button(action: {
+//                self.showingDetail.toggle()
+//            }) {
+//                Image(systemName: "info.circle")
+//                    .foregroundColor(.accentColor)
+//            }.sheet(isPresented: $showingDetail) {
+//                MoreInfo(dataEntries: self.dataEntries)
+//            }
         }.frame(height: 40)
     }
 }

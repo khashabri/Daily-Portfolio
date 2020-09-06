@@ -13,35 +13,29 @@ struct MoreInfo: View {
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
-        NavigationView {
-            VStack() {
-                HStack() {
-                    Text("Name:")
-                        .font(.headline)
-                        .padding(.leading, 20)
-                    Text(dataEntries[0].compName)
-                    Spacer()
-                }
-                .padding(.top)
-                HStack() {
-                    Text("Market Symbol:")
-                        .font(.headline)
-                        .padding(.leading, 20)
-                    Text(dataEntries[0].compSymbol)
-                    Spacer()
-                }
+        VStack() {
+            HStack() {
+                Text("Name:")
+                    .font(.headline)
+                    .padding(.leading, 20)
+                Text(dataEntries[0].compName)
                 Spacer()
-                InfoSheet(dataEntries: dataEntries)
             }
-            .minimumScaleFactor(0.1)
-            .lineLimit(1)
-                
-            .navigationBarTitle("Overview", displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: { self.presentationMode.wrappedValue.dismiss()
-            }) {
-                Text("Done").bold()
-            })
+            .padding(.top)
+            HStack() {
+                Text("Market Symbol:")
+                    .font(.headline)
+                    .padding(.leading, 20)
+                Text(dataEntries[0].compSymbol)
+                Spacer()
+            }
+            Spacer()
+            InfoSheet(dataEntries: dataEntries)
         }
+        .minimumScaleFactor(0.1)
+        .lineLimit(1)
+            
+        .navigationBarTitle("Overview", displayMode: .inline)        
     }
 }
 
