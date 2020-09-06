@@ -135,6 +135,7 @@ struct CompPortfolioOutput: Identifiable, Hashable, Codable{
     
     // Dividende
     var dividendDict = [String: String]()
+    var allDividendDict = [String: String]()
     
     // Splits
     var splitsDict = [String: String]()

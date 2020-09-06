@@ -91,7 +91,7 @@ struct AskingView: View {
                         }
                         
                         self.settings.portfolio.append(userInput)
-                        print(self.selectedDate)
+                        save_UserInputs(userInputs: self.settings.portfolio)
                         
                         self.presentationMode.wrappedValue.dismiss()
                         self.presentationMode.wrappedValue.dismiss()

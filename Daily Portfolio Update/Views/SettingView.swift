@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct SettingView: View {
+    @EnvironmentObject var settings: UserSettings
     @State var username: String = ""
     @State var isPrivate: Bool = true
     @State var notificationsEnabled: Bool = false
@@ -51,7 +52,8 @@ struct SettingView: View {
                 
                 Section {
                     Button(action: {
-                        print("Perform an action here...")
+                        clearDirectoryFolder()
+                        self.settings.portfolio = []
                     }) {
                         Text("Reset All Settings")
                     }

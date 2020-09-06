@@ -57,7 +57,7 @@ struct ContentView: View {
                 Text("Portfolio")
             }
             
-            SettingView()
+            SettingView().environmentObject(settings)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
@@ -234,7 +234,7 @@ struct totalInfoHeader: View {
             Spacer()
             if(isLoading){
                 ActivityIndicator().frame(width: 23, height: 23)
-                Text("Loading...").bold()
+                Text("Fetching latest data...").bold()
             }
             else{
                 Button(action: { self.showPlot.toggle()}){

@@ -10,7 +10,6 @@ import SwiftUI
 
 struct InfoSheet: View {
     
-    //    @State var aCompanyData: CompData = offlineData[0]
     @State var dataEntries: [CompPortfolioOutput]
     
     var body: some View {
@@ -219,12 +218,21 @@ struct purchaseDatesSubView: View {
 
 struct dividendSubView: View {
     @State var compPortfolioOutput: CompPortfolioOutput
+    @State var showMoreDividend = false
     
     var body: some View {
         Section(
             header: HStack {
                 Image(systemName: "creditcard")
-                Text("Some of last devidend dates")
+                Text("Latest dividends")
+                Spacer()
+                Button(action: {self.showMoreDividend.toggle()}) {
+                    HStack{
+                        Image(systemName: "ellipsis.circle")
+                        Text("View All")
+                    }
+                }.sheet(isPresented: $showMoreDividend) {DividendView(compPortfolioOutput: self.compPortfolioOutput)}
+                
         }) {
             ForEach(self.compPortfolioOutput.dividendDict.keys.sorted(by: >), id: \.self) { key in
                 HStack{
@@ -247,7 +255,7 @@ struct noDividendSubView: View {
         Section(
             header: HStack {
                 Image(systemName: "dollarsign.circle")
-                Text("Some of last devidend dates")})
+                Text("Some of last dividend dates")})
         {
             Text("No dividend das been registered.")
                 .lineLimit(1)

@@ -97,6 +97,7 @@ class NetworkingManagerPortfolio: ObservableObject {
                 // get max last 5 dividends
                 var maxN = 5
                 var filteredDict = welcome.compData.filter{ Double($0.value.s_dividend) != 0 }
+                self.compPortfolioOutput.allDividendDict = filteredDict.mapValues { value in value.s_dividend }
                 var keys = filteredDict.keys.sorted(by: >)
                 (keys.count > maxN) ? keys = Array(keys[0...maxN]) : ()
                 
