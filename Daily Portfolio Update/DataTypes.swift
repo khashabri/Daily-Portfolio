@@ -101,6 +101,7 @@ struct UserInput: Identifiable, Equatable, Codable{
 struct CompPortfolioOutput: Identifiable, Hashable, Codable{
     var id = UUID()
     var savingKey = ""
+    var lastServerCheckTime = now()
     var lastRefreshed: String = ""
     var compName: String = ""
     var compSymbol: String = ""

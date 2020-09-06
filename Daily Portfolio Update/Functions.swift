@@ -127,7 +127,7 @@ func savingKeyMaker(_ userInput: UserInput) -> String{
 func save_CompPortfolioOutput(compPortfolioOutput: CompPortfolioOutput, fileName: String){
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
-
+    
     let propertyListEncoder = PropertyListEncoder()
     let encodedComp = try? propertyListEncoder.encode(compPortfolioOutput)
     try? encodedComp!.write(to: archiveURL, options: .noFileProtection)
@@ -169,4 +169,30 @@ func load_UserInputs() -> [UserInput]{
     }
     
     return []
+}
+
+func get_yesterday(_ of: Date) -> Date {
+    let lastDayDate = Calendar.current.date(byAdding: .day, value: -1, to: of)!
+    return lastDayDate
+}
+
+// MARK: - FIX: todaysMarketClosure and now() should be timezone dependent
+
+func refreshDateThreshold() -> Date{
+    let calendar = Calendar.current
+    let todaysMarketClosure = calendar.date(bySettingHour: 22, minute: 30, second: 0, of: Date())!
+    let now = Date()
+    var threshold = todaysMarketClosure
+    
+    (now < todaysMarketClosure) ? threshold = get_yesterday(threshold) : ()
+    
+    while calendar.isDateInWeekend(threshold) {
+        threshold = get_yesterday(threshold)
+    }
+    
+    return threshold
+}
+
+func now() -> Date{
+    return Date()
 }

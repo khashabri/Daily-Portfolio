@@ -22,29 +22,10 @@ class NetworkingManagerPortfolio: ObservableObject {
         if !userInput.manualPurchasedPrice.isZero { self.manualPurchasedPrice = userInput.manualPurchasedPrice }
     }
     
-//    func save() {
-//        if let encoded = try? JSONEncoder().encode(self.compPortfolioOutput) {
-//            UserDefaults.standard.set(encoded, forKey: self.compPortfolioOutput.savingKey)
-//        }
-//    }
-//    
-//    func load() -> CompPortfolioOutput {
-//        if let data = UserDefaults.standard.data(forKey: self.compPortfolioOutput.savingKey) {
-//            if let decoded = try? JSONDecoder().decode(CompPortfolioOutput.self, from: data) {
-//                self.compPortfolioOutput = decoded
-//                
-//                print("####### Loaded Data #######")
-//                //                print(compPortfolioOutput)
-//                return compPortfolioOutput
-//            }
-//        }
-//        return CompPortfolioOutput()
-//    }
-    
     func getData(completion: @escaping (CompPortfolioOutput) -> ()){
         
         if let loadedCompPortfolioOutput = load_CompPortfolioOutput(fileName: compPortfolioOutput.savingKey){
-            if loadedCompPortfolioOutput.lastRefreshed == "2020-09-04"{
+            if loadedCompPortfolioOutput.lastServerCheckTime >= refreshDateThreshold(){
                 completion(loadedCompPortfolioOutput)
                 return
             }
@@ -110,6 +91,8 @@ class NetworkingManagerPortfolio: ObservableObject {
                 self.compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
                 
                 self.compPortfolioOutput.priceHistory = prices
+                
+                self.compPortfolioOutput.lastServerCheckTime = now()
                 
                 // get max last 5 dividends
                 var maxN = 5
