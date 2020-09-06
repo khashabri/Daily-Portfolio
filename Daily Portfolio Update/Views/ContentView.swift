@@ -74,9 +74,7 @@ struct ContentView: View {
             if !self.existingInputs.contains(input){
                 existingInputs.append(input)
                 NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
-                    
-                    print(compPortfolioOutput)
-                    
+                                        
                     // Catching Data of companies
                     let key = compPortfolioOutput.compSymbol
                     if self.handelDicts.companiesEntriesDict.keys.contains(key){

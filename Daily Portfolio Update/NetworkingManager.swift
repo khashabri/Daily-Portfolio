@@ -95,63 +95,18 @@ class NetworkingManagerPortfolio: ObservableObject {
                 self.compPortfolioOutput.lastServerCheckTime = now()
                 
                 // get max last 5 dividends
-                var maxN = 5
                 var filteredDict = welcome.compData.filter{ Double($0.value.s_dividend) != 0 }
-                self.compPortfolioOutput.allDividendDict = filteredDict.mapValues { value in value.s_dividend }
-                var keys = filteredDict.keys.sorted(by: >)
-                (keys.count > maxN) ? keys = Array(keys[0...maxN]) : ()
-                
-                for key in keys{
-                    self.compPortfolioOutput.dividendDict[key] = filteredDict[key]?.s_dividend
-                }
+                self.compPortfolioOutput.dividendDict = filteredDict.mapValues { value in value.s_dividend }
                 
                 // get max last 3 splits
-                maxN = 2
                 filteredDict = welcome.compData.filter{ Double($0.value.s_split_coeff) != 1 }
-                keys = filteredDict.keys.sorted(by: >)
-                (keys.count > maxN) ? keys = Array(keys[0...maxN]) : ()
-                
-                for key in keys{
-                    self.compPortfolioOutput.splitsDict[key] = filteredDict[key]?.s_split_coeff
-                }
+                self.compPortfolioOutput.splitsDict = filteredDict.mapValues { value in value.s_split_coeff }
                 
                 save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
-                print("####### Saved Data #######")
                 
                 completion(self.compPortfolioOutput)
                 
             }
         }.resume()
     }
-}
-
-// MARK: - Sample Offline Data
-func JsonOfflineCompPortfolioOutput() -> CompPortfolioOutput {
-    let url = Bundle.main.url(forResource: "AmdOfflineApiData", withExtension: ".txt")!
-    let data = try! Data(contentsOf: url)
-    let welcome = try! JSONDecoder().decode(Welcome.self, from: data)
-    
-    var compPortfolioOutput = CompPortfolioOutput(compName: "Apple Inc.", compSymbol: "aapl", purchaseDate: "2020-03-19", purchaseAmount: 12)
-    
-    let workingDate = compPortfolioOutput.purchaseDate
-    let totDatesArr = welcome.compData.keys.sorted(by: >)
-    
-    let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!
-    let usefulDates = Array(totDatesArr[0...thatDatePosition])
-    let prices = welcome.compData.values(of: usefulDates)
-    let thatTimePrice = prices.last!
-    
-    compPortfolioOutput.gainHistory = compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
-    
-    compPortfolioOutput.currentGain = roundGoodD((prices.first! - prices.last!) / prices.last!)
-    
-    compPortfolioOutput.totalInvestment = compPortfolioOutput.purchaseAmount * prices.last!
-    
-    compPortfolioOutput.purchasePrice = prices.last!
-    
-    compPortfolioOutput.totalCurrentValue = compPortfolioOutput.purchaseAmount * prices.first!
-    
-    compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
-    
-    return compPortfolioOutput
 }

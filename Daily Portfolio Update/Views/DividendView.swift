@@ -15,14 +15,14 @@ struct DividendView: View {
     var body: some View {
         NavigationView{
             List(){
-                ForEach(self.compPortfolioOutput.allDividendDict.keys.sorted(by: >), id: \.self) { key in
+                ForEach(self.compPortfolioOutput.dividendDict.keys.sorted(by: >), id: \.self) { key in
                     HStack{
                         Text(key)
                         
                         Spacer()
                         
                         HStack(){
-                            Text(currencyString(self.compPortfolioOutput.allDividendDict[key]!))
+                            Text(currencyString(self.compPortfolioOutput.dividendDict[key]!))
                             
                         }
                     }

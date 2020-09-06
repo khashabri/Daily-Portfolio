@@ -234,7 +234,7 @@ struct dividendSubView: View {
                 }.sheet(isPresented: $showMoreDividend) {DividendView(compPortfolioOutput: self.compPortfolioOutput)}
                 
         }) {
-            ForEach(self.compPortfolioOutput.dividendDict.keys.sorted(by: >), id: \.self) { key in
+            ForEach(self.compPortfolioOutput.dividendDict.keys.sorted(by: >)[0...min(4,self.compPortfolioOutput.dividendDict.keys.count-1)], id: \.self) { key in
                 HStack{
                     Text(key)
                     
