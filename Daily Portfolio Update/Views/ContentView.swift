@@ -57,11 +57,19 @@ struct ContentView: View {
                 Text("Portfolio")
             }
             
+            
+            TopNewsView(companiesSymbols: Array(handelDicts.portfolioListInvestDict.keys))
+                .tabItem {
+                    Image(systemName: "flame")
+                    Text("Top News")
+            }
+            
             SettingView().environmentObject(settings)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
             }
+        
         }
     }
     

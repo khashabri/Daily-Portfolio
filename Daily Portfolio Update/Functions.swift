@@ -210,3 +210,10 @@ func clearDirectoryFolder() {
         }
     } catch  { print(error) }
 }
+
+func removeTandElse(_ string: String) -> String{
+    var reformattedString = string.replacingOccurrences(of: "T", with: "  ")
+    reformattedString = reformattedString.replacingOccurrences(of: ":00Z", with: "")
+    reformattedString = reformattedString.replacingOccurrences(of: "Z", with: "")
+    return reformattedString
+}

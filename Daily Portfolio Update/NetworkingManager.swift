@@ -110,3 +110,32 @@ class NetworkingManagerPortfolio: ObservableObject {
         }.resume()
     }
 }
+
+
+// MARK: - Class
+class NetworkingManagerNews: ObservableObject {
+    var urlString: String
+    
+    init(compSymbol: String) {
+        let name = myDic_Symb2Name[compSymbol]!
+        let reformattedString = name.replacingOccurrences(of: " ", with: "%20")
+        self.urlString = "http://newsapi.org/v2/everything?q=" + reformattedString + "&from=2020-09-01&sortBy=popularity&apiKey=1da1fd527f8542cb87bd34bfb3d78979"
+    }
+    
+    func getData(completion: @escaping ([Article]) -> ()){
+        
+        guard let url = URL(string: self.urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { (data,_,_) in
+            guard let data = data else { return }
+            
+            let welcomeNews = try! JSONDecoder().decode(WelcomeNews.self, from: data)
+            
+            DispatchQueue.main.async {
+                
+                completion(welcomeNews.articles)
+                
+            }
+        }.resume()
+    }
+}
