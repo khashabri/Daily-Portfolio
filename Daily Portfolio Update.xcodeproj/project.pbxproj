@@ -18,6 +18,7 @@
 		8461AEE424F919520011763C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8461AEE324F919520011763C /* SearchBar.swift */; };
 		84649DE024F665B400F12DAE /* SearchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84649DDF24F665B400F12DAE /* SearchingView.swift */; };
 		84649DE224F6874D00F12DAE /* AskingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84649DE124F6874D00F12DAE /* AskingView.swift */; };
+		8483ED1A2507EA560095E2A4 /* MoreNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8483ED192507EA560095E2A4 /* MoreNewsView.swift */; };
 		848F995A24F40F0700B7628A /* InfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F995924F40F0700B7628A /* InfoSheet.swift */; };
 		849C5ED624D6416000F67F05 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C5ED524D6416000F67F05 /* Functions.swift */; };
 		84A1EE6324DDD1D200FA945B /* AmdOfflineApiData.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84A1EE6224DDD1D200FA945B /* AmdOfflineApiData.txt */; };
@@ -47,6 +48,7 @@
 		8461AEE324F919520011763C /* SearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		84649DDF24F665B400F12DAE /* SearchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingView.swift; sourceTree = "<group>"; };
 		84649DE124F6874D00F12DAE /* AskingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskingView.swift; sourceTree = "<group>"; };
+		8483ED192507EA560095E2A4 /* MoreNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreNewsView.swift; sourceTree = "<group>"; };
 		848F995924F40F0700B7628A /* InfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSheet.swift; sourceTree = "<group>"; };
 		849C5ED524D6416000F67F05 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		84A1EE6224DDD1D200FA945B /* AmdOfflineApiData.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AmdOfflineApiData.txt; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			children = (
 				840D416924D43B2700394CA8 /* ContentView.swift */,
 				84136FD02506D1BA0082BD3A /* TopNewsView.swift */,
+				8483ED192507EA560095E2A4 /* MoreNewsView.swift */,
 				840B4EEA24FB271600D706AB /* ChartView.swift */,
 				84F2269824FB38100073A227 /* LogsView.swift */,
 				84BE0D7024F33533006EAA59 /* RowViewPortfolio.swift */,
@@ -251,6 +254,7 @@
 				84136FD12506D1BA0082BD3A /* TopNewsView.swift in Sources */,
 				84F8F5D424D3AB570058C4D3 /* SceneDelegate.swift in Sources */,
 				848F995A24F40F0700B7628A /* InfoSheet.swift in Sources */,
+				8483ED1A2507EA560095E2A4 /* MoreNewsView.swift in Sources */,
 				84136FCC25051AE20082BD3A /* DividendView.swift in Sources */,
 				840D416A24D43B2700394CA8 /* ContentView.swift in Sources */,
 			);

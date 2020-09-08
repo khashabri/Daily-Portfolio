@@ -26,7 +26,7 @@ struct TopNewsView: View {
                 List {
                     ForEach(self.dict.keys.sorted(by: <), id: \.self) {key in
                         
-                        Section(header: Text(myDic_Symb2Name[key]!)) {
+                        Section(header: customHeader(Name: myDic_Symb2Name[key]!, articles: self.dict[key]!)) {
                             ForEach(self.dict[key]![0...min(3,self.dict[key]!.count-1)], id: \.self) {aArticle in
                                 RowView(aArticle: aArticle)
                             }
@@ -94,4 +94,27 @@ struct SafariView: UIViewControllerRepresentable {
         
     }
     
+}
+
+struct customHeader: View {
+    
+    @State var Name: String
+    @State var articles: [Article]
+    @State var showMore = false
+    
+    var body: some View {
+        HStack {
+            Text(self.Name)
+            Spacer()
+            Button(action: { self.showMore.toggle()}){
+                HStack{
+                    Image(systemName: "ellipsis.circle")
+                    Text("More")
+                }
+                .sheet(isPresented: $showMore) {MoreNewsView(articles: self.articles)}
+            }
+        }
+        .lineLimit(1)
+        .minimumScaleFactor(0.1)
+    }
 }
