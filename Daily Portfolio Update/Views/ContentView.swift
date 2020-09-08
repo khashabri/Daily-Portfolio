@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var existingInputs: [UserInput] = []
+    @State var existingInputs = [UserInput]()
     @State var handelDicts = HandelDicts()
     @State var totalNumbers = TotalNumbers()
     @State var isLoading: Bool
@@ -40,6 +40,13 @@ struct ContentView: View {
                         .onDelete(perform: self.deleteRow)
                     }
                     .onAppear { self.buildElements() }
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                        self.existingInputs = [UserInput]()
+                        self.handelDicts = HandelDicts()
+                        self.totalNumbers = TotalNumbers()
+                        self.isLoading = true
+                        self.buildElements()
+                    }
                     
                     SlideOverCard($position, backgroundStyle: $background) {
                         VStack {
