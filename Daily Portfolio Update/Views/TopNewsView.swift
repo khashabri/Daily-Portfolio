@@ -27,7 +27,7 @@ struct TopNewsView: View {
                     ForEach(self.dict.keys.sorted(by: <), id: \.self) {key in
                         
                         Section(header: Text(myDic_Symb2Name[key]!)) {
-                            ForEach(self.dict[key]![0...min(3,self.dict[key]!.count-1)].reversed(), id: \.self) {aArticle in
+                            ForEach(self.dict[key]![0...min(3,self.dict[key]!.count-1)], id: \.self) {aArticle in
                                 RowView(aArticle: aArticle)
                             }
                         }
