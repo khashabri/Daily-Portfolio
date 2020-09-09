@@ -128,7 +128,7 @@ class NetworkingManagerNews: ObservableObject {
     func getData(completion: @escaping ([Article]) -> ()){
         
         if let loadedArticles = load_Articles(fileName: "articles_of_" + self.compSymbol){
-            if (Date() - loadedArticles[0].lastServerCheckTime)/3600 < 1{
+            if (Date() - loadedArticles[0].lastServerCheckTime!)/3600 < 1{
 //                print(Date())
 //                print(loadedArticles[0].lastServerCheckTime)
 //                print((Date() - loadedArticles[0].lastServerCheckTime)/3600)

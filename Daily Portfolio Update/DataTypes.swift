@@ -168,7 +168,7 @@ struct WelcomeNews: Codable, Hashable {
 // MARK: - Article
 struct Article: Identifiable, Hashable, Codable{
     var id = UUID()
-    var lastServerCheckTime = now()
+    var lastServerCheckTime: Date?
     var savingKey = ""
     let source: Source?
     let author: String?
