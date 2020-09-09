@@ -78,3 +78,9 @@ extension Dictionary where Key == String , Value == CompData {
         return tmp
     }
 }
+
+extension Date {
+    static func - (lhs: Date, rhs: Date) -> TimeInterval {
+        return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
+    }
+}

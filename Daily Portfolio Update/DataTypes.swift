@@ -162,12 +162,14 @@ struct HandelDicts: Equatable {
 struct WelcomeNews: Codable, Hashable {
     let status: String?
     let totalResults: Int?
-    let articles: [Article]
+    var articles: [Article]
 }
 
 // MARK: - Article
 struct Article: Identifiable, Hashable, Codable{
     var id = UUID()
+    var lastServerCheckTime = now()
+    var savingKey = ""
     let source: Source?
     let author: String?
     let title, articleDescription: String?

@@ -13,7 +13,7 @@ import SafariServices
 
 struct TopNewsView: View {
     @State var companiesSymbols: [String]
-    @State var existingInputs: [String] = []
+    @State var existingInputs = [String]()
     @State var dict = [String:[Article]]()
     
     //    init() {
@@ -33,16 +33,20 @@ struct TopNewsView: View {
                         }
                     }
                 }.onAppear { self.buildElements() }
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                        self.existingInputs = [String]()
+                        self.buildElements()
+                }
             }
             .navigationBarTitle(Text("🌎 Top News"), displayMode: .inline)
         }
     }
-    private func buildElements() {
+    public func buildElements() {
         for compSymbol in self.companiesSymbols{
             if !self.existingInputs.contains(compSymbol){
                 self.existingInputs.append(compSymbol)
                 NetworkingManagerNews(compSymbol: compSymbol).getData { articles in
-                self.dict[compSymbol] = articles
+                    self.dict[compSymbol] = articles
                 }
             }
         }

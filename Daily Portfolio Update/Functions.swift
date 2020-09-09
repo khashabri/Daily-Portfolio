@@ -217,3 +217,25 @@ func removeTandElse(_ string: String) -> String{
     reformattedString = reformattedString.replacingOccurrences(of: "Z", with: "")
     return reformattedString
 }
+
+func save_Articles(articles: [Article], fileName: String){
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListEncoder = PropertyListEncoder()
+    let encodedArticles = try? propertyListEncoder.encode(articles)
+    try? encodedArticles!.write(to: archiveURL, options: .noFileProtection)
+}
+
+func load_Articles(fileName: String) -> [Article]?{
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListDecoder = PropertyListDecoder()
+    guard let retrievedArticles = try? Data(contentsOf: archiveURL) else { return nil }
+    if let decodedArticles = try? propertyListDecoder.decode(Array<Article>.self, from: retrievedArticles){
+        return decodedArticles
+    }
+    
+    return nil
+}

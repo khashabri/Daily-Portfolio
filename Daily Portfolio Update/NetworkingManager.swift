@@ -115,8 +115,10 @@ class NetworkingManagerPortfolio: ObservableObject {
 // MARK: - Class
 class NetworkingManagerNews: ObservableObject {
     var urlString: String
+    let compSymbol: String
     
     init(compSymbol: String) {
+        self.compSymbol = compSymbol
         let name = myDic_Symb2Name[compSymbol]!
         let reformattedString = name.replacingOccurrences(of: " ", with: "%20")
         self.urlString = "http://newsapi.org/v2/everything?q=" + reformattedString + "&from=2020-09-01&sortBy=publishedAt&language=en&apiKey=1da1fd527f8542cb87bd34bfb3d78979"
@@ -125,15 +127,27 @@ class NetworkingManagerNews: ObservableObject {
     
     func getData(completion: @escaping ([Article]) -> ()){
         
+        if let loadedArticles = load_Articles(fileName: "articles_of_" + self.compSymbol){
+            if (Date() - loadedArticles[0].lastServerCheckTime)/3600 < 1{
+//                print(Date())
+//                print(loadedArticles[0].lastServerCheckTime)
+//                print((Date() - loadedArticles[0].lastServerCheckTime)/3600)
+                completion(loadedArticles)
+                return
+            }
+        }
+        
         guard let url = URL(string: self.urlString) else { return }
         
         URLSession.shared.dataTask(with: url) { (data,_,_) in
             guard let data = data else { return }
             
-            let welcomeNews = try! JSONDecoder().decode(WelcomeNews.self, from: data)
+            var welcomeNews = try! JSONDecoder().decode(WelcomeNews.self, from: data)
             
             DispatchQueue.main.async {
                 
+                welcomeNews.articles[0].lastServerCheckTime = now()
+                save_Articles(articles: welcomeNews.articles, fileName: "articles_of_" + self.compSymbol)
                 completion(welcomeNews.articles)
                 
             }
