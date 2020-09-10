@@ -13,7 +13,6 @@ import SafariServices
 
 struct TopNewsView: View {
     @State var companiesSymbols: [String]
-    @State var existingInputs = [String]()
     @State var dict = [String:[Article]]()
     
     //    init() {
@@ -34,7 +33,6 @@ struct TopNewsView: View {
                     }
                 }.onAppear { self.buildElements() }
                     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                        self.existingInputs = [String]()
                         self.buildElements()
                 }
             }
@@ -42,13 +40,27 @@ struct TopNewsView: View {
         }
     }
     public func buildElements() {
+        let myGroup = DispatchGroup()
+        var tmpDict = [String:[Article]]()
+        var changeHappend = false
+        
         for compSymbol in self.companiesSymbols{
-            if !self.existingInputs.contains(compSymbol){
-                self.existingInputs.append(compSymbol)
-                NetworkingManagerNews(compSymbol: compSymbol).getData { articles in
-                    self.dict[compSymbol] = articles
+            myGroup.enter()
+            
+            NetworkingManagerNews(compSymbol: compSymbol).getData { articles in
+                tmpDict[compSymbol] = articles
+                
+                if let latestArticleTitle = self.dict[compSymbol]?[0].title{
+                    if (tmpDict[compSymbol]![0].title != latestArticleTitle) {changeHappend = true}
+                }else{
+                    changeHappend = true
                 }
+                myGroup.leave()
             }
+        }
+        
+        myGroup.notify(queue: .main) {
+            changeHappend ? self.dict = tmpDict : ()
         }
     }
 }
@@ -67,6 +79,7 @@ struct RowView: View {
         VStack(alignment: .leading){
             Text(aArticle.title!)
                 .font(.headline)
+                .minimumScaleFactor(0.8)
                 .padding(.vertical, 3.0)
             HStack {
                 Text(aArticle.source!.name!)
@@ -93,8 +106,7 @@ struct SafariView: UIViewControllerRepresentable {
         return SFSafariViewController(url: url)
     }
     
-    func updateUIViewController(_ uiViewController: SFSafariViewController,
-                                context: UIViewControllerRepresentableContext<SafariView>) {
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: UIViewControllerRepresentableContext<SafariView>) {
         
     }
     
