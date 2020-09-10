@@ -179,7 +179,7 @@ struct Article: Identifiable, Hashable, Codable{
     let content: String?
     
     enum CodingKeys: String, CodingKey {
-        case source, author, title
+        case source, author, title, lastServerCheckTime
         case articleDescription = "description"
         case url, urlToImage, publishedAt, content
     }

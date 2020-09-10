@@ -128,26 +128,25 @@ class NetworkingManagerNews: ObservableObject {
     func getData(completion: @escaping ([Article]) -> ()){
         
         if let loadedArticles = load_Articles(fileName: "articles_of_" + self.compSymbol){
-            if (Date() - loadedArticles[0].lastServerCheckTime!)/3600 < 1{
-//                print(Date())
-//                print(loadedArticles[0].lastServerCheckTime)
-//                print((Date() - loadedArticles[0].lastServerCheckTime)/3600)
-                completion(loadedArticles)
-                return
+            if let lastServerCheckTime = loadedArticles[0].lastServerCheckTime{
+                if (Date() - lastServerCheckTime)/3600 < 1{
+                    completion(loadedArticles)
+                    return
+                }
             }
         }
         
         guard let url = URL(string: self.urlString) else { return }
-        
+
         URLSession.shared.dataTask(with: url) { (data,_,_) in
             guard let data = data else { return }
             
             var welcomeNews = try! JSONDecoder().decode(WelcomeNews.self, from: data)
+            welcomeNews.articles[0].lastServerCheckTime = now()
             
             DispatchQueue.main.async {
-                
-                welcomeNews.articles[0].lastServerCheckTime = now()
                 save_Articles(articles: welcomeNews.articles, fileName: "articles_of_" + self.compSymbol)
+
                 completion(welcomeNews.articles)
                 
             }

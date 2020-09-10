@@ -224,6 +224,7 @@ func save_Articles(articles: [Article], fileName: String){
     
     let propertyListEncoder = PropertyListEncoder()
     let encodedArticles = try? propertyListEncoder.encode(articles)
+//    try? FileManager.default.removeItem(at: archiveURL)
     try? encodedArticles!.write(to: archiveURL, options: .noFileProtection)
 }
 
