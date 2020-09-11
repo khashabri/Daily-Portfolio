@@ -5,6 +5,7 @@ import Combine
 class NetworkingManagerPortfolio: ObservableObject {
     var urlString: String
     var compPortfolioOutput = CompPortfolioOutput()
+    var welcome: Welcome?
     var manualPurchasedPrice: Double? = nil
     
     init(userInput: UserInput) {
@@ -31,83 +32,98 @@ class NetworkingManagerPortfolio: ObservableObject {
             }
         }
         
+        if let loadedWelcome = load_Welcome(compSymbol: self.compPortfolioOutput.compSymbol){
+            if loadedWelcome.lastServerCheckTime! >= refreshDateThreshold(){
+                self.welcome = loadedWelcome
+                self.makeCalculations()
+                completion(self.compPortfolioOutput)
+                return
+            }
+        }
         guard let url = URL(string: self.urlString) else { return }
         
         URLSession.shared.dataTask(with: url) { (data,_,_) in
             guard let data = data else { return }
             
-            let welcome = try! JSONDecoder().decode(Welcome.self, from: data)
+            self.welcome = try! JSONDecoder().decode(Welcome.self, from: data)
             
             DispatchQueue.main.async {
                 
-                var workingDate = self.compPortfolioOutput.purchaseDate
-                let totDatesArr = welcome.compData.keys.sorted(by: >)
-                
-                let date0D = totDatesArr[0]
-                let date1D = totDatesArr[1]
-                let date5D = totDatesArr[5]
-                let date1M = totDatesArr[22]
-                let date1Y = totDatesArr[264]
-                
-                // Make up day statistics
-                self.compPortfolioOutput.open = (welcome.compData[date0D]?.s_open)!
-                self.compPortfolioOutput.close = (welcome.compData[date0D]?.s_close)!
-                self.compPortfolioOutput.high = (welcome.compData[date0D]?.s_high)!
-                self.compPortfolioOutput.low = (welcome.compData[date0D]?.s_low)!
-                self.compPortfolioOutput.volume = (welcome.compData[date0D]?.s_volume)!
-                
-                // Making up watchlist data
-                self.compPortfolioOutput.priceChange1D = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1D]!.s_close)
-                self.compPortfolioOutput.priceChange5D = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date5D]!.s_close)
-                self.compPortfolioOutput.priceChange1M = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1M]!.s_close)
-                self.compPortfolioOutput.priceChange1Y = calcRateS(x: welcome.compData[date0D]!.s_close, y: welcome.compData[date1Y]!.s_close)
-                
-                self.compPortfolioOutput.volumeChange1D = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1D]!.s_volume)
-                self.compPortfolioOutput.volumeChange5D = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date5D]!.s_volume)
-                self.compPortfolioOutput.volumeChange1M = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1M]!.s_volume)
-                self.compPortfolioOutput.volumeChange1Y = calcRateS(x: welcome.compData[date0D]!.s_volume, y: welcome.compData[date1Y]!.s_volume)
-                
-                
-                // Making up portfolio data
-                while !totDatesArr.contains(workingDate) {
-                    workingDate = workingDate.convertToNextDate()
-                }
-                let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!
-                let usefulDates = Array(totDatesArr[0...thatDatePosition])
-                let prices = welcome.compData.values(of: usefulDates)
-                
-                let thatTimePrice: Double = self.manualPurchasedPrice ?? prices.last!
-                
-                self.compPortfolioOutput.gainHistory = self.compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
-                
-                self.compPortfolioOutput.currentGain = calcRateD(x: prices.first!, y: thatTimePrice)
-                
-                self.compPortfolioOutput.totalInvestment = self.compPortfolioOutput.purchaseAmount * thatTimePrice
-                
-                self.compPortfolioOutput.purchasePrice = thatTimePrice
-                
-                self.compPortfolioOutput.totalCurrentValue = self.compPortfolioOutput.purchaseAmount * prices.first!
-                
-                self.compPortfolioOutput.lastRefreshed = welcome.metaData.lastRefreshed
-                
-                self.compPortfolioOutput.priceHistory = prices
-                
-                self.compPortfolioOutput.lastServerCheckTime = now()
-                
-                // get max last 5 dividends
-                var filteredDict = welcome.compData.filter{ Double($0.value.s_dividend) != 0 }
-                self.compPortfolioOutput.dividendDict = filteredDict.mapValues { value in value.s_dividend }
-                
-                // get max last 3 splits
-                filteredDict = welcome.compData.filter{ Double($0.value.s_split_coeff) != 1 }
-                self.compPortfolioOutput.splitsDict = filteredDict.mapValues { value in value.s_split_coeff }
+                self.makeCalculations()
                 
                 save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
+                save_Welcome(welcome: self.welcome!, compSymbol: self.compPortfolioOutput.compSymbol)
                 
                 completion(self.compPortfolioOutput)
                 
             }
         }.resume()
+        
+    }
+    
+    func makeCalculations(){
+        var workingDate = self.compPortfolioOutput.purchaseDate
+        let totDatesArr = welcome!.compData.keys.sorted(by: >)
+        
+        let date0D = totDatesArr[0]
+        let date1D = totDatesArr[1]
+        let date5D = totDatesArr[5]
+        let date1M = totDatesArr[22]
+        let date1Y = totDatesArr[264]
+        
+        // Make up day statistics
+        self.compPortfolioOutput.open = (self.welcome!.compData[date0D]?.s_open)!
+        self.compPortfolioOutput.close = (self.welcome!.compData[date0D]?.s_close)!
+        self.compPortfolioOutput.high = (self.welcome!.compData[date0D]?.s_high)!
+        self.compPortfolioOutput.low = (self.welcome!.compData[date0D]?.s_low)!
+        self.compPortfolioOutput.volume = (self.welcome!.compData[date0D]?.s_volume)!
+        
+        // Making up watchlist data
+        self.compPortfolioOutput.priceChange1D = calcRateS(x: self.welcome!.compData[date0D]!.s_close, y: self.welcome!.compData[date1D]!.s_close)
+        self.compPortfolioOutput.priceChange5D = calcRateS(x: self.welcome!.compData[date0D]!.s_close, y: self.welcome!.compData[date5D]!.s_close)
+        self.compPortfolioOutput.priceChange1M = calcRateS(x: self.welcome!.compData[date0D]!.s_close, y: self.welcome!.compData[date1M]!.s_close)
+        self.compPortfolioOutput.priceChange1Y = calcRateS(x: self.welcome!.compData[date0D]!.s_close, y: self.welcome!.compData[date1Y]!.s_close)
+        
+        self.compPortfolioOutput.volumeChange1D = calcRateS(x: self.welcome!.compData[date0D]!.s_volume, y: self.welcome!.compData[date1D]!.s_volume)
+        self.compPortfolioOutput.volumeChange5D = calcRateS(x: self.welcome!.compData[date0D]!.s_volume, y: self.welcome!.compData[date5D]!.s_volume)
+        self.compPortfolioOutput.volumeChange1M = calcRateS(x: self.welcome!.compData[date0D]!.s_volume, y: self.welcome!.compData[date1M]!.s_volume)
+        self.compPortfolioOutput.volumeChange1Y = calcRateS(x: self.welcome!.compData[date0D]!.s_volume, y: self.welcome!.compData[date1Y]!.s_volume)
+        
+        
+        // Making up portfolio data
+        while !totDatesArr.contains(workingDate) {
+            workingDate = workingDate.convertToNextDate()
+        }
+        let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!
+        let usefulDates = Array(totDatesArr[0...thatDatePosition])
+        let prices = self.welcome!.compData.values(of: usefulDates)
+        
+        let thatTimePrice: Double = self.manualPurchasedPrice ?? prices.last!
+        
+        self.compPortfolioOutput.gainHistory = self.compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
+        
+        self.compPortfolioOutput.currentGain = calcRateD(x: prices.first!, y: thatTimePrice)
+        
+        self.compPortfolioOutput.totalInvestment = self.compPortfolioOutput.purchaseAmount * thatTimePrice
+        
+        self.compPortfolioOutput.purchasePrice = thatTimePrice
+        
+        self.compPortfolioOutput.totalCurrentValue = self.compPortfolioOutput.purchaseAmount * prices.first!
+        
+        self.compPortfolioOutput.lastRefreshed = self.welcome!.metaData.lastRefreshed
+        
+        self.compPortfolioOutput.priceHistory = prices
+        
+        // get dividends
+        var filteredDict = self.welcome!.compData.filter{ Double($0.value.s_dividend) != 0 }
+        self.compPortfolioOutput.dividendDict = filteredDict.mapValues { value in value.s_dividend }
+        
+        // get splits
+        filteredDict = self.welcome!.compData.filter{ Double($0.value.s_split_coeff) != 1 }
+        self.compPortfolioOutput.splitsDict = filteredDict.mapValues { value in value.s_split_coeff }
+        
+        self.compPortfolioOutput.lastServerCheckTime = now()
+        self.welcome!.lastServerCheckTime = now()
     }
 }
 
@@ -137,7 +153,7 @@ class NetworkingManagerNews: ObservableObject {
         }
         
         guard let url = URL(string: self.urlString) else { return }
-
+        
         URLSession.shared.dataTask(with: url) { (data,_,_) in
             guard let data = data else { return }
             
@@ -146,7 +162,7 @@ class NetworkingManagerNews: ObservableObject {
             
             DispatchQueue.main.async {
                 save_Articles(articles: welcomeNews.articles, fileName: "articles_of_" + self.compSymbol)
-
+                
                 completion(welcomeNews.articles)
                 
             }

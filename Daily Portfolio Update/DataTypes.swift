@@ -12,8 +12,10 @@ import Foundation
 struct Welcome: Codable & Decodable  {
     let metaData: MetaData
     var compData: [String: CompData]
+    var lastServerCheckTime: Date?
     
     enum CodingKeys: String, CodingKey, Decodable {
+        case lastServerCheckTime
         case metaData = "Meta Data"
         case compData = "Time Series (Daily)"
     }

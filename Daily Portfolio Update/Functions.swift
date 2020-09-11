@@ -240,3 +240,27 @@ func load_Articles(fileName: String) -> [Article]?{
     
     return nil
 }
+
+func save_Welcome(welcome: Welcome, compSymbol: String){
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let fileName = "serverWelcomeData_" + compSymbol
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListEncoder = PropertyListEncoder()
+    let encodedWelcome = try? propertyListEncoder.encode(welcome)
+    try? encodedWelcome!.write(to: archiveURL, options: .noFileProtection)
+}
+
+func load_Welcome(compSymbol: String) -> Welcome?{
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let fileName = "serverWelcomeData_" + compSymbol
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListDecoder = PropertyListDecoder()
+    guard let retrievedWelcome = try? Data(contentsOf: archiveURL) else { return nil }
+    if let decodedWelcome = try? propertyListDecoder.decode(Welcome.self, from: retrievedWelcome){
+        return decodedWelcome
+    }
+    
+    return nil
+}
