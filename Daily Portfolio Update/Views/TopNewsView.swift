@@ -50,8 +50,8 @@ struct TopNewsView: View {
             NetworkingManagerNews(compSymbol: compSymbol).getData { articles in
                 tmpDict[compSymbol] = articles
                 
-                if let latestArticleTitle = self.dict[compSymbol]?[0].title{
-                    if (tmpDict[compSymbol]![0].title != latestArticleTitle) {changeHappend = true}
+                if let latestArticletime = self.dict[compSymbol]?[0].publishedAt{
+                    if (tmpDict[compSymbol]![0].publishedAt != latestArticletime) {changeHappend = true}
                 }else{
                     changeHappend = true
                 }
