@@ -91,10 +91,27 @@ struct CompData: Codable & Identifiable & Decodable {
 struct UserInput: Identifiable, Equatable, Codable{
     let id: UUID
     let compName: String
-    lazy var compSymbol = getKey(value: compName)
+    var compSymbol: String
     let purchaseDate: String
     let purchaseAmount: Double
     var manualPurchasedPrice: Double = 0
+    
+    init(id: UUID, compName: String, purchaseDate: String, purchaseAmount: Double) {
+        self.compSymbol = getKey(value: compName)
+        self.id = id
+        self.compName = compName
+        self.purchaseDate = purchaseDate
+        self.purchaseAmount = purchaseAmount
+    }
+    
+    init(id: UUID, compName: String, purchaseDate: String, purchaseAmount: Double, manualPurchasedPrice: Double) {
+        self.compSymbol = getKey(value: compName)
+        self.id = id
+        self.compName = compName
+        self.purchaseDate = purchaseDate
+        self.purchaseAmount = purchaseAmount
+        self.manualPurchasedPrice = manualPurchasedPrice
+    }
 }
 
 // MARK: - Company Portfolio Output

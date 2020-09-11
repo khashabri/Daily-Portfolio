@@ -8,7 +8,7 @@ class NetworkingManagerPortfolio: ObservableObject {
     var manualPurchasedPrice: Double? = nil
     
     init(userInput: UserInput) {
-        var userInput = userInput
+        let userInput = userInput
         
         self.compPortfolioOutput.id = userInput.id // bijectiv relation
         self.compPortfolioOutput.savingKey = savingKeyMaker(userInput)

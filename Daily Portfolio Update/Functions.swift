@@ -120,7 +120,7 @@ func isInt(_ x: String) -> Bool{
 }
 
 func savingKeyMaker(_ userInput: UserInput) -> String{
-    var userInput = userInput
+    let userInput = userInput
     return userInput.compSymbol + userInput.purchaseDate + String(userInput.purchaseAmount) + String(userInput.manualPurchasedPrice)
 }
 
