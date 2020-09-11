@@ -165,8 +165,9 @@ struct ContentView: View {
         self.handelDicts.portfolioListPercentageDict[removedKey] = nil
         self.handelDicts.portfolioListShareNumberDict[removedKey] = nil
         
-        let indx = self.settings.portfolio.firstIndex{$0.compSymbol == removedKey}
-        self.settings.portfolio.remove(at: indx!)
+        while let indx = self.settings.portfolio.firstIndex(where: {$0.compSymbol == removedKey}) {
+            self.settings.portfolio.remove(at: indx)
+        }
     }
 }
 
