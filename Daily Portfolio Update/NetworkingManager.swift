@@ -25,7 +25,7 @@ class NetworkingManagerPortfolio: ObservableObject {
     func getData(completion: @escaping (CompPortfolioOutput) -> ()){
         
         if let loadedCompPortfolioOutput = load_CompPortfolioOutput(fileName: compPortfolioOutput.savingKey){
-            if loadedCompPortfolioOutput.lastServerCheckTime >= refreshDateThreshold(){
+            if loadedCompPortfolioOutput.lastServerCheckTime! >= refreshDateThreshold(){
                 completion(loadedCompPortfolioOutput)
                 return
             }
