@@ -296,3 +296,22 @@ func deleteCache_CompPortfolioOutput(fileName: String){
     
     try? FileManager.default.removeItem(at: archiveURL)
 }
+
+func printDirectoryContent(){
+    // Get the document directory url
+    let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+
+    do {
+        // Get the directory contents urls (including subfolders urls)
+        let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
+        print(directoryContents)
+
+        // if you want to filter the directory contents you can do like this:
+        let plistURLs = directoryContents.filter{ $0.pathExtension == "plist" }
+        let plistFileNames = plistURLs.map{ $0.deletingPathExtension().lastPathComponent }
+        print("plist Names:", plistFileNames)
+
+    } catch {
+        print(error)
+    }
+}
