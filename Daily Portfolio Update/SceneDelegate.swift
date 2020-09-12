@@ -11,17 +11,6 @@ import SwiftUI
 
 class UserSettings: ObservableObject {
     @Published var portfolio = load_UserInputs()
-    
-//    init() {
-////        let samplePortInput1 = UserInput(compName: "Apple Inc.", purchaseDate: "2018-07-23", purchaseAmount: 2)
-//        let samplePortInput2 = UserInput(compName: "Snap Inc.", purchaseDate: "2020-08-20", purchaseAmount: 15)
-//        let samplePortInput3 = UserInput(compName: "Intel Corporation", purchaseDate: "2020-01-01", purchaseAmount: 19)
-////        let samplePortInput4 = UserInput(compName: "Apple Inc.", purchaseDate: "2020-01-23", purchaseAmount: 4)
-//        self.portfolio.append(samplePortInput2)
-//        self.portfolio.append(samplePortInput3)
-////        self.portfolio.append(samplePortInput1)
-////        self.portfolio.append(samplePortInput4)
-//    }
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

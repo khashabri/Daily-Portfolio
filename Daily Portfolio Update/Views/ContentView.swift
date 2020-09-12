@@ -166,8 +166,12 @@ struct ContentView: View {
         self.handelDicts.portfolioListShareNumberDict[removedKey] = nil
         
         while let indx = self.settings.portfolio.firstIndex(where: {$0.compSymbol == removedKey}) {
+            deleteCache_CompPortfolioOutput(fileName: savingKeyMaker(self.settings.portfolio[indx]))
             self.settings.portfolio.remove(at: indx)
         }
+        
+        deleteCache_Welcome(compSymbol: removedKey)
+        deleteCache_Articles(compSymbol: removedKey)
     }
 }
 

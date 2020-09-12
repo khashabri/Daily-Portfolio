@@ -64,12 +64,16 @@ struct LogsView: View {
             self.handelDicts.portfolioListShareNumberDict.removeValue(forKey: category)
             self.handelDicts.portfolioListGainDict.removeValue(forKey: category)
             self.handelDicts.portfolioListInvestDict.removeValue(forKey: category)
+            
+            deleteCache_Articles(compSymbol: category)
+            deleteCache_Welcome(compSymbol: category)
         }
         
         let tmpIndx = self.settings.portfolio.findByID(id: removedEntry.id)
         self.settings.portfolio.remove(at: tmpIndx!)
         
-        // MARK - TODO: existingInputs leer machen!
+        deleteCache_CompPortfolioOutput(fileName: removedEntry.savingKey)
+        
     }
 }
 

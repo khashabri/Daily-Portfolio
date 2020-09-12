@@ -218,17 +218,18 @@ func removeTandElse(_ string: String) -> String{
     return reformattedString
 }
 
-func save_Articles(articles: [Article], fileName: String){
+func save_Articles(articles: [Article], compSymbol: String){
+    let fileName = "articles_of_" + compSymbol
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
     
     let propertyListEncoder = PropertyListEncoder()
     let encodedArticles = try? propertyListEncoder.encode(articles)
-//    try? FileManager.default.removeItem(at: archiveURL)
     try? encodedArticles!.write(to: archiveURL, options: .noFileProtection)
 }
 
-func load_Articles(fileName: String) -> [Article]?{
+func load_Articles(compSymbol: String) -> [Article]?{
+    let fileName = "articles_of_" + compSymbol
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
     
@@ -263,4 +264,35 @@ func load_Welcome(compSymbol: String) -> Welcome?{
     }
     
     return nil
+}
+
+func deleteCache_Welcome(compSymbol: String){
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let fileName = "serverWelcomeData_" + compSymbol
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    try? FileManager.default.removeItem(at: archiveURL)
+}
+
+func deleteCache_Articles(compSymbol: String){
+    let fileName = "articles_of_" + compSymbol
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    try? FileManager.default.removeItem(at: archiveURL)
+}
+
+func deleteCache_UserInputs(){
+    let fileName = "userInputs"
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    try? FileManager.default.removeItem(at: archiveURL)
+}
+
+func deleteCache_CompPortfolioOutput(fileName: String){
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    try? FileManager.default.removeItem(at: archiveURL)
 }

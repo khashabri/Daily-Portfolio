@@ -36,6 +36,9 @@ class NetworkingManagerPortfolio: ObservableObject {
             if loadedWelcome.lastServerCheckTime! >= refreshDateThreshold(){
                 self.welcome = loadedWelcome
                 self.makeCalculations()
+                
+                save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
+                
                 completion(self.compPortfolioOutput)
                 return
             }
@@ -143,7 +146,7 @@ class NetworkingManagerNews: ObservableObject {
     
     func getData(completion: @escaping ([Article]) -> ()){
         
-        if let loadedArticles = load_Articles(fileName: "articles_of_" + self.compSymbol){
+        if let loadedArticles = load_Articles(compSymbol: self.compSymbol){
             if let lastServerCheckTime = loadedArticles[0].lastServerCheckTime{
                 if (Date() - lastServerCheckTime)/3600 < 1{
                     completion(loadedArticles)
@@ -161,7 +164,7 @@ class NetworkingManagerNews: ObservableObject {
             welcomeNews.articles[0].lastServerCheckTime = now()
             
             DispatchQueue.main.async {
-                save_Articles(articles: welcomeNews.articles, fileName: "articles_of_" + self.compSymbol)
+                save_Articles(articles: welcomeNews.articles, compSymbol: self.compSymbol)
                 
                 completion(welcomeNews.articles)
                 
