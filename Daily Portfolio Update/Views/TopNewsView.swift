@@ -12,12 +12,8 @@ import SafariServices
 // MARK: - TODO: Big error handling and saving needed! + Live reacting on companiesSymbols changes
 
 struct TopNewsView: View {
-    @State var companiesSymbols: [String]
     @State var dict = [String:[Article]]()
-    
-    //    init() {
-    //        self.buildElements()
-    //    }
+    @EnvironmentObject var settings: UserSettings
     
     var body: some View {
         NavigationView{
@@ -44,7 +40,13 @@ struct TopNewsView: View {
         var tmpDict = [String:[Article]]()
         var changeHappend = false
         
-        for compSymbol in self.companiesSymbols{
+        var compSymbols = self.settings.portfolio.map{ $0.compSymbol}
+        compSymbols = Array(Set(compSymbols))
+        
+        // if key is deleted, the list should be renewed.
+        self.dict.keys.count != compSymbols.count ? changeHappend = true : ()
+                
+        for compSymbol in compSymbols{
             myGroup.enter()
             
             NetworkingManagerNews(compSymbol: compSymbol).getData { articles in
@@ -66,8 +68,11 @@ struct TopNewsView: View {
 }
 
 struct TopNewsView_Previews: PreviewProvider {
+    // doomy object for making the preview visible
+    static var settingsForPreview = UserSettings()
+    
     static var previews: some View {
-        TopNewsView(companiesSymbols: ["AAPL","AMD","TSLA"])
+        TopNewsView().environmentObject(self.settingsForPreview)
     }
 }
 
