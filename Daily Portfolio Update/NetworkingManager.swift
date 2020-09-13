@@ -48,18 +48,24 @@ class NetworkingManagerPortfolio: ObservableObject {
         URLSession.shared.dataTask(with: url) { (data,_,_) in
             guard let data = data else { return }
             
-            self.welcome = try! JSONDecoder().decode(Welcome.self, from: data)
-            
-            DispatchQueue.main.async {
-                
-                self.makeCalculations()
-                
-                save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
-                save_Welcome(welcome: self.welcome!, compSymbol: self.compPortfolioOutput.compSymbol)
-                
-                completion(self.compPortfolioOutput)
-                
+            do{
+                self.welcome = try JSONDecoder().decode(Welcome.self, from: data)
+                DispatchQueue.main.async {
+                    
+                    self.makeCalculations()
+                    
+                    save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
+                    save_Welcome(welcome: self.welcome!, compSymbol: self.compPortfolioOutput.compSymbol)
+                    
+                    completion(self.compPortfolioOutput)
+                    
+                }
+            } catch {
+//                print(error)
+                return
             }
+            
+            
         }.resume()
         
     }
