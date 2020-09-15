@@ -2,7 +2,7 @@ import SwiftUI
 
 
 @available(iOS 13.0, *)
-public struct SlideOverCard<Content> : View where Content : View {
+public struct SlideOverCardBlack<Content> : View where Content : View {
     @Binding var defaultPosition : CardPosition
     @Binding var backgroundStyle: BackgroundStyle
     var content: () -> Content
@@ -14,7 +14,23 @@ public struct SlideOverCard<Content> : View where Content : View {
     }
      
     public var body: some View {
-        ModifiedContent(content: self.content(), modifier: Card(position: self.$defaultPosition, backgroundStyle: self.$backgroundStyle))
+        ModifiedContent(content: self.content(), modifier: Card(colorScheme: false, position: self.$defaultPosition, backgroundStyle: self.$backgroundStyle))
+       }
+}
+
+public struct SlideOverCardLight<Content> : View where Content : View {
+    @Binding var defaultPosition : CardPosition
+    @Binding var backgroundStyle: BackgroundStyle
+    var content: () -> Content
+    
+    public init(_ position: Binding<CardPosition> = .constant(.middle), backgroundStyle: Binding<BackgroundStyle> = .constant(.solid), content: @escaping () -> Content) {
+        self.content = content
+        self._defaultPosition = position
+        self._backgroundStyle = backgroundStyle
+    }
+     
+    public var body: some View {
+        ModifiedContent(content: self.content(), modifier: Card(colorScheme: true, position: self.$defaultPosition, backgroundStyle: self.$backgroundStyle))
        }
 }
 
@@ -67,8 +83,7 @@ enum DragState {
 
 
 struct Card: ViewModifier {
-    
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @State var colorScheme: Bool
     @GestureState var dragState: DragState = .inactive
     @Binding var position : CardPosition
     @Binding var backgroundStyle: BackgroundStyle
@@ -100,7 +115,7 @@ struct Card: ViewModifier {
             ZStack(alignment: .top) {
 
                 if backgroundStyle == .blur {
-                    BlurView(style: colorScheme == .dark ? .dark : .extraLight)
+                    BlurView(style: colorScheme == false ? .dark : .extraLight)
                 }
 
                 if backgroundStyle == .clear {
@@ -108,7 +123,7 @@ struct Card: ViewModifier {
                 }
 
                 if backgroundStyle == .solid {
-                    colorScheme == .dark ? Color.black : Color.white
+                    colorScheme == true ? Color.black : Color.white
                 }
 
                 Handle()
@@ -166,7 +181,7 @@ struct Card: ViewModifier {
 }
 
 @available(iOS 13.0, *)
-struct BlurView: UIViewRepresentable, Equatable {
+struct BlurView: UIViewRepresentable {
     let style: UIBlurEffect.Style
 
     func makeUIView(context: UIViewRepresentableContext<BlurView>) -> UIView {

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @Environment(\.colorScheme) var colorScheme
     @State var existingInputs = [UserInput]()
     @State var handelDicts = HandelDicts()
     @State var totalNumbers = TotalNumbers()
@@ -48,9 +49,17 @@ struct ContentView: View {
                         self.buildElements()
                     }
                     
-                    SlideOverCard($position, backgroundStyle: $background) {
-                        VStack {
-                            totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: self.$isLoading)
+                    if colorScheme == .dark{
+                        SlideOverCardBlack($position, backgroundStyle: $background) {
+                            VStack {
+                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: self.$isLoading)
+                            }
+                        }
+                    }else{
+                        SlideOverCardLight($position, backgroundStyle: $background) {
+                            VStack {
+                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: self.$isLoading)
+                            }
                         }
                     }
                 }
@@ -76,7 +85,7 @@ struct ContentView: View {
                     Image(systemName: "gear")
                     Text("Settings")
             }
-        
+            
         }
     }
     
@@ -89,7 +98,7 @@ struct ContentView: View {
             if !self.existingInputs.contains(input){
                 existingInputs.append(input)
                 NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
-                                        
+                    
                     // Catching Data of companies
                     let key = compPortfolioOutput.compSymbol
                     if self.handelDicts.companiesEntriesDict.keys.contains(key){
