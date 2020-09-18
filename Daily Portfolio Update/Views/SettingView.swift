@@ -62,6 +62,13 @@ struct SettingView: View {
                     }) {
                         Text("Reset Catched Server Data")
                     }
+                    Button(action: {
+                        clearDirectoryFolder()
+                        settings.portfolio = sampleUserInputs
+                        save_UserInputs(userInputs: sampleUserInputs)
+                    }) {
+                        Text("Sample Portfolio")
+                    }
                 }
             }
             .navigationBarTitle("Settings")

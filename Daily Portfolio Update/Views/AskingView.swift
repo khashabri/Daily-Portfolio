@@ -43,7 +43,8 @@ struct AskingView: View {
                     Image(systemName: "cart")
                     Text("Purchase Informations")}){
                         DatePicker("Your stock purchase date:", selection: $selectedDate, displayedComponents: .date)
-                        
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.2)
                         TextField("Purchased amount", text: $amountOfStock)
                             .keyboardType(.decimalPad)
                             .onReceive(Just(amountOfStock)) { newValue in

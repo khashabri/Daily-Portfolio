@@ -20,6 +20,7 @@ struct MoreNewsView: View {
                         RowView(aArticle: aArticle)
                     }
                 }
+                .listStyle(PlainListStyle())
             }
             .navigationBarTitle(Text(""), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {self.presentationMode.wrappedValue.dismiss()}) { Text("Done").bold()})

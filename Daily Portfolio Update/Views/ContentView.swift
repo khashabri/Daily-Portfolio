@@ -40,12 +40,12 @@ struct ContentView: View {
                         }
                         .onDelete(perform: self.deleteRow)
                     }
+                    .listStyle(DefaultListStyle())
                     .onAppear { self.buildElements() }
                     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                         self.existingInputs = [UserInput]()
                         self.handelDicts = HandelDicts()
                         self.totalNumbers = TotalNumbers()
-                        self.isLoading = true
                         self.buildElements()
                     }
                     
@@ -65,7 +65,7 @@ struct ContentView: View {
                 }
                     
                 .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView(isLoading: self.$isLoading)))
-                .navigationBarTitle(Text("Portfolio"), displayMode: .inline)
+                .navigationBarTitle(Text("Portfolio"))
             }
                 
             .tabItem {
@@ -90,6 +90,7 @@ struct ContentView: View {
     }
     
     private func buildElements() {
+        self.isLoading = true
         let myGroup = DispatchGroup()
         
         for input in settings.portfolio {
@@ -263,6 +264,8 @@ struct totalInfoHeader: View {
             if(isLoading){
                 ActivityIndicator().frame(width: 23, height: 23)
                 Text("Fetching latest data...").bold()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.2)
             }
             else{
                 Button(action: { self.showPlot.toggle()}){
@@ -286,7 +289,9 @@ struct totalInfoFooter: View {
     
     var body: some View {
         HStack {
-            Text("Last database update on: " + totalNumbers.lastRefreshed)
+            Text("Last market closure: " + totalNumbers.lastRefreshed)
+                .lineLimit(1)
+                .minimumScaleFactor(0.2)
             Spacer()
             Button(action: { self.showLogs.toggle()}){
                 HStack{
