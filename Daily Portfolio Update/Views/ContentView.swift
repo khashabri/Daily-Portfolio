@@ -63,11 +63,11 @@ struct ContentView: View {
                         }
                     }
                 }
-                    
+                
                 .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView(isLoading: self.$isLoading)))
                 .navigationBarTitle(Text("Portfolio"))
             }
-                
+            
             .tabItem {
                 Image(systemName: "person.crop.circle")
                 Text("Portfolio")
@@ -78,13 +78,13 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "flame")
                     Text("Top News")
-            }
+                }
             
             SettingView().environmentObject(self.settings)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
-            }
+                }
             
         }
     }
@@ -262,12 +262,14 @@ struct totalInfoHeader: View {
             Text("Total Result")
             Spacer()
             if(isLoading){
-                ActivityIndicator().frame(width: 23, height: 23)
-                Text("Fetching latest data...").bold()
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.2)
-            }
-            else{
+                HStack{
+                    ActivityIndicator().frame(width: 23, height: 23)
+                    Text("Fetching latest data...").bold()
+                }
+                .padding(.leading, 15)
+                .lineLimit(1)
+                .minimumScaleFactor(0.2)
+            }else{
                 Button(action: { self.showPlot.toggle()}){
                     HStack{
                         Image(systemName: "paintbrush")
@@ -290,6 +292,7 @@ struct totalInfoFooter: View {
     var body: some View {
         HStack {
             Text("Last market closure: " + totalNumbers.lastRefreshed)
+                .padding(.trailing, 30)
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
             Spacer()
@@ -324,23 +327,23 @@ struct ActivityIndicator: View {
                         .offset(y: geometry.size.width / 10 - geometry.size.height / 2)
                     
                 }.frame(width: geometry.size.width, height: geometry.size.height)
-                    
-                    .rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
-                    
-                    .animation(Animation
-                        
-                        .timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
-                        
-                        .repeatForever(autoreverses: false))
+                
+                .rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
+                
+                .animation(Animation
+                            
+                            .timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
+                            
+                            .repeatForever(autoreverses: false))
                 
             }
             
         }.aspectRatio(1, contentMode: .fit)
+        
+        .onAppear {
             
-            .onAppear {
-                
-                self.isAnimating = true
-                
+            self.isAnimating = true
+            
         }
         
     }
