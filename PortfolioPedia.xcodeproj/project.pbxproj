@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		840B4EE924FAAE8100D706AB /* SlideOverCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840B4EE824FAAE8100D706AB /* SlideOverCard.swift */; };
 		840B4EEB24FB271600D706AB /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840B4EEA24FB271600D706AB /* ChartView.swift */; };
 		840D416A24D43B2700394CA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D416924D43B2700394CA8 /* ContentView.swift */; };
 		84136FCC25051AE20082BD3A /* DividendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84136FCB25051AE20082BD3A /* DividendView.swift */; };
@@ -25,10 +24,10 @@
 		84B6CD4424D96ACF002716C2 /* DataBank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B6CD4324D96ACF002716C2 /* DataBank.swift */; };
 		84BE0D7124F33533006EAA59 /* RowViewPortfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE0D7024F33533006EAA59 /* RowViewPortfolio.swift */; };
 		84BE0D7624F3C1BF006EAA59 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE0D7524F3C1BF006EAA59 /* Extentions.swift */; };
-		84C1312324F890BC00E8A403 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C1312224F890BC00E8A403 /* Default-568h@2x.png */; };
 		84C894DC24F2D8BC0044C27D /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C894DB24F2D8BC0044C27D /* NetworkingManager.swift */; };
 		84E6074924F916640022AE64 /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E6074824F916640022AE64 /* DataTypes.swift */; };
 		84F2269924FB38100073A227 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2269824FB38100073A227 /* LogsView.swift */; };
+		84F525F7251506BD0093ED99 /* SlideOverCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F525F6251506BD0093ED99 /* SlideOverCard.swift */; };
 		84F8F5D224D3AB570058C4D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */; };
 		84F8F5D424D3AB570058C4D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F5D324D3AB570058C4D3 /* SceneDelegate.swift */; };
 		84F8F5D824D3AB5B0058C4D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */; };
@@ -38,7 +37,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		840B4EE824FAAE8100D706AB /* SlideOverCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SlideOverCard.swift; path = "Daily Portfolio Update/SlideOverCard.swift"; sourceTree = SOURCE_ROOT; };
 		840B4EEA24FB271600D706AB /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		840D416924D43B2700394CA8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		84136FCB25051AE20082BD3A /* DividendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividendView.swift; sourceTree = "<group>"; };
@@ -55,10 +53,10 @@
 		84B6CD4324D96ACF002716C2 /* DataBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBank.swift; sourceTree = "<group>"; };
 		84BE0D7024F33533006EAA59 /* RowViewPortfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowViewPortfolio.swift; sourceTree = "<group>"; };
 		84BE0D7524F3C1BF006EAA59 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
-		84C1312224F890BC00E8A403 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		84C894DB24F2D8BC0044C27D /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		84E6074824F916640022AE64 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
 		84F2269824FB38100073A227 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		84F525F6251506BD0093ED99 /* SlideOverCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideOverCard.swift; sourceTree = "<group>"; };
 		84F8F5CE24D3AB570058C4D3 /* Daily Portfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily Portfolio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84F8F5D324D3AB570058C4D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,8 +110,7 @@
 		84F8F5C524D3AB570058C4D3 = {
 			isa = PBXGroup;
 			children = (
-				84C1312224F890BC00E8A403 /* Default-568h@2x.png */,
-				84F8F5D024D3AB570058C4D3 /* Daily Portfolio Update */,
+				84F8F5D024D3AB570058C4D3 /* PortfolioPedia */,
 				84F8F5CF24D3AB570058C4D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -126,7 +123,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		84F8F5D024D3AB570058C4D3 /* Daily Portfolio Update */ = {
+		84F8F5D024D3AB570058C4D3 /* PortfolioPedia */ = {
 			isa = PBXGroup;
 			children = (
 				84F8F5DF24D3AB5C0058C4D3 /* Info.plist */,
@@ -137,14 +134,14 @@
 				84BE0D7524F3C1BF006EAA59 /* Extentions.swift */,
 				8461AEE324F919520011763C /* SearchBar.swift */,
 				84C894DB24F2D8BC0044C27D /* NetworkingManager.swift */,
-				840B4EE824FAAE8100D706AB /* SlideOverCard.swift */,
+				84F525F6251506BD0093ED99 /* SlideOverCard.swift */,
 				84E6074A24F9184B0022AE64 /* Views */,
 				84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */,
 				84BE0D7324F3C12C006EAA59 /* Attachments */,
 				84F8F5DC24D3AB5C0058C4D3 /* LaunchScreen.storyboard */,
 				84F8F5D924D3AB5B0058C4D3 /* Preview Content */,
 			);
-			path = "Daily Portfolio Update";
+			path = PortfolioPedia;
 			sourceTree = "<group>";
 		};
 		84F8F5D924D3AB5B0058C4D3 /* Preview Content */ = {
@@ -158,9 +155,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		84F8F5CD24D3AB570058C4D3 /* Daily Portfolio Update */ = {
+		84F8F5CD24D3AB570058C4D3 /* PortfolioPedia */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "Daily Portfolio Update" */;
+			buildConfigurationList = 84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "PortfolioPedia" */;
 			buildPhases = (
 				84F8F5CA24D3AB570058C4D3 /* Sources */,
 				84F8F5CB24D3AB570058C4D3 /* Frameworks */,
@@ -170,7 +167,7 @@
 			);
 			dependencies = (
 			);
-			name = "Daily Portfolio Update";
+			name = PortfolioPedia;
 			packageProductDependencies = (
 				84F8F5E624D3AC5F0058C4D3 /* URLImage */,
 				841E873C24DCA6F10098C9EA /* SwiftUICharts */,
@@ -186,7 +183,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Khashayar Abri";
 				TargetAttributes = {
 					84F8F5CD24D3AB570058C4D3 = {
@@ -194,7 +191,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "Daily Portfolio Update" */;
+			buildConfigurationList = 84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "PortfolioPedia" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -211,7 +208,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				84F8F5CD24D3AB570058C4D3 /* Daily Portfolio Update */,
+				84F8F5CD24D3AB570058C4D3 /* PortfolioPedia */,
 			);
 		};
 /* End PBXProject section */
@@ -224,7 +221,6 @@
 				84A1EE6324DDD1D200FA945B /* AmdOfflineApiData.txt in Resources */,
 				84F8F5DE24D3AB5C0058C4D3 /* LaunchScreen.storyboard in Resources */,
 				84F8F5DB24D3AB5B0058C4D3 /* Preview Assets.xcassets in Resources */,
-				84C1312324F890BC00E8A403 /* Default-568h@2x.png in Resources */,
 				84F8F5D824D3AB5B0058C4D3 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,7 +237,6 @@
 				84F8F5D224D3AB570058C4D3 /* AppDelegate.swift in Sources */,
 				84649DE224F6874D00F12DAE /* AskingView.swift in Sources */,
 				84E6074924F916640022AE64 /* DataTypes.swift in Sources */,
-				840B4EE924FAAE8100D706AB /* SlideOverCard.swift in Sources */,
 				8461AEE424F919520011763C /* SearchBar.swift in Sources */,
 				84F2269924FB38100073A227 /* LogsView.swift in Sources */,
 				8436977F24DEA70D0006F331 /* SettingView.swift in Sources */,
@@ -249,6 +244,7 @@
 				84366F7524F3DBFB0099BD6B /* MoreInfo.swift in Sources */,
 				840B4EEB24FB271600D706AB /* ChartView.swift in Sources */,
 				84649DE024F665B400F12DAE /* SearchingView.swift in Sources */,
+				84F525F7251506BD0093ED99 /* SlideOverCard.swift in Sources */,
 				84BE0D7624F3C1BF006EAA59 /* Extentions.swift in Sources */,
 				84C894DC24F2D8BC0044C27D /* NetworkingManager.swift in Sources */,
 				84136FD12506D1BA0082BD3A /* TopNewsView.swift in Sources */,
@@ -300,6 +296,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -360,6 +357,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -393,10 +391,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Daily Portfolio Update/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PortfolioPedia/Preview Content\"";
 				DEVELOPMENT_TEAM = BZKC3LWB2Z;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Daily Portfolio Update/Info.plist";
+				INFOPLIST_FILE = PortfolioPedia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -413,10 +411,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Daily Portfolio Update/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PortfolioPedia/Preview Content\"";
 				DEVELOPMENT_TEAM = BZKC3LWB2Z;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Daily Portfolio Update/Info.plist";
+				INFOPLIST_FILE = PortfolioPedia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -431,7 +429,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "Daily Portfolio Update" */ = {
+		84F8F5C924D3AB570058C4D3 /* Build configuration list for PBXProject "PortfolioPedia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84F8F5E024D3AB5C0058C4D3 /* Debug */,
@@ -440,7 +438,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "Daily Portfolio Update" */ = {
+		84F8F5E224D3AB5C0058C4D3 /* Build configuration list for PBXNativeTarget "PortfolioPedia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84F8F5E324D3AB5C0058C4D3 /* Debug */,
