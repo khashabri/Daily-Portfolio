@@ -41,13 +41,6 @@ struct ContentView: View {
                         .onDelete(perform: self.deleteRow)
                     }
                     .listStyle(DefaultListStyle())
-                    .onAppear { self.buildElements() }
-                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                        self.existingInputs = [UserInput]()
-                        self.handelDicts = HandelDicts()
-                        self.totalNumbers = TotalNumbers()
-                        self.buildElements()
-                    }
                     
                     if colorScheme == .dark{
                         SlideOverCardBlack($position, backgroundStyle: $background) {
@@ -72,15 +65,21 @@ struct ContentView: View {
                 Image(systemName: "person.crop.circle")
                 Text("Portfolio")
             }
+            .onAppear{ buildElements() }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                self.existingInputs = [UserInput]()
+                self.handelDicts = HandelDicts()
+                self.totalNumbers = TotalNumbers()
+                self.buildElements()
+            }
             
+//            TopNewsView().environmentObject(self.settings)
+//                .tabItem {
+//                    Image(systemName: "flame")
+//                    Text("Top News")
+//                }
             
-            TopNewsView().environmentObject(self.settings)
-                .tabItem {
-                    Image(systemName: "flame")
-                    Text("Top News")
-                }
-            
-            SettingView().environmentObject(self.settings)
+            SettingView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
@@ -97,8 +96,8 @@ struct ContentView: View {
             myGroup.enter()
             
             if !self.existingInputs.contains(input){
-                existingInputs.append(input)
                 NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
+                    self.existingInputs.append(input)
                     
                     // Catching Data of companies
                     let key = compPortfolioOutput.compSymbol

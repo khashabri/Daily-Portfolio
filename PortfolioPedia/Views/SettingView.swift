@@ -10,6 +10,9 @@ import SwiftUI
 
 struct SettingView: View {
     @EnvironmentObject var settings: UserSettings
+    @Binding var totalNumbers: TotalNumbers
+    @Binding var handelDicts: HandelDicts
+    
     @State var username: String = ""
     @State var isPrivate: Bool = true
     @State var notificationsEnabled: Bool = false
@@ -53,17 +56,24 @@ struct SettingView: View {
                 Section {
                     Button(action: {
                         clearDirectoryFolder()
-                        self.settings.portfolio = []
+                        self.settings.portfolio.removeAll()
+                        self.totalNumbers = TotalNumbers()
+                        self.handelDicts = HandelDicts()
                     }) {
                         Text("Reset All Settings")
                     }
                     Button(action: {
                         clearDirectoryFolder()
+                        self.totalNumbers = TotalNumbers()
+                        self.handelDicts = HandelDicts()
+                        
                     }) {
-                        Text("Reset Catched Server Data")
+                        Text("Delete Catched Server Data")
                     }
                     Button(action: {
                         clearDirectoryFolder()
+                        self.totalNumbers = TotalNumbers()
+                        self.handelDicts = HandelDicts()
                         settings.portfolio = sampleUserInputs
                         save_UserInputs(userInputs: sampleUserInputs)
                     }) {
@@ -76,8 +86,8 @@ struct SettingView: View {
     }
 }
 
-struct SettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingView()
-    }
-}
+//struct SettingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingView()
+//    }
+//}
