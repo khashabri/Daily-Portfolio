@@ -12,11 +12,9 @@ struct SettingView: View {
     @EnvironmentObject var settings: UserSettings
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
+    @State private var showingAlert = false
     
-    @State var username: String = ""
     @State var notificationsEnabled: Bool = false
-    @State private var previewIndex = 0
-    var previewOptions = ["Always", "When Unlocked", "Never"]
     
     var body: some View {
         NavigationView {
@@ -51,28 +49,42 @@ struct SettingView: View {
                 Section {
                     Button(action: {
                         clearDirectoryFolder()
-                        self.settings.portfolio.removeAll()
                         self.totalNumbers = TotalNumbers()
                         self.handelDicts = HandelDicts()
+                        self.settings.portfolio = sampleUserInputs
+                        save_UserSettings(userSettings: self.settings)
+                        self.showingAlert = true
                     }) {
-                        Text("Reset All Settings")
+                        Text("Sample Portfolio")
                     }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Important message"), message: Text("Sample entries has been loaded to your portfolio."), dismissButton: .default(Text("Dismiss")))
+                    }
+                    
                     Button(action: {
                         clearDirectoryFolder()
                         self.totalNumbers = TotalNumbers()
                         self.handelDicts = HandelDicts()
+                        self.showingAlert = true
                         
                     }) {
                         Text("Delete Catched Server Data")
                     }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Important message"), message: Text("Cache files has been deleted."), dismissButton: .default(Text("Dismiss")))
+                    }
+                    
                     Button(action: {
                         clearDirectoryFolder()
+                        self.settings.portfolio.removeAll()
                         self.totalNumbers = TotalNumbers()
                         self.handelDicts = HandelDicts()
-                        settings.portfolio = sampleUserInputs
-                        save_UserSettings(userSettings: self.settings)
+                        self.showingAlert = true
                     }) {
-                        Text("Sample Portfolio")
+                        Text("Delete Portfolio").foregroundColor(.red)
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Important message"), message: Text("Your portfolio has been deleted entirely."), dismissButton: .default(Text("Dismiss")))
                     }
                 }
             }
