@@ -14,7 +14,6 @@ struct SettingView: View {
     @Binding var handelDicts: HandelDicts
     
     @State var username: String = ""
-    @State var isPrivate: Bool = true
     @State var notificationsEnabled: Bool = false
     @State private var previewIndex = 0
     var previewOptions = ["Always", "When Unlocked", "Never"]
@@ -22,10 +21,11 @@ struct SettingView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("PROFILE")) {
-                    TextField("Username", text: $username)
-                    Toggle(isOn: $isPrivate) {
-                        Text("Private Account")
+                Section(header: Text("Manage Subscription"), footer: Text("Add more than two companies to your portfolio and support the app development.")) {
+                    Toggle(isOn: $settings.subscribed) {
+                        Text("Pro Version")
+                    }.onTapGesture {
+                        save_UserSettings(userSettings: self.settings)
                     }
                 }
                 
@@ -33,18 +33,13 @@ struct SettingView: View {
                     Toggle(isOn: $notificationsEnabled) {
                         Text("Enabled")
                     }
-                    Picker(selection: $previewIndex, label: Text("Show Previews")) {
-                        ForEach(0 ..< previewOptions.count) {
-                            Text(self.previewOptions[$0])
-                        }
-                    }
                 }
                 
                 Section(header: Text("ABOUT")) {
                     HStack {
                         Text("Version")
                         Spacer()
-                        Text("2.2.1")
+                        Text("1.0.0")
                     }
                     HStack {
                         Text("Copyright")
@@ -75,7 +70,7 @@ struct SettingView: View {
                         self.totalNumbers = TotalNumbers()
                         self.handelDicts = HandelDicts()
                         settings.portfolio = sampleUserInputs
-                        save_UserInputs(userInputs: sampleUserInputs)
+                        save_UserSettings(userSettings: self.settings)
                     }) {
                         Text("Sample Portfolio")
                     }

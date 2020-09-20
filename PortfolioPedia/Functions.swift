@@ -146,31 +146,6 @@ func load_CompPortfolioOutput(fileName: String) -> CompPortfolioOutput?{
     return nil
 }
 
-func save_UserInputs(userInputs: [UserInput]){
-    let fileName = "userInputs"
-    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
-    
-    let propertyListEncoder = PropertyListEncoder()
-    let encodedUserInputs = try? propertyListEncoder.encode(userInputs)
-    
-    try? encodedUserInputs!.write(to: archiveURL, options: .noFileProtection)
-}
-
-func load_UserInputs() -> [UserInput]{
-    let fileName = "userInputs"
-    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
-    
-    let propertyListDecoder = PropertyListDecoder()
-    guard let retrievedUserInputs = try? Data(contentsOf: archiveURL) else { return [] }
-    if let decodedUserInputs = try? propertyListDecoder.decode(Array<UserInput>.self, from: retrievedUserInputs){
-        return decodedUserInputs
-    }
-    
-    return []
-}
-
 func get_yesterday(_ of: Date) -> Date {
     let lastDayDate = Calendar.current.date(byAdding: .day, value: -1, to: of)!
     return lastDayDate
@@ -314,4 +289,31 @@ func printDirectoryContent(){
     } catch {
         print(error)
     }
+}
+
+func save_UserSettings(userSettings: UserSettings){
+    let fileName = "userSettings"
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListEncoder = PropertyListEncoder()
+    let encodedUserInputs = try? propertyListEncoder.encode(userSettings)
+    
+    try? encodedUserInputs!.write(to: archiveURL, options: .noFileProtection)
+}
+
+func load_UserSettings() -> UserSettings{
+    let fileName = "userSettings"
+    let emptyUserSettings = UserSettings(portfolio: [], subscribed: false)
+    
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
+    
+    let propertyListDecoder = PropertyListDecoder()
+    guard let retrievedUserSettings = try? Data(contentsOf: archiveURL) else { return emptyUserSettings }
+    if let decodedUserInputs = try? propertyListDecoder.decode(UserSettings.self, from: retrievedUserSettings){
+        return decodedUserInputs
+    }
+    
+    return emptyUserSettings
 }

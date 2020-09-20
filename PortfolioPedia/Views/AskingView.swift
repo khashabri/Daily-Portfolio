@@ -92,7 +92,7 @@ struct AskingView: View {
                         }
                         
                         self.settings.portfolio.append(userInput)
-                        save_UserInputs(userInputs: self.settings.portfolio)
+                        save_UserSettings(userSettings: self.settings)
                         
                         self.presentationMode.wrappedValue.dismiss()
                         self.presentationMode.wrappedValue.dismiss()
