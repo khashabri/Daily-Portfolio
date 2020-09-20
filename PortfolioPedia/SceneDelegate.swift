@@ -13,9 +13,10 @@ class UserSettings: ObservableObject, Codable {
     
     @Published var portfolio: [UserInput]
     @Published var subscribed: Bool
+    @Published var notificationsEnabled: Bool
     
     enum CodingKeys: CodingKey {
-        case portfolio, subscribed
+        case portfolio, subscribed, notificationsEnabled
     }
 
 //    init() {
@@ -23,21 +24,24 @@ class UserSettings: ObservableObject, Codable {
 //        self.subscribed = load_subscribed()
 //    }
     
-    init(portfolio: [UserInput], subscribed: Bool) {
+    init(portfolio: [UserInput], subscribed: Bool, notificationsEnabled: Bool) {
         self.portfolio = portfolio
         self.subscribed = subscribed
+        self.notificationsEnabled = notificationsEnabled
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         portfolio = try container.decode([UserInput].self, forKey: .portfolio)
         subscribed = try container.decode(Bool.self, forKey: .subscribed)
+        notificationsEnabled = try container.decode(Bool.self, forKey: .notificationsEnabled)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(portfolio, forKey: .portfolio)
         try container.encode(subscribed, forKey: .subscribed)
+        try container.encode(notificationsEnabled, forKey: .notificationsEnabled)
     }
 }
 

@@ -13,9 +13,7 @@ struct SettingView: View {
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
     @State private var showingAlert = false
-    
-    @State var notificationsEnabled: Bool = false
-    
+        
     var body: some View {
         NavigationView {
             Form {
@@ -28,8 +26,10 @@ struct SettingView: View {
                 }
                 
                 Section(header: Text("NOTIFICATIONS")) {
-                    Toggle(isOn: $notificationsEnabled) {
+                    Toggle(isOn: $settings.notificationsEnabled) {
                         Text("Enabled")
+                    }.onTapGesture {
+                        save_UserSettings(userSettings: self.settings)
                     }
                 }
                 
