@@ -99,7 +99,7 @@ struct notiFooter: View {
     
     var body: some View {
         VStack{
-            Text("Get every day about half an hour after market closure to check your latest portfolio state.")
+            Text("Get notified every day about half an hour after market closure to check your latest portfolio state.")
             if self.notificationType == [] && toggleIsOn{
                 Text("Notifications permission is denied! Enable it in system settings and retoggle this again.").foregroundColor(.red)
             }
