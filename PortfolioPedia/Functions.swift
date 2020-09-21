@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 let pass: Any = ()
 
@@ -155,7 +156,7 @@ func get_yesterday(_ of: Date) -> Date {
 
 func refreshDateThreshold() -> Date{
     let calendar = Calendar.current
-    let todaysMarketClosure = calendar.date(bySettingHour: 22, minute: 30, second: 0, of: Date())!
+    let todaysMarketClosure = calendar.date(bySettingHour: 22, minute: 31, second: 0, of: Date())!
     let now = Date()
     var threshold = todaysMarketClosure
     
@@ -275,17 +276,17 @@ func deleteCache_CompPortfolioOutput(fileName: String){
 func printDirectoryContent(){
     // Get the document directory url
     let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-
+    
     do {
         // Get the directory contents urls (including subfolders urls)
         let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
         print(directoryContents)
-
+        
         // if you want to filter the directory contents you can do like this:
         let plistURLs = directoryContents.filter{ $0.pathExtension == "plist" }
         let plistFileNames = plistURLs.map{ $0.deletingPathExtension().lastPathComponent }
         print("plist Names:", plistFileNames)
-
+        
     } catch {
         print(error)
     }
@@ -304,7 +305,7 @@ func save_UserSettings(userSettings: UserSettings){
 
 func load_UserSettings() -> UserSettings{
     let fileName = "userSettings"
-    let emptyUserSettings = UserSettings(portfolio: [], subscribed: false, notificationsEnabled: true)
+    let emptyUserSettings = UserSettings(portfolio: [], subscribed: false, notificationsEnabled: false)
     
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")
@@ -316,4 +317,62 @@ func load_UserSettings() -> UserSettings{
     }
     
     return emptyUserSettings
+}
+
+func enableNotifications(){
+    // Ask for permission
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+        if success {
+            print("All set!")
+        } else if let error = error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    // Schedule Notification
+    let content = UNMutableNotificationContent()
+    content.title = "New server data available"
+    content.body = "Open the app to check the latest rendite."
+    content.sound = UNNotificationSound.default
+    
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy/MM/dd HH:mm"
+    let MoDateTime = formatter.date(from: "2020/09/14 22:31")
+    let DiDateTime = formatter.date(from: "2020/09/15 22:31")
+    let MiDateTime = formatter.date(from: "2020/09/16 22:31")
+    let DoDateTime = formatter.date(from: "2020/09/17 22:31")
+    let FrDateTime = formatter.date(from: "2020/09/18 22:31")
+    
+    let triggerMoWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: MoDateTime!)
+    let triggerDiWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: DiDateTime!)
+    let triggerMiWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: MiDateTime!)
+    let triggerDoWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: DoDateTime!)
+    let triggerFrWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: FrDateTime!)
+    
+    let triggerMo = UNCalendarNotificationTrigger(dateMatching: triggerMoWeekly, repeats: true)
+    let triggerDi = UNCalendarNotificationTrigger(dateMatching: triggerDiWeekly, repeats: true)
+    let triggerMi = UNCalendarNotificationTrigger(dateMatching: triggerMiWeekly, repeats: true)
+    let triggerDo = UNCalendarNotificationTrigger(dateMatching: triggerDoWeekly, repeats: true)
+    let triggerFr = UNCalendarNotificationTrigger(dateMatching: triggerFrWeekly, repeats: true)
+    
+    // choose a random identifier
+    let requestMo = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: triggerMo)
+    let requestDi = UNNotificationRequest(identifier: "DinstagsNotification", content: content, trigger: triggerDi)
+    let requestMi = UNNotificationRequest(identifier: "MittwochsNotification", content: content, trigger: triggerMi)
+    let requestDo = UNNotificationRequest(identifier: "DonnerstagsNotification", content: content, trigger: triggerDo)
+    let requestFr = UNNotificationRequest(identifier: "FreitagsNotification", content: content, trigger: triggerFr)
+    
+    // add our notification request
+    UNUserNotificationCenter.current().add(requestMo)
+    UNUserNotificationCenter.current().add(requestDi)
+    UNUserNotificationCenter.current().add(requestMi)
+    UNUserNotificationCenter.current().add(requestDo)
+    UNUserNotificationCenter.current().add(requestFr)
+    
+    
+    
+}
+
+func disableNotifications(){
+    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 }

@@ -7,30 +7,30 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct SettingView: View {
     @EnvironmentObject var settings: UserSettings
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
     @State private var showingAlert = false
-        
+    
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Manage Subscription"), footer: Text("Add more than two companies to your portfolio and support the app development.")) {
-                    Toggle(isOn: $settings.subscribed) {
-                        Text("Pro Version")
-                    }.onTapGesture {
-                        save_UserSettings(userSettings: self.settings)
-                    }
+                    Toggle("Pro Version", isOn: $settings.subscribed)
+                        .onReceive([self.settings.subscribed].publisher.first()) { (value) in
+                            save_UserSettings(userSettings: self.settings)
+                        }
                 }
                 
-                Section(header: Text("NOTIFICATIONS")) {
-                    Toggle(isOn: $settings.notificationsEnabled) {
-                        Text("Enabled")
-                    }.onTapGesture {
-                        save_UserSettings(userSettings: self.settings)
-                    }
+                Section(header: Text("NOTIFICATIONS"), footer: notiFooter(toggleIsOn: $settings.notificationsEnabled)) {
+                    Toggle("Enabled", isOn: $settings.notificationsEnabled)
+                        .onReceive([self.settings.notificationsEnabled].publisher.first()) { (value) in
+                            save_UserSettings(userSettings: self.settings)
+                            value ? enableNotifications() : disableNotifications()
+                        }
                 }
                 
                 Section(header: Text("ABOUT")) {
@@ -93,8 +93,23 @@ struct SettingView: View {
     }
 }
 
+struct notiFooter: View {
+    @Binding var toggleIsOn: Bool
+    let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
+    
+    var body: some View {
+        VStack{
+            Text("Get every day about half an hour after market closure to check your latest portfolio state.")
+            if self.notificationType == [] && toggleIsOn{
+                Text("Notifications permission is denied! Enable it in system settings and retoggle this again.").foregroundColor(.red)
+            }
+        }
+    }
+}
+
 //struct SettingView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        SettingView()
 //    }
 //}
+
