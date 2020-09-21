@@ -17,6 +17,7 @@ struct AskingView: View {
     @State private var manualPurchasedPrice = ""
     @State private var today = get_today()
     @Binding var isLoading: Bool
+    @State private var showingAlert = false
     
     // this variable is somit shared through all views with this line
     @EnvironmentObject var settings: UserSettings
@@ -72,7 +73,7 @@ struct AskingView: View {
                     }
                 }
                 
-                Section(footer: Text("If you don't set the price manually the purchased price will be the close price of the purchase date.")){
+                Section(footer: addButtonFooter()){
                     Button(action: {
                         self.isLoading = true
                         let df = DateFormatter()
@@ -97,6 +98,7 @@ struct AskingView: View {
                         self.presentationMode.wrappedValue.dismiss()
                         self.presentationMode.wrappedValue.dismiss()
                         
+                        
                     }) {
                         HStack {
                             Image(systemName: "cart.badge.plus")
@@ -113,7 +115,7 @@ struct AskingView: View {
                         
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
-                    .disabled(buttonTextColor == .gray)
+                    .disabled(buttonTextColor == .gray || buttonTextColor == .orange)
                 }
             }
                 
@@ -125,10 +127,28 @@ struct AskingView: View {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         let date = df.string(from: self.selectedDate)
-        let color: Color = (amountOfStock != "") && (today>date) && (!toggleOn || manualPurchasedPrice != "") ? .blue : .gray
-        return color
+        if settings.portfolio.count >= 2 && !settings.subscribed{
+            let color: Color = .orange
+            return color
+        }else{
+            let color: Color = (amountOfStock != "") && (today>date) && (!toggleOn || manualPurchasedPrice != "") ? .blue : .gray
+            return color
+        }
     }
+}
+
+// needs better implementation
+struct addButtonFooter: View {
+    @EnvironmentObject var settings: UserSettings
     
+    var body: some View {
+        VStack{
+            Text("If you don't set the price manually the purchased price will be the close price of the purchase date.")
+            if settings.portfolio.count >= 2 && !settings.subscribed {
+                Text("Your maximum number of portfolio elements has been reached. Please consider the pro version.").foregroundColor(.red)
+            }
+        }
+    }
 }
 
 // to use this first comment out @Binding var shouldPopToRootView : Bool
