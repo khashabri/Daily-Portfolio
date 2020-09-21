@@ -356,7 +356,7 @@ func enableNotifications(){
     let triggerFr = UNCalendarNotificationTrigger(dateMatching: triggerFrWeekly, repeats: true)
     
     // choose a random identifier
-    let requestMo = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: triggerMo)
+    let requestMo = UNNotificationRequest(identifier: "MontagsNotification", content: content, trigger: triggerMo)
     let requestDi = UNNotificationRequest(identifier: "DinstagsNotification", content: content, trigger: triggerDi)
     let requestMi = UNNotificationRequest(identifier: "MittwochsNotification", content: content, trigger: triggerMi)
     let requestDo = UNNotificationRequest(identifier: "DonnerstagsNotification", content: content, trigger: triggerDo)

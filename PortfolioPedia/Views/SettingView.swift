@@ -58,7 +58,7 @@ struct SettingView: View {
                         Text("Sample Portfolio")
                     }
                     .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Important message"), message: Text("Sample entries has been loaded to your portfolio."), dismissButton: .default(Text("Dismiss")))
+                        Alert(title: Text("Important message"), message: Text("Sample entries have been loaded to your portfolio."), dismissButton: .default(Text("Dismiss")))
                     }
                     
                     Button(action: {
@@ -71,7 +71,7 @@ struct SettingView: View {
                         Text("Delete Catched Server Data")
                     }
                     .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Important message"), message: Text("Cache files has been deleted."), dismissButton: .default(Text("Dismiss")))
+                        Alert(title: Text("Important message"), message: Text("Cache files have been deleted."), dismissButton: .default(Text("Dismiss")))
                     }
                     
                     Button(action: {
