@@ -95,13 +95,12 @@ struct SettingView: View {
 
 struct notiFooter: View {
     @Binding var toggleIsOn: Bool
-    let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
     
     var body: some View {
         VStack{
             Text("Get notified every day about half an hour after market closure to check your latest portfolio state.")
-            if self.notificationType == [] && toggleIsOn{
-                Text("Notifications permission is denied! Enable it in system settings and retoggle this again.").foregroundColor(.red)
+            if !notificationPermission() && toggleIsOn{
+                Text("Notifications permission denied! Enable app notification in system settings and retoggle this afterwards.").foregroundColor(.red)
             }
         }
     }
