@@ -41,6 +41,7 @@ struct ContentView: View {
                         .onDelete(perform: self.deleteRow)
                     }
                     .listStyle(DefaultListStyle())
+                    .onAppear{ buildElements() }
                     
                     if colorScheme == .dark{
                         SlideOverCardBlack($position, backgroundStyle: $background) {
@@ -57,7 +58,7 @@ struct ContentView: View {
                     }
                 }
                 
-                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView(isLoading: self.$isLoading)))
+                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
                 .navigationBarTitle(Text("Portfolio"))
             }
             
@@ -65,7 +66,6 @@ struct ContentView: View {
                 Image(systemName: "person.crop.circle")
                 Text("Portfolio")
             }
-            .onAppear{ buildElements() }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                 self.existingInputs = [UserInput]()
                 self.handelDicts = HandelDicts()

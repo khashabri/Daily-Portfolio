@@ -12,7 +12,6 @@ struct SearchingView: View {
     @State var askingDetail = false
     @State private var searchTerm: String = ""
     @State private var backgroundColor = Color.white
-    @Binding var isLoading: Bool
     
     @EnvironmentObject var settings: UserSettings
     
@@ -24,7 +23,7 @@ struct SearchingView: View {
                 ForEach(myDic_Symb2Name.values.sorted().filter{ word in
                     self.searchTerm.isEmpty ? true:
                         word.localizedCaseInsensitiveContains(self.searchTerm)}, id: \.self) {value in
-                            NavigationLink(destination: AskingView(compName: value, isLoading: self.$isLoading )){
+                            NavigationLink(destination: AskingView(compName: value)){
                                 HStack{
                                     Text(value)
                                 }
@@ -40,6 +39,6 @@ struct SearchingView: View {
 
 struct SearchingView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchingView(isLoading: .constant(false))
+        SearchingView()
     }
 }
