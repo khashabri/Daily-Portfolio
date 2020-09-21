@@ -17,7 +17,6 @@ struct AskingView: View {
     @State private var manualPurchasedPrice = ""
     @State private var today = get_today()
     @Binding var isLoading: Bool
-    @State private var showingAlert = false
     
     // this variable is somit shared through all views with this line
     @EnvironmentObject var settings: UserSettings
@@ -97,7 +96,6 @@ struct AskingView: View {
                         
                         self.presentationMode.wrappedValue.dismiss()
                         self.presentationMode.wrappedValue.dismiss()
-                        
                         
                     }) {
                         HStack {
