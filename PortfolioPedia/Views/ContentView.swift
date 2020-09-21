@@ -8,13 +8,17 @@
 
 import SwiftUI
 
+enum LoadingState {
+   case isLoading, errorAccured, allDone
+}
+
 struct ContentView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @State var existingInputs = [UserInput]()
     @State var handelDicts = HandelDicts()
     @State var totalNumbers = TotalNumbers()
-    @State var isLoading: Bool
+    @State var loadingState: LoadingState
     
     // For add button
     @State private var showModal = false
@@ -46,13 +50,13 @@ struct ContentView: View {
                     if colorScheme == .dark{
                         SlideOverCardBlack($position, backgroundStyle: $background) {
                             VStack {
-                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: self.$isLoading)
+                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState)
                             }
                         }
                     }else{
                         SlideOverCardLight($position, backgroundStyle: $background) {
                             VStack {
-                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, isLoading: self.$isLoading)
+                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState)
                             }
                         }
                     }
@@ -89,7 +93,8 @@ struct ContentView: View {
     }
     
     private func buildElements() {
-        self.isLoading = true
+        self.loadingState = .isLoading
+        
         let myGroup = DispatchGroup()
         
         for input in settings.portfolio {
@@ -137,7 +142,7 @@ struct ContentView: View {
         }
         
         myGroup.notify(queue: .main) {
-            self.isLoading = false
+            self.loadingState = .allDone
         }
     }
     
@@ -187,9 +192,9 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     // doomy object for making the preview visible
     static var settingsForPreview = UserSettings(portfolio: sampleUserInputs, subscribed: false, notificationsEnabled: false)
-    
+
     static var previews: some View {
-        ContentView(isLoading: true).environmentObject(self.settingsForPreview)
+        ContentView(loadingState: LoadingState.allDone).environmentObject(self.settingsForPreview)
     }
 }
 
@@ -213,13 +218,13 @@ struct AddButton<Destination : View>: View {
 struct totalInfoSubview: View {
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
-    @Binding var isLoading: Bool
+    @Binding var loadingState: LoadingState
     
     var body: some View {
         VStack{
             Form{
                 
-                Section(header: totalInfoHeader(isLoading: $isLoading, totalNumbers: $totalNumbers), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
+                Section(header: totalInfoHeader(loadingState: $loadingState, totalNumbers: $totalNumbers), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -251,7 +256,7 @@ struct totalInfoSubview: View {
 
 
 struct totalInfoHeader: View {
-    @Binding var isLoading: Bool
+    @Binding var loadingState: LoadingState
     @Binding var totalNumbers: TotalNumbers
     @State var showPlot = false
     
@@ -260,7 +265,8 @@ struct totalInfoHeader: View {
             Image(systemName: "sum")
             Text("Total Result")
             Spacer()
-            if(isLoading){
+            switch loadingState{
+            case .isLoading:
                 HStack{
                     ActivityIndicator().frame(width: 23, height: 23)
                     Text("Fetching latest data...").bold()
@@ -268,7 +274,14 @@ struct totalInfoHeader: View {
                 .padding(.leading, 15)
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
-            }else{
+            case .errorAccured:
+                HStack{
+                    Text("Error Accured!").bold()
+                }
+                .padding(.leading, 15)
+                .lineLimit(1)
+                .minimumScaleFactor(0.2)
+            case .allDone:
                 Button(action: { self.showPlot.toggle()}){
                     HStack{
                         Image(systemName: "paintbrush")
