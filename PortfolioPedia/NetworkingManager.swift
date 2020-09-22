@@ -1,10 +1,6 @@
 import Foundation
 import Combine
 
-enum NetworkError: Error {
-    case badURL
-}
-
 //// MARK: - Class
 class NetworkingManagerPortfolio: ObservableObject {
     var urlString: String
@@ -65,8 +61,7 @@ class NetworkingManagerPortfolio: ObservableObject {
                     
                 }
             } catch {
-//                print(error)
-                completion(.failure(.badURL))
+                completion(.failure(.badURL(compName: self.compPortfolioOutput.compName)))
                 return
             }
             

@@ -8,10 +8,6 @@
 
 import SwiftUI
 
-enum LoadingState {
-   case isLoading, errorOccured, allDone
-}
-
 struct ContentView: View {
     
     @Environment(\.colorScheme) var colorScheme
@@ -19,6 +15,7 @@ struct ContentView: View {
     @State var handelDicts = HandelDicts()
     @State var totalNumbers = TotalNumbers()
     @State var loadingState: LoadingState
+    @State var erroredComps = [String]()
     
     // For add button
     @State private var showModal = false
@@ -50,13 +47,13 @@ struct ContentView: View {
                     if colorScheme == .dark{
                         SlideOverCardBlack($position, backgroundStyle: $background) {
                             VStack {
-                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState)
+                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
                             }
                         }
                     }else{
                         SlideOverCardLight($position, backgroundStyle: $background) {
                             VStack {
-                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState)
+                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
                             }
                         }
                     }
@@ -94,6 +91,7 @@ struct ContentView: View {
     
     private func buildElements() {
         self.loadingState = .isLoading
+        self.erroredComps = []
         
         let myGroup = DispatchGroup()
         
@@ -137,9 +135,11 @@ struct ContentView: View {
                         self.totalNumbers.lastRefreshed = compPortfolioOutput.lastRefreshed
                         
                         myGroup.leave()
-                    case .failure(let error):
+                        
+                    case .failure(let erroredComp):
                         self.loadingState = .errorOccured
-                        print(error.localizedDescription)
+                        let erroredCompName = erroredComp.get()
+                        self.erroredComps.contains(erroredCompName) ? () : self.erroredComps.append(erroredCompName)
                     }
                 }
             }else{
@@ -198,7 +198,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     // doomy object for making the preview visible
     static var settingsForPreview = UserSettings(portfolio: sampleUserInputs, subscribed: false, notificationsEnabled: false)
-
+    
     static var previews: some View {
         ContentView(loadingState: LoadingState.allDone).environmentObject(self.settingsForPreview)
     }
@@ -225,12 +225,13 @@ struct totalInfoSubview: View {
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
     @Binding var loadingState: LoadingState
+    @Binding var erroredComps: [String]
     
     var body: some View {
         VStack{
             Form{
                 
-                Section(header: totalInfoHeader(loadingState: $loadingState, totalNumbers: $totalNumbers), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
+                Section(header: totalInfoHeader(loadingState: $loadingState, totalNumbers: $totalNumbers, erroredComps: $erroredComps), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -264,7 +265,9 @@ struct totalInfoSubview: View {
 struct totalInfoHeader: View {
     @Binding var loadingState: LoadingState
     @Binding var totalNumbers: TotalNumbers
+    @Binding var erroredComps: [String]
     @State var showPlot = false
+    @State private var showingAlert = false
     
     var body: some View {
         HStack {
@@ -282,7 +285,15 @@ struct totalInfoHeader: View {
                 .minimumScaleFactor(0.2)
             case .errorOccured:
                 HStack{
-                    Image(systemName: "exclamationmark.bubble")
+                    Button(action: {
+                        self.showingAlert = true
+                    }) {
+                        Image(systemName: "exclamationmark.bubble")
+                    }
+                    .alert(isPresented:$showingAlert) {
+                        Alert(title: Text("Error Message"), message: Text("Server didn't fully respond for the following companies: " + erroredComps.joined(separator: ", ")), dismissButton: .default(Text("Dismiss")))
+                    }
+                    
                     Text("Something went wrong. Retry shortly.").bold()
                 }
                 .padding(.leading, 15)

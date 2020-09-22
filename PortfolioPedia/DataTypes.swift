@@ -8,6 +8,22 @@
 
 import Foundation
 
+// MARK: - Enums
+enum NetworkError: Error {
+    case badURL(compName: String)
+    
+    func get() -> String {
+         switch self {
+         case .badURL(let string):
+             return string
+         }
+     }
+}
+
+enum LoadingState {
+    case isLoading, errorOccured, allDone
+}
+
 // MARK: - Welcome
 struct Welcome: Codable & Decodable  {
     let metaData: MetaData

@@ -48,17 +48,18 @@ struct SettingView: View {
                 
                 Section {
                     Button(action: {
-                        clearDirectoryFolder()
-                        self.totalNumbers = TotalNumbers()
-                        self.handelDicts = HandelDicts()
-                        self.settings.portfolio = sampleUserInputs
-                        save_UserSettings(userSettings: self.settings)
                         self.showingAlert = true
                     }) {
                         Text("Sample Portfolio")
                     }
                     .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Important message"), message: Text("Sample entries have been loaded to your portfolio."), dismissButton: .default(Text("Dismiss")))
+                        Alert(title: Text("Are you sure?"), message: Text("Your current portfolio will be replaced by sample entries to demonstrate app features."), primaryButton: .destructive(Text("Delete")) {
+                            clearDirectoryFolder()
+                            self.totalNumbers = TotalNumbers()
+                            self.handelDicts = HandelDicts()
+                            self.settings.portfolio = sampleUserInputs
+                            save_UserSettings(userSettings: self.settings)
+                        }, secondaryButton: .cancel())
                     }
                     
                     Button(action: {
@@ -75,16 +76,17 @@ struct SettingView: View {
                     }
                     
                     Button(action: {
-                        clearDirectoryFolder()
-                        self.settings.portfolio.removeAll()
-                        self.totalNumbers = TotalNumbers()
-                        self.handelDicts = HandelDicts()
                         self.showingAlert = true
                     }) {
                         Text("Delete Portfolio").foregroundColor(.red)
                     }
                     .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Important message"), message: Text("Your portfolio has been deleted entirely."), dismissButton: .default(Text("Dismiss")))
+                        Alert(title: Text("Are you sure?"), message: Text("Your portfolio will be deleted entirely. There is no undo."), primaryButton: .destructive(Text("Delete")) {
+                            clearDirectoryFolder()
+                            self.settings.portfolio.removeAll()
+                            self.totalNumbers = TotalNumbers()
+                            self.handelDicts = HandelDicts()
+                        }, secondaryButton: .cancel())
                     }
                 }
             }
