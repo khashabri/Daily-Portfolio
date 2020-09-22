@@ -1,6 +1,10 @@
 import Foundation
 import Combine
 
+enum NetworkError: Error {
+    case badURL
+}
+
 //// MARK: - Class
 class NetworkingManagerPortfolio: ObservableObject {
     var urlString: String
@@ -23,11 +27,11 @@ class NetworkingManagerPortfolio: ObservableObject {
         if !userInput.manualPurchasedPrice.isZero { self.manualPurchasedPrice = userInput.manualPurchasedPrice }
     }
     
-    func getData(completion: @escaping (CompPortfolioOutput) -> ()){
+    func getData(completion: @escaping (Result<CompPortfolioOutput, NetworkError>) -> ()){
         
         if let loadedCompPortfolioOutput = load_CompPortfolioOutput(fileName: compPortfolioOutput.savingKey){
             if loadedCompPortfolioOutput.lastServerCheckTime! >= refreshDateThreshold(){
-                completion(loadedCompPortfolioOutput)
+                completion(.success(loadedCompPortfolioOutput))
                 return
             }
         }
@@ -39,7 +43,7 @@ class NetworkingManagerPortfolio: ObservableObject {
                 
                 save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
                 
-                completion(self.compPortfolioOutput)
+                completion(.success(self.compPortfolioOutput))
                 return
             }
         }
@@ -57,11 +61,12 @@ class NetworkingManagerPortfolio: ObservableObject {
                     save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
                     save_Welcome(welcome: self.welcome!, compSymbol: self.compPortfolioOutput.compSymbol)
                     
-                    completion(self.compPortfolioOutput)
+                    completion(.success(self.compPortfolioOutput))
                     
                 }
             } catch {
 //                print(error)
+                completion(.failure(.badURL))
                 return
             }
             

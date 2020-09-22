@@ -9,7 +9,7 @@
 import SwiftUI
 
 enum LoadingState {
-   case isLoading, errorAccured, allDone
+   case isLoading, errorOccured, allDone
 }
 
 struct ContentView: View {
@@ -101,40 +101,46 @@ struct ContentView: View {
             myGroup.enter()
             
             if !self.existingInputs.contains(input){
-                NetworkingManagerPortfolio(userInput: input).getData { compPortfolioOutput in
-                    self.existingInputs.append(input)
-                    
-                    // Catching Data of companies
-                    let key = compPortfolioOutput.compSymbol
-                    if self.handelDicts.companiesEntriesDict.keys.contains(key){
+                NetworkingManagerPortfolio(userInput: input).getData { result in
+                    switch result {
+                    case .success(let compPortfolioOutput):
+                        self.existingInputs.append(input)
                         
-                        self.handelDicts.companiesEntriesDict[key]?.append(compPortfolioOutput)
-                        self.handelDicts.portfolioListInvestDict[key]! += compPortfolioOutput.totalInvestment
-                        self.handelDicts.portfolioListGainDict[key]! += compPortfolioOutput.gainHistory[0]
-                        self.handelDicts.portfolioListShareNumberDict[key]! += compPortfolioOutput.purchaseAmount
+                        // Catching Data of companies
+                        let key = compPortfolioOutput.compSymbol
+                        if self.handelDicts.companiesEntriesDict.keys.contains(key){
+                            
+                            self.handelDicts.companiesEntriesDict[key]?.append(compPortfolioOutput)
+                            self.handelDicts.portfolioListInvestDict[key]! += compPortfolioOutput.totalInvestment
+                            self.handelDicts.portfolioListGainDict[key]! += compPortfolioOutput.gainHistory[0]
+                            self.handelDicts.portfolioListShareNumberDict[key]! += compPortfolioOutput.purchaseAmount
+                            
+                        }
+                        else{
+                            self.handelDicts.companiesEntriesDict[key] = [compPortfolioOutput]
+                            self.handelDicts.portfolioListInvestDict[key] = compPortfolioOutput.totalInvestment
+                            self.handelDicts.portfolioListGainDict[key] = compPortfolioOutput.gainHistory[0]
+                            self.handelDicts.portfolioListShareNumberDict[key] = compPortfolioOutput.purchaseAmount
+                            
+                        }
                         
+                        let currentPrice = compPortfolioOutput.priceHistory[0]
+                        // Catching data for the Portfolio List (some are above)
+                        self.handelDicts.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.handelDicts.portfolioListShareNumberDict[key]!, y: self.handelDicts.portfolioListInvestDict[key]!)
+                        
+                        // Calc data for "Total Result" section
+                        self.totalNumbers.totalInvestment += compPortfolioOutput.totalInvestment
+                        self.totalNumbers.totalValue += compPortfolioOutput.totalCurrentValue
+                        self.totalNumbers.rendite = self.totalNumbers.totalValue - self.totalNumbers.totalInvestment
+                        self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
+                        self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory + compPortfolioOutput.gainHistory
+                        self.totalNumbers.lastRefreshed = compPortfolioOutput.lastRefreshed
+                        
+                        myGroup.leave()
+                    case .failure(let error):
+                        self.loadingState = .errorOccured
+                        print(error.localizedDescription)
                     }
-                    else{
-                        self.handelDicts.companiesEntriesDict[key] = [compPortfolioOutput]
-                        self.handelDicts.portfolioListInvestDict[key] = compPortfolioOutput.totalInvestment
-                        self.handelDicts.portfolioListGainDict[key] = compPortfolioOutput.gainHistory[0]
-                        self.handelDicts.portfolioListShareNumberDict[key] = compPortfolioOutput.purchaseAmount
-                        
-                    }
-                    
-                    let currentPrice = compPortfolioOutput.priceHistory[0]
-                    // Catching data for the Portfolio List (some are above)
-                    self.handelDicts.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.handelDicts.portfolioListShareNumberDict[key]!, y: self.handelDicts.portfolioListInvestDict[key]!)
-                    
-                    // Calc data for "Total Result" section
-                    self.totalNumbers.totalInvestment += compPortfolioOutput.totalInvestment
-                    self.totalNumbers.totalValue += compPortfolioOutput.totalCurrentValue
-                    self.totalNumbers.rendite = self.totalNumbers.totalValue - self.totalNumbers.totalInvestment
-                    self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
-                    self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory + compPortfolioOutput.gainHistory
-                    self.totalNumbers.lastRefreshed = compPortfolioOutput.lastRefreshed
-                    
-                    myGroup.leave()
                 }
             }else{
                 myGroup.leave() // you can't remove these because otherwise it will done before dispatch
@@ -274,9 +280,10 @@ struct totalInfoHeader: View {
                 .padding(.leading, 15)
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
-            case .errorAccured:
+            case .errorOccured:
                 HStack{
-                    Text("Error Accured!").bold()
+                    Image(systemName: "exclamationmark.bubble")
+                    Text("Something went wrong. Retry shortly.").bold()
                 }
                 .padding(.leading, 15)
                 .lineLimit(1)
