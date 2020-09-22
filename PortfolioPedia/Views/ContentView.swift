@@ -300,13 +300,15 @@ struct totalInfoHeader: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
             case .allDone:
-                Button(action: { self.showPlot.toggle()}){
-                    HStack{
-                        Image(systemName: "paintbrush")
-                        Text("Chart")
-                    }
-                    .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers)}
-                }
+                Text("Up to date")
+                Image(systemName: "checkmark.seal.fill")
+//                Button(action: { self.showPlot.toggle()}){
+//                    HStack{
+//                        Image(systemName: "paintbrush")
+//                        Text("Chart")
+//                    }
+//                    .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers)}
+//                }
             }
         }
     }
