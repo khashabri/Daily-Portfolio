@@ -97,7 +97,7 @@ struct ContentView: View {
         
         var names = self.settings.portfolio.map{ $0.compName }
         names = Array(Set(names))
-
+        
         for name in names{
             var tmp = self.settings.portfolio.filter{ $0.compName == name }
             pionierInputs.append(tmp.removeFirst())
@@ -339,13 +339,13 @@ struct totalInfoHeader: View {
             case .allDone:
                 Text("Up to date")
                 Image(systemName: "checkmark.seal.fill")
-//                Button(action: { self.showPlot.toggle()}){
-//                    HStack{
-//                        Image(systemName: "paintbrush")
-//                        Text("Chart")
-//                    }
-//                    .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers)}
-//                }
+            //                Button(action: { self.showPlot.toggle()}){
+            //                    HStack{
+            //                        Image(systemName: "paintbrush")
+            //                        Text("Chart")
+            //                    }
+            //                    .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers)}
+            //                }
             }
         }
     }
