@@ -91,50 +91,31 @@ struct ContentView: View {
     
     private func buildElements() {
         self.loadingState = .isLoading
+        var pionierInputs = [UserInput]()
+        var followerInputs = [UserInput]()
         self.erroredComps = []
         
-        let myGroup = DispatchGroup()
+        var names = self.settings.portfolio.map{ $0.compName }
+        names = Array(Set(names))
+
+        for name in names{
+            var tmp = self.settings.portfolio.filter{ $0.compName == name }
+            pionierInputs.append(tmp.removeFirst())
+            followerInputs.append(contentsOf: tmp)
+        }
         
-        for input in settings.portfolio {
-            myGroup.enter()
+        // first fetching data of an input per Company
+        let pionierGroup = DispatchGroup()
+        for input in pionierInputs {
+            pionierGroup.enter()
             
             if !self.existingInputs.contains(input){
                 NetworkingManagerPortfolio(userInput: input).getData { result in
                     switch result {
                     case .success(let compPortfolioOutput):
                         self.existingInputs.append(input)
-                        
-                        // Catching Data of companies
-                        let key = compPortfolioOutput.compSymbol
-                        if self.handelDicts.companiesEntriesDict.keys.contains(key){
-                            
-                            self.handelDicts.companiesEntriesDict[key]?.append(compPortfolioOutput)
-                            self.handelDicts.portfolioListInvestDict[key]! += compPortfolioOutput.totalInvestment
-                            self.handelDicts.portfolioListGainDict[key]! += compPortfolioOutput.gainHistory[0]
-                            self.handelDicts.portfolioListShareNumberDict[key]! += compPortfolioOutput.purchaseAmount
-                            
-                        }
-                        else{
-                            self.handelDicts.companiesEntriesDict[key] = [compPortfolioOutput]
-                            self.handelDicts.portfolioListInvestDict[key] = compPortfolioOutput.totalInvestment
-                            self.handelDicts.portfolioListGainDict[key] = compPortfolioOutput.gainHistory[0]
-                            self.handelDicts.portfolioListShareNumberDict[key] = compPortfolioOutput.purchaseAmount
-                            
-                        }
-                        
-                        let currentPrice = compPortfolioOutput.priceHistory[0]
-                        // Catching data for the Portfolio List (some are above)
-                        self.handelDicts.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.handelDicts.portfolioListShareNumberDict[key]!, y: self.handelDicts.portfolioListInvestDict[key]!)
-                        
-                        // Calc data for "Total Result" section
-                        self.totalNumbers.totalInvestment += compPortfolioOutput.totalInvestment
-                        self.totalNumbers.totalValue += compPortfolioOutput.totalCurrentValue
-                        self.totalNumbers.rendite = self.totalNumbers.totalValue - self.totalNumbers.totalInvestment
-                        self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
-                        self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory + compPortfolioOutput.gainHistory
-                        self.totalNumbers.lastRefreshed = compPortfolioOutput.lastRefreshed
-                        
-                        myGroup.leave()
+                        calculate(compPortfolioOutput: compPortfolioOutput)
+                        pionierGroup.leave()
                         
                     case .failure(let erroredComp):
                         self.loadingState = .errorOccured
@@ -143,13 +124,69 @@ struct ContentView: View {
                     }
                 }
             }else{
-                myGroup.leave() // you can't remove these because otherwise it will done before dispatch
+                pionierGroup.leave() // you can't remove these because otherwise it will done before dispatch
             }
         }
         
-        myGroup.notify(queue: .main) {
-            self.loadingState = .allDone
+        // second fetching data of other inputs so they can be done offline
+        pionierGroup.notify(queue: .main) {
+            let followerGroup = DispatchGroup()
+            for input in followerInputs {
+                followerGroup.enter()
+                
+                if !self.existingInputs.contains(input){
+                    NetworkingManagerPortfolio(userInput: input).getData { result in
+                        switch result {
+                        case .success(let compPortfolioOutput):
+                            self.existingInputs.append(input)
+                            calculate(compPortfolioOutput: compPortfolioOutput)
+                            followerGroup.leave()
+                            
+                        // this will actually never happend, since it is done offline
+                        case .failure( _): break
+                        }
+                    }
+                }else{
+                    followerGroup.leave() // you can't remove these because otherwise it will done before dispatch
+                }
+            }
+            
+            followerGroup.notify(queue: .main) {
+                self.loadingState = .allDone
+            }
         }
+    }
+    
+    private func calculate(compPortfolioOutput: CompPortfolioOutput) {
+        // Catching Data of companies
+        let key = compPortfolioOutput.compSymbol
+        if self.handelDicts.companiesEntriesDict.keys.contains(key){
+            
+            self.handelDicts.companiesEntriesDict[key]?.append(compPortfolioOutput)
+            self.handelDicts.portfolioListInvestDict[key]! += compPortfolioOutput.totalInvestment
+            self.handelDicts.portfolioListGainDict[key]! += compPortfolioOutput.gainHistory[0]
+            self.handelDicts.portfolioListShareNumberDict[key]! += compPortfolioOutput.purchaseAmount
+            
+        }
+        else{
+            self.handelDicts.companiesEntriesDict[key] = [compPortfolioOutput]
+            self.handelDicts.portfolioListInvestDict[key] = compPortfolioOutput.totalInvestment
+            self.handelDicts.portfolioListGainDict[key] = compPortfolioOutput.gainHistory[0]
+            self.handelDicts.portfolioListShareNumberDict[key] = compPortfolioOutput.purchaseAmount
+            
+        }
+        
+        let currentPrice = compPortfolioOutput.priceHistory[0]
+        // Catching data for the Portfolio List (some are above)
+        self.handelDicts.portfolioListPercentageDict[key] = calcRateD(x: currentPrice * self.handelDicts.portfolioListShareNumberDict[key]!, y: self.handelDicts.portfolioListInvestDict[key]!)
+        
+        // Calc data for "Total Result" section
+        self.totalNumbers.totalInvestment += compPortfolioOutput.totalInvestment
+        self.totalNumbers.totalValue += compPortfolioOutput.totalCurrentValue
+        self.totalNumbers.rendite = self.totalNumbers.totalValue - self.totalNumbers.totalInvestment
+        self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
+        self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory + compPortfolioOutput.gainHistory
+        self.totalNumbers.lastRefreshed = compPortfolioOutput.lastRefreshed
     }
     
     private func deleteRow(at indexSet: IndexSet) {
