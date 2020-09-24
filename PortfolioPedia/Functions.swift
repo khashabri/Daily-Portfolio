@@ -21,6 +21,16 @@ func get_today() -> String {
     return lastkDayString
 }
 
+func get_tomorrow() -> String {
+    let lastDayDate = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let lastkDayString = dateFormatter.string(from: lastDayDate)
+    
+    return lastkDayString
+}
+
 func get_yesterday() -> String {
     let lastDayDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
     let dateFormatter = DateFormatter()

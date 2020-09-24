@@ -102,7 +102,13 @@ class NetworkingManagerPortfolio: ObservableObject {
         // Making up portfolio data
         while !totDatesArr.contains(workingDate) {
             workingDate = workingDate.convertToNextDate()
+            
+            if workingDate > get_tomorrow(){
+                workingDate = totDatesArr[0]
+                break
+            }
         }
+        
         let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!
         let usefulDates = Array(totDatesArr[0...thatDatePosition])
         let prices = self.welcome!.compData.values(of: usefulDates)

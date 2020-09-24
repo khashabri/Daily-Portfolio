@@ -127,7 +127,7 @@ struct AskingView: View {
             let color: Color = .orange
             return color
         }else{
-            let color: Color = (amountOfStock != "") && (today>date) && (!toggleOn || manualPurchasedPrice != "") ? .blue : .gray
+            let color: Color = (amountOfStock != "") && (today>=date) && (!toggleOn || manualPurchasedPrice != "") ? .blue : .gray
             return color
         }
     }
