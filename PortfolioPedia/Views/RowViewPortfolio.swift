@@ -66,6 +66,6 @@ struct RowViewPortfolio: View {
 
 struct RowViewPortfolio_Previews: PreviewProvider {
     static var previews: some View {
-        RowViewPortfolio(dataEntries: SampledataEntry["SNAP"]!, Name: "Apple Inc.", portfolioListInvestDict: 1230, portfolioListGainDict: 400, portfolioListPercentageDict: 40, portfolioListShareNumberDict: 5)
+        RowViewPortfolio(dataEntries: SampleData().companiesEntriesDict["SNAP"]!, Name: "Apple Inc.", portfolioListInvestDict: 1230, portfolioListGainDict: 400, portfolioListPercentageDict: 40, portfolioListShareNumberDict: 5)
     }
 }

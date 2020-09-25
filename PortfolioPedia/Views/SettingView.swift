@@ -57,7 +57,7 @@ struct SettingView: View {
                             clearDirectoryFolder()
                             self.totalNumbers = TotalNumbers()
                             self.handelDicts = HandelDicts()
-                            self.settings.portfolio = sampleUserInputs
+                            self.settings.portfolio = SampleData().userInputs
                             save_UserSettings(userSettings: self.settings)
                         }, secondaryButton: .cancel())
                     }

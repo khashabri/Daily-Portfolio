@@ -36,6 +36,6 @@ struct DividendView: View {
 
 struct DividendView_Previews: PreviewProvider {
     static var previews: some View {
-        DividendView(compPortfolioOutput: (SampledataEntry["SNAP"]?.first)!)
+        DividendView(compPortfolioOutput: (SampleData().companiesEntriesDict["SNAP"]!.first)!)
     }
 }

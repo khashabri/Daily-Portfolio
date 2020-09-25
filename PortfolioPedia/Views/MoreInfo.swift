@@ -42,7 +42,7 @@ struct MoreInfo: View {
 
 struct MoreInfo_Previews: PreviewProvider {
     static var previews: some View {
-        MoreInfo(dataEntries: SampledataEntry["SNAP"]!)
+        MoreInfo(dataEntries: SampleData().companiesEntriesDict["SNAP"]!)
     }
 }
 

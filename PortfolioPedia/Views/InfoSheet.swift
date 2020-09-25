@@ -185,7 +185,7 @@ struct MarketPerformance: View {
 
 struct InfoSheet_Previews: PreviewProvider {
     static var previews: some View {
-        InfoSheet(dataEntries: SampledataEntry["SNAP"]!)
+        InfoSheet(dataEntries: SampleData().companiesEntriesDict["SNAP"]!)
     }
 }
 

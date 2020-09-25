@@ -234,7 +234,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     // doomy object for making the preview visible
-    static var settingsForPreview = UserSettings(portfolio: sampleUserInputs, subscribed: false, notificationsEnabled: false)
+    static var settingsForPreview = UserSettings(portfolio: SampleData().userInputs, subscribed: false, notificationsEnabled: false)
     
     static var previews: some View {
         ContentView(loadingState: LoadingState.allDone).environmentObject(self.settingsForPreview)

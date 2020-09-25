@@ -31,7 +31,7 @@ struct MoreNewsView: View {
 
 struct MoreNewsView_Previews: PreviewProvider {
     static var previews: some View {
-        MoreNewsView(articles: [sampleArticle1, sampleArticle2, sampleArticle3])
+        MoreNewsView(articles: [SampleData().article1, SampleData().article2, SampleData().article3])
     }
 }
 
