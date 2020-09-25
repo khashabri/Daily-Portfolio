@@ -53,7 +53,7 @@ struct SettingView: View {
                         Text("Sample Portfolio")
                     }
                     .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Are you sure?"), message: Text("Your current portfolio will be replaced by sample entries to demonstrate app features."), primaryButton: .destructive(Text("Delete")) {
+                        Alert(title: Text("Are you sure?"), message: Text("Your current portfolio will be replaced by sample entries to demonstrate app features."), primaryButton: .destructive(Text("Replace")) {
                             clearDirectoryFolder()
                             self.totalNumbers = TotalNumbers()
                             self.handelDicts = HandelDicts()
