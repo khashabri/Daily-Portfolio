@@ -72,7 +72,7 @@ struct SettingView: View {
                             clearDirectoryFolder()
                             self.totalNumbers = TotalNumbers()
                             self.handelDicts = HandelDicts()
-                            self.settings.portfolio = SampleData().userInputs
+                            self.settings.userInputs = SampleData().userInputs
                             save_UserSettings(userSettings: self.settings)
                         }, secondaryButton: .cancel())
                     }
@@ -85,7 +85,7 @@ struct SettingView: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Are you sure?"), message: Text("Your portfolio will be deleted entirely. There is no undo."), primaryButton: .destructive(Text("Delete")) {
                             clearDirectoryFolder()
-                            self.settings.portfolio.removeAll()
+                            self.settings.userInputs.removeAll()
                             self.totalNumbers = TotalNumbers()
                             self.handelDicts = HandelDicts()
                         }, secondaryButton: .cancel())

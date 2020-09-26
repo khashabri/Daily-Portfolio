@@ -40,7 +40,7 @@ struct TopNewsView: View {
         var tmpDict = [String:[Article]]()
         var changeHappend = false
         
-        var compSymbols = self.settings.portfolio.map{ $0.compSymbol}
+        var compSymbols = self.settings.userInputs.map{ $0.compSymbol}
         compSymbols = Array(Set(compSymbols))
         
         // if key is deleted, the list should be renewed.
@@ -69,7 +69,7 @@ struct TopNewsView: View {
 
 struct TopNewsView_Previews: PreviewProvider {
     // doomy object for making the preview visible
-    static var settingsForPreview = UserSettings(portfolio: SampleData().userInputs, subscribed: false, notificationsEnabled: false)
+    static var settingsForPreview = UserSettings(userInputs: SampleData().userInputs, subscribed: false, notificationsEnabled: false)
     
     static var previews: some View {
         TopNewsView().environmentObject(self.settingsForPreview)

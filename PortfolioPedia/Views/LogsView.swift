@@ -69,8 +69,8 @@ struct LogsView: View {
             deleteCache_Welcome(compSymbol: category)
         }
         
-        let tmpIndx = self.settings.portfolio.findByID(id: removedEntry.id)
-        self.settings.portfolio.remove(at: tmpIndx!)
+        let tmpIndx = self.settings.userInputs.findByID(id: removedEntry.id)
+        self.settings.userInputs.remove(at: tmpIndx!)
         
         deleteCache_CompPortfolioOutput(fileName: removedEntry.savingKey)
         

@@ -12,22 +12,17 @@ import StoreKit
 
 class UserSettings: ObservableObject, Codable {
     
-    @Published var portfolio: [UserInput]
+    @Published var userInputs: [UserInput]
     @Published var openedTimes: Int
     @Published var subscribed: Bool
     @Published var notificationsEnabled: Bool
     
     enum CodingKeys: CodingKey {
-        case openedTimes, portfolio, subscribed, notificationsEnabled
+        case openedTimes, userInputs, subscribed, notificationsEnabled
     }
-
-//    init() {
-//        self.portfolio = load_UserInputs()
-//        self.subscribed = load_subscribed()
-//    }
     
-    init(portfolio: [UserInput], openedTimes: Int = 0, subscribed: Bool = false, notificationsEnabled: Bool = true) {
-        self.portfolio = portfolio
+    init(userInputs: [UserInput], openedTimes: Int = 0, subscribed: Bool = false, notificationsEnabled: Bool = true) {
+        self.userInputs = userInputs
         self.openedTimes = openedTimes
         self.subscribed = subscribed
         self.notificationsEnabled = notificationsEnabled
@@ -35,7 +30,7 @@ class UserSettings: ObservableObject, Codable {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        portfolio = try container.decode([UserInput].self, forKey: .portfolio)
+        userInputs = try container.decode([UserInput].self, forKey: .userInputs)
         openedTimes = try container.decode(Int.self, forKey: .openedTimes)
         subscribed = try container.decode(Bool.self, forKey: .subscribed)
         notificationsEnabled = try container.decode(Bool.self, forKey: .notificationsEnabled)
@@ -43,7 +38,7 @@ class UserSettings: ObservableObject, Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(portfolio, forKey: .portfolio)
+        try container.encode(userInputs, forKey: .userInputs)
         try container.encode(openedTimes, forKey: .openedTimes)
         try container.encode(subscribed, forKey: .subscribed)
         try container.encode(notificationsEnabled, forKey: .notificationsEnabled)

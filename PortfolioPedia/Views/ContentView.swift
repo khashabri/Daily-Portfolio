@@ -95,11 +95,11 @@ struct ContentView: View {
         var followerInputs = [UserInput]()
         self.erroredComps = []
         
-        var names = self.settings.portfolio.map{ $0.compName }
+        var names = self.settings.userInputs.map{ $0.compName }
         names = Array(Set(names))
         
         for name in names{
-            var tmp = self.settings.portfolio.filter{ $0.compName == name }
+            var tmp = self.settings.userInputs.filter{ $0.compName == name }
             pionierInputs.append(tmp.removeFirst())
             followerInputs.append(contentsOf: tmp)
         }
@@ -222,9 +222,9 @@ struct ContentView: View {
         self.handelDicts.portfolioListPercentageDict[removedKey] = nil
         self.handelDicts.portfolioListShareNumberDict[removedKey] = nil
         
-        while let indx = self.settings.portfolio.firstIndex(where: {$0.compSymbol == removedKey}) {
-            deleteCache_CompPortfolioOutput(fileName: savingKeyMaker(self.settings.portfolio[indx]))
-            self.settings.portfolio.remove(at: indx)
+        while let indx = self.settings.userInputs.firstIndex(where: {$0.compSymbol == removedKey}) {
+            deleteCache_CompPortfolioOutput(fileName: savingKeyMaker(self.settings.userInputs[indx]))
+            self.settings.userInputs.remove(at: indx)
         }
         
         deleteCache_Welcome(compSymbol: removedKey)
@@ -234,7 +234,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     // doomy object for making the preview visible
-    static var settingsForPreview = UserSettings(portfolio: SampleData().userInputs, subscribed: false, notificationsEnabled: false)
+    static var settingsForPreview = UserSettings(userInputs: SampleData().userInputs, subscribed: false, notificationsEnabled: false)
     
     static var previews: some View {
         ContentView(loadingState: LoadingState.allDone).environmentObject(self.settingsForPreview)

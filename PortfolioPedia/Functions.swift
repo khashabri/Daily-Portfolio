@@ -315,7 +315,7 @@ func save_UserSettings(userSettings: UserSettings){
 
 func load_UserSettings() -> UserSettings{
     let fileName = "userSettings"
-    let emptyUserSettings = UserSettings(portfolio: [], openedTimes: 0,subscribed: false, notificationsEnabled: true)
+    let emptyUserSettings = UserSettings(userInputs: [], openedTimes: 0, subscribed: false, notificationsEnabled: true)
     
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     let archiveURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("plist")

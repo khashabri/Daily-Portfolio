@@ -89,7 +89,7 @@ struct AskingView: View {
                             userInput = UserInput(id: UUID(), compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!)
                         }
                         
-                        self.settings.portfolio.append(userInput)
+                        self.settings.userInputs.append(userInput)
                         save_UserSettings(userSettings: self.settings)
                         
                         self.presentationMode.wrappedValue.dismiss()
@@ -123,7 +123,7 @@ struct AskingView: View {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         let date = df.string(from: self.selectedDate)
-        if settings.portfolio.count >= 2 && !settings.subscribed{
+        if settings.userInputs.count >= 2 && !settings.subscribed{
             let color: Color = .orange
             return color
         }else{
@@ -140,7 +140,7 @@ struct addButtonFooter: View {
     var body: some View {
         VStack{
             Text("If you don't set the price manually the purchased price will be the close price of the purchase date.")
-            if settings.portfolio.count >= 2 && !settings.subscribed {
+            if settings.userInputs.count >= 2 && !settings.subscribed {
                 Text("Your maximum number of portfolio elements has been reached. Please consider the pro version.").foregroundColor(.red)
             }
         }
