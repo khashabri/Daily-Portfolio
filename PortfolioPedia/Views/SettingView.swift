@@ -8,6 +8,8 @@
 
 import SwiftUI
 import UserNotifications
+import UIKit
+import MessageUI
 
 struct SettingView: View {
     @EnvironmentObject var settings: UserSettings
@@ -15,17 +17,21 @@ struct SettingView: View {
     @Binding var handelDicts: HandelDicts
     @State private var showingAlert = false
     
+    // for email sending
+    @State var result: Result<MFMailComposeResult, Error>? = nil
+    @State var showingMail = false
+    
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Manage Subscription"), footer: Text("Add more than two companies to your portfolio and support the app development.")) {
-                    Toggle("Pro Version", isOn: $settings.subscribed)
+                Section(header: Text("Features"), footer: Text("Add more than two companies to your portfolio and support the app development.")) {
+                    Toggle("Unlock full version", isOn: $settings.subscribed)
                         .onReceive([self.settings.subscribed].publisher.first()) { (value) in
                             save_UserSettings(userSettings: self.settings)
                         }
                 }
                 
-                Section(header: Text("NOTIFICATIONS"), footer: notiFooter(toggleIsOn: $settings.notificationsEnabled)) {
+                Section(header: Text("Notifications"), footer: notiFooter(toggleIsOn: $settings.notificationsEnabled)) {
                     Toggle("Enabled", isOn: $settings.notificationsEnabled)
                         .onReceive([self.settings.notificationsEnabled].publisher.first()) { (value) in
                             save_UserSettings(userSettings: self.settings)
@@ -33,7 +39,7 @@ struct SettingView: View {
                         }
                 }
                 
-                Section(header: Text("ABOUT")) {
+                Section(header: Text("About"), footer: Text("Company logos are provided by clearbit.com")) {
                     HStack {
                         Text("Version")
                         Spacer()
@@ -44,13 +50,22 @@ struct SettingView: View {
                         Spacer()
                         Text("@ khashabri")
                     }
+                    Button(action: {
+                        self.showingMail.toggle()
+                    }) {
+                        Text("Bug report / Suggestion")
+                    }
+                    .disabled(!MFMailComposeViewController.canSendMail())
+                    .sheet(isPresented: $showingMail) {
+                        MailView(result: self.$result)
+                    }
                 }
                 
-                Section {
+                Section(header: Text("Quick actions")) {
                     Button(action: {
                         self.showingAlert = true
                     }) {
-                        Text("Sample Portfolio")
+                        Text("Load a sample portfolio")
                     }
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Are you sure?"), message: Text("Your current portfolio will be replaced by sample entries to demonstrate app features."), primaryButton: .destructive(Text("Replace")) {
@@ -63,22 +78,9 @@ struct SettingView: View {
                     }
                     
                     Button(action: {
-                        clearDirectoryFolder()
-                        self.totalNumbers = TotalNumbers()
-                        self.handelDicts = HandelDicts()
-                        self.showingAlert = true
-                        
-                    }) {
-                        Text("Delete Catched Server Data")
-                    }
-                    .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Important message"), message: Text("Cache files have been deleted."), dismissButton: .default(Text("Dismiss")))
-                    }
-                    
-                    Button(action: {
                         self.showingAlert = true
                     }) {
-                        Text("Delete Portfolio").foregroundColor(.red)
+                        Text("Delete the entire portfolio").foregroundColor(.red)
                     }
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Are you sure?"), message: Text("Your portfolio will be deleted entirely. There is no undo."), primaryButton: .destructive(Text("Delete")) {
@@ -108,9 +110,59 @@ struct notiFooter: View {
     }
 }
 
+struct MailView: UIViewControllerRepresentable {
+
+    @Environment(\.presentationMode) var presentation
+    @Binding var result: Result<MFMailComposeResult, Error>?
+
+    class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+
+        @Binding var presentation: PresentationMode
+        @Binding var result: Result<MFMailComposeResult, Error>?
+
+        init(presentation: Binding<PresentationMode>,
+             result: Binding<Result<MFMailComposeResult, Error>?>) {
+            _presentation = presentation
+            _result = result
+        }
+
+        func mailComposeController(_ controller: MFMailComposeViewController,
+                                   didFinishWith result: MFMailComposeResult,
+                                   error: Error?) {
+            defer {
+                $presentation.wrappedValue.dismiss()
+            }
+            guard error == nil else {
+                self.result = .failure(error!)
+                return
+            }
+            self.result = .success(result)
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(presentation: presentation,
+                           result: $result)
+    }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
+        let vc = MFMailComposeViewController()
+        vc.setToRecipients(["khashabri@gmail.com"])
+        vc.setSubject("PortfolioPedia: Bug Report / Suggestion")
+//        vc.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
+        vc.mailComposeDelegate = context.coordinator
+        return vc
+    }
+
+    func updateUIViewController(_ uiViewController: MFMailComposeViewController,
+                                context: UIViewControllerRepresentableContext<MailView>) {
+
+    }
+
+}
+
 //struct SettingView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        SettingView()
 //    }
 //}
-
