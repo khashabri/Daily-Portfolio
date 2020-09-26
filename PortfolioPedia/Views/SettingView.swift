@@ -31,8 +31,8 @@ struct SettingView: View {
                         }
                 }
                 
-                Section(header: Text("Notifications"), footer: notiFooter(toggleIsOn: $settings.notificationsEnabled)) {
-                    Toggle("Enabled", isOn: $settings.notificationsEnabled)
+                Section(footer: notiFooter(toggleIsOn: $settings.notificationsEnabled)) {
+                    Toggle("Notifications", isOn: $settings.notificationsEnabled)
                         .onReceive([self.settings.notificationsEnabled].publisher.first()) { (value) in
                             save_UserSettings(userSettings: self.settings)
                             value ? enableNotifications() : disableNotifications()
