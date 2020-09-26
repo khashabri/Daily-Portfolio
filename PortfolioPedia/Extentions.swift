@@ -28,8 +28,7 @@ extension Array where Element == Double {
     
     // [Double] - 2
     public static func - (left: [Double], right: Double) -> [Double] {
-        
-        return left.map { roundGoodD(($0 - right)) }
+        return left.map { ($0 - right) }
     }
     
     // [Double] + [Double]

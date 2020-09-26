@@ -116,9 +116,7 @@ class NetworkingManagerPortfolio: ObservableObject {
         let thatTimePrice: Double = self.manualPurchasedPrice ?? prices.last!
         
         self.compPortfolioOutput.gainHistory = self.compPortfolioOutput.purchaseAmount * (prices - thatTimePrice)
-        
-        self.compPortfolioOutput.currentGain = calcRateD(x: prices.first!, y: thatTimePrice)
-        
+                
         self.compPortfolioOutput.totalInvestment = self.compPortfolioOutput.purchaseAmount * thatTimePrice
         
         self.compPortfolioOutput.purchasePrice = thatTimePrice
