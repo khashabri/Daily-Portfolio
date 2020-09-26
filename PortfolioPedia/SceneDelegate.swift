@@ -8,15 +8,17 @@
 
 import UIKit
 import SwiftUI
+import StoreKit
 
 class UserSettings: ObservableObject, Codable {
     
     @Published var portfolio: [UserInput]
+    @Published var openedTimes: Int
     @Published var subscribed: Bool
     @Published var notificationsEnabled: Bool
     
     enum CodingKeys: CodingKey {
-        case portfolio, subscribed, notificationsEnabled
+        case openedTimes, portfolio, subscribed, notificationsEnabled
     }
 
 //    init() {
@@ -24,8 +26,9 @@ class UserSettings: ObservableObject, Codable {
 //        self.subscribed = load_subscribed()
 //    }
     
-    init(portfolio: [UserInput], subscribed: Bool, notificationsEnabled: Bool) {
+    init(portfolio: [UserInput], openedTimes: Int = 0, subscribed: Bool = false, notificationsEnabled: Bool = true) {
         self.portfolio = portfolio
+        self.openedTimes = openedTimes
         self.subscribed = subscribed
         self.notificationsEnabled = notificationsEnabled
     }
@@ -33,6 +36,7 @@ class UserSettings: ObservableObject, Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         portfolio = try container.decode([UserInput].self, forKey: .portfolio)
+        openedTimes = try container.decode(Int.self, forKey: .openedTimes)
         subscribed = try container.decode(Bool.self, forKey: .subscribed)
         notificationsEnabled = try container.decode(Bool.self, forKey: .notificationsEnabled)
     }
@@ -40,6 +44,7 @@ class UserSettings: ObservableObject, Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(portfolio, forKey: .portfolio)
+        try container.encode(openedTimes, forKey: .openedTimes)
         try container.encode(subscribed, forKey: .subscribed)
         try container.encode(notificationsEnabled, forKey: .notificationsEnabled)
     }
@@ -78,7 +83,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        settings.openedTimes += 1
+        print(settings.openedTimes)
         settings.notificationsEnabled && notificationPermission() ? enableNotifications() : ()
+        ((settings.openedTimes % 7) == 0)  ? SKStoreReviewController.requestReview() : ()
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
