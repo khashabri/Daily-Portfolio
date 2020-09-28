@@ -62,7 +62,7 @@ extension Array where Element == Double {
 }
 
 extension Array where Element == UserInput{
-    mutating func findByID(id: UUID) -> Int?{
+    mutating func findByID(id: String) -> Int?{
         return self.firstIndex{ $0.id == id}
     }
 }
@@ -91,5 +91,19 @@ extension Date {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
         return formatter.string(from: self)
+    }
+}
+
+extension Array where Element: Comparable {
+    func containsSameElements(as other: [Element]) -> Bool {
+        return self.count == other.count && self.sorted() == other.sorted()
+    }
+}
+
+extension Array where Element == UserInput{
+    func containsSameElements(as other: [Element]) -> Bool {
+        let a = self.map{ $0.id }
+        let b = other.map{ $0.id }
+        return a.count == b.count && a.sorted() == b.sorted()
     }
 }

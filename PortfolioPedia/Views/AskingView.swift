@@ -83,10 +83,10 @@ struct AskingView: View {
                         self.manualPurchasedPrice = self.manualPurchasedPrice.replacingOccurrences(of: ",", with: ".")
                         
                         if self.toggleOn && self.manualPurchasedPrice != ""{
-                            userInput = UserInput(id: UUID(), compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!, manualPurchasedPrice: Double(self.manualPurchasedPrice)!)
+                            userInput = UserInput(id: UUID().uuidString, compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!, manualPurchasedPrice: Double(self.manualPurchasedPrice)!)
                         }
                         else{
-                            userInput = UserInput(id: UUID(), compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!)
+                            userInput = UserInput(id: UUID().uuidString, compName: self.compName, purchaseDate:date, purchaseAmount: Double(self.amountOfStock)!)
                         }
                         
                         self.settings.userInputs.append(userInput)

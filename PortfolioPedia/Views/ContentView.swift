@@ -90,6 +90,12 @@ struct ContentView: View {
     }
     
     private func buildElements() {
+        // Do nothing if everything is there
+        if self.existingInputs.containsSameElements(as: self.settings.userInputs){
+            self.loadingState = .allDone
+            return
+        }
+            
         self.loadingState = .isLoading
         var pionierInputs = [UserInput]()
         var followerInputs = [UserInput]()

@@ -54,7 +54,7 @@ struct MetaData: Codable & Decodable {
 
 // MARK: - TimeSeriesDaily
 struct CompData: Codable & Identifiable & Decodable {
-    var id = UUID()
+    var id = UUID().uuidString
     var s_open, s_high, s_low, s_close, s_volume, s_dividend, s_split_coeff: String
     
     var symbol: String = ""
@@ -107,14 +107,14 @@ struct CompData: Codable & Identifiable & Decodable {
 
 // MARK: - User Input
 struct UserInput: Identifiable, Equatable, Codable{
-    let id: UUID
+    let id: String
     let compName: String
     var compSymbol: String
     let purchaseDate: String
     let purchaseAmount: Double
     var manualPurchasedPrice: Double = 0
     
-    init(id: UUID, compName: String, purchaseDate: String, purchaseAmount: Double) {
+    init(id: String, compName: String, purchaseDate: String, purchaseAmount: Double) {
         self.compSymbol = getKey(value: compName)
         self.id = id
         self.compName = compName
@@ -122,7 +122,7 @@ struct UserInput: Identifiable, Equatable, Codable{
         self.purchaseAmount = purchaseAmount
     }
     
-    init(id: UUID, compName: String, purchaseDate: String, purchaseAmount: Double, manualPurchasedPrice: Double) {
+    init(id: String, compName: String, purchaseDate: String, purchaseAmount: Double, manualPurchasedPrice: Double) {
         self.compSymbol = getKey(value: compName)
         self.id = id
         self.compName = compName
@@ -134,7 +134,7 @@ struct UserInput: Identifiable, Equatable, Codable{
 
 // MARK: - Company Portfolio Output
 struct CompPortfolioOutput: Identifiable, Hashable, Codable{
-    var id = UUID()
+    var id = UUID().uuidString
     var savingKey = ""
     var lastServerCheckTime: String?
     var lastRefreshed: String = ""
@@ -202,7 +202,7 @@ struct WelcomeNews: Codable, Hashable {
 
 // MARK: - Article
 struct Article: Identifiable, Hashable, Codable{
-    var id = UUID()
+    var id = UUID().uuidString
     var lastServerCheckTime: Date?
     var savingKey = ""
     let source: Source?
