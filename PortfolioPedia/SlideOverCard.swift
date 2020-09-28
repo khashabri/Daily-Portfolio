@@ -48,7 +48,7 @@ public enum CardPosition: CGFloat {
         case .bottom:
 //            return UIScreen.main.bounds.height - 80
 //            return UIScreen.main.bounds.height/1.3 //direkt nach untere Safe area
-            return aboveTabBarPosition(screenSize: UIScreen.main.bounds)
+            return tabBarPosition!
         case .middle:
             return UIScreen.main.bounds.height/2.8
         case .top:

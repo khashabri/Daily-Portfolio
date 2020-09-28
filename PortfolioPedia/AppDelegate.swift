@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import SwiftUI
+
+var tabBarPosition: CGFloat?
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-            
+        
+        tabBarPosition = aboveTabBarPosition(screenSize: UIScreen.main.bounds)
+        
         return true
     }
 
