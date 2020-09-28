@@ -135,8 +135,8 @@ class NetworkingManagerPortfolio: ObservableObject {
         filteredDict = self.welcome!.compData.filter{ Double($0.value.s_split_coeff) != 1 }
         self.compPortfolioOutput.splitsDict = filteredDict.mapValues { value in value.s_split_coeff }
         
-        self.compPortfolioOutput.lastServerCheckTime = now()
-        self.welcome!.lastServerCheckTime = now()
+        self.compPortfolioOutput.lastServerCheckTime = nowUTC()
+        self.welcome!.lastServerCheckTime = nowUTC()
     }
 }
 
@@ -171,7 +171,8 @@ class NetworkingManagerNews: ObservableObject {
             guard let data = data else { return }
             
             var welcomeNews = try! JSONDecoder().decode(WelcomeNews.self, from: data)
-            welcomeNews.articles[0].lastServerCheckTime = now()
+            // no UTC time conversion is needed because we only the difference of two dates matters
+            welcomeNews.articles[0].lastServerCheckTime = Date()
             
             DispatchQueue.main.async {
                 save_Articles(articles: welcomeNews.articles, compSymbol: self.compSymbol)

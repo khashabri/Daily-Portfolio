@@ -28,7 +28,7 @@ enum LoadingState {
 struct Welcome: Codable & Decodable  {
     let metaData: MetaData
     var compData: [String: CompData]
-    var lastServerCheckTime: Date?
+    var lastServerCheckTime: String?
     
     enum CodingKeys: String, CodingKey, Decodable {
         case lastServerCheckTime
@@ -136,7 +136,7 @@ struct UserInput: Identifiable, Equatable, Codable{
 struct CompPortfolioOutput: Identifiable, Hashable, Codable{
     var id = UUID()
     var savingKey = ""
-    var lastServerCheckTime: Date?
+    var lastServerCheckTime: String?
     var lastRefreshed: String = ""
     var compName: String = ""
     var compSymbol: String = ""

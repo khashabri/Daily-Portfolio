@@ -165,8 +165,11 @@ func get_yesterday(_ of: Date) -> Date {
 
 // MARK: - FIX: todaysMarketClosure and now() should be timezone dependent
 
-func refreshDateThreshold() -> Date{
+//
+func refreshDateThreshold() -> String{
     let calendar = Calendar.current
+    
+    // Calculate in my local time whether the market closure is passed for today.
     let todaysMarketClosure = calendar.date(bySettingHour: 22, minute: 31, second: 0, of: Date())!
     let now = Date()
     var threshold = todaysMarketClosure
@@ -177,11 +180,17 @@ func refreshDateThreshold() -> Date{
         threshold = get_yesterday(threshold)
     }
     
-    return threshold
+    // Convert my local result to UTC string result
+    let formatter = DateFormatter()
+    formatter.timeZone = TimeZone(identifier: "UTC")
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+    return formatter.string(from: threshold)
 }
 
-func now() -> Date{
-    return Date()
+// das soll nowUTC werden und String ausgeben
+func nowUTC() -> String{
+    return Date().currentUTCTimeZoneDate
 }
 
 func clearDirectoryFolder() {
@@ -346,14 +355,17 @@ func enableNotifications(){
     content.body = "Open the app to check the latest rendite."
     content.sound = UNNotificationSound.default
     
+    // given UTC trigger time, convert it to the local device time for local notifications
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy/MM/dd HH:mm"
-    let MoDateTime = formatter.date(from: "2020/09/14 22:31")
-    let DiDateTime = formatter.date(from: "2020/09/15 22:31")
-    let MiDateTime = formatter.date(from: "2020/09/16 22:31")
-    let DoDateTime = formatter.date(from: "2020/09/17 22:31")
-    let FrDateTime = formatter.date(from: "2020/09/18 22:31")
+    formatter.timeZone = TimeZone(identifier: "UTC")
+    let MoDateTime = formatter.date(from: "2020/09/14 20:31")
+    let DiDateTime = formatter.date(from: "2020/09/15 20:31")
+    let MiDateTime = formatter.date(from: "2020/09/16 20:31")
+    let DoDateTime = formatter.date(from: "2020/09/17 20:31")
+    let FrDateTime = formatter.date(from: "2020/09/18 20:31")
     
+    // extracting date components from the local notification trigger time
     let triggerMoWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: MoDateTime!)
     let triggerDiWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: DiDateTime!)
     let triggerMiWeekly = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: MiDateTime!)
