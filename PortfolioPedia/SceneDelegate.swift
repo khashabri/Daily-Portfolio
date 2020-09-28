@@ -79,9 +79,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
         settings.openedTimes += 1
-        print(settings.openedTimes)
         settings.notificationsEnabled && notificationPermission() ? enableNotifications() : ()
-        ((settings.openedTimes % 7) == 0)  ? SKStoreReviewController.requestReview() : ()
+        ((settings.openedTimes % 10) == 0)  ? SKStoreReviewController.requestReview() : ()
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
