@@ -74,11 +74,11 @@ struct ContentView: View {
                 self.buildElements()
             }
             
-            TopNewsView().environmentObject(self.settings)
-                .tabItem {
-                    Image(systemName: "flame")
-                    Text("Top News")
-                }
+//            TopNewsView().environmentObject(self.settings)
+//                .tabItem {
+//                    Image(systemName: "flame")
+//                    Text("Top News")
+//                }
             
             SettingView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)
                 .tabItem {

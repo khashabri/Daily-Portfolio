@@ -21,8 +21,9 @@ struct InfoSheet: View {
 
 
 struct MarketPerformance: View {
-    
+    @State var showMoreDividend = false
     @State var dataEntries: [CompPortfolioOutput]
+    
     var body: some View {
         Form {
             Section(header:
@@ -168,7 +169,7 @@ struct MarketPerformance: View {
                 noDividendSubView()
             }
             else{
-                dividendSubView(compPortfolioOutput: dataEntries[0])
+                dividendSubView(compPortfolioOutput: dataEntries[0], showMoreDividend: $showMoreDividend)
             }
             
             if dataEntries[0].splitsDict.keys.isEmpty {
@@ -179,7 +180,7 @@ struct MarketPerformance: View {
             }
             
             purchaseDatesSubView(dataEntries: dataEntries)
-        }
+        }.sheet(isPresented: $showMoreDividend) {DividendView(compPortfolioOutput: dataEntries[0])}
     }
 }
 
@@ -218,7 +219,7 @@ struct purchaseDatesSubView: View {
 
 struct dividendSubView: View {
     @State var compPortfolioOutput: CompPortfolioOutput
-    @State var showMoreDividend = false
+    @Binding var showMoreDividend: Bool
     
     var body: some View {
         Section(
@@ -230,8 +231,8 @@ struct dividendSubView: View {
                     HStack{
                         Image(systemName: "ellipsis.circle")
                         Text("View All")
-                    }
-                }.sheet(isPresented: $showMoreDividend) {DividendView(compPortfolioOutput: self.compPortfolioOutput)}
+                    }.foregroundColor(.blue)
+                }
                 
         }) {
             ForEach(self.compPortfolioOutput.dividendDict.keys.sorted(by: >)[0...min(4,self.compPortfolioOutput.dividendDict.keys.count-1)], id: \.self) { key in
