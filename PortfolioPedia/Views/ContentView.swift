@@ -345,13 +345,13 @@ struct totalInfoHeader: View {
             case .allDone:
                 Text("Up to date")
                 Image(systemName: "checkmark.seal.fill")
-            //                Button(action: { self.showPlot.toggle()}){
-            //                    HStack{
-            //                        Image(systemName: "paintbrush")
-            //                        Text("Chart")
-            //                    }
-            //                    .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers)}
-            //                }
+                            Button(action: { self.showPlot.toggle()}){
+                                HStack{
+                                    Image(systemName: "paintbrush")
+                                    Text("Chart")
+                                }
+                                .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers)}
+                            }
             }
         }
     }

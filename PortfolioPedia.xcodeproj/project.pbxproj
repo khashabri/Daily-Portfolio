@@ -27,6 +27,7 @@
 		84E6074924F916640022AE64 /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E6074824F916640022AE64 /* DataTypes.swift */; };
 		84F2269924FB38100073A227 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2269824FB38100073A227 /* LogsView.swift */; };
 		84F525F7251506BD0093ED99 /* SlideOverCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F525F6251506BD0093ED99 /* SlideOverCard.swift */; };
+		84F658CF252A08DC00D3BDE5 /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F658CE252A08DC00D3BDE5 /* LineChart.swift */; };
 		84F8F5D224D3AB570058C4D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */; };
 		84F8F5D424D3AB570058C4D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F5D324D3AB570058C4D3 /* SceneDelegate.swift */; };
 		84F8F5D824D3AB5B0058C4D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */; };
@@ -55,6 +56,7 @@
 		84E6074824F916640022AE64 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
 		84F2269824FB38100073A227 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		84F525F6251506BD0093ED99 /* SlideOverCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideOverCard.swift; sourceTree = "<group>"; };
+		84F658CE252A08DC00D3BDE5 /* LineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		84F8F5CE24D3AB570058C4D3 /* Daily Portfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily Portfolio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84F8F5D324D3AB570058C4D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				84BE0D7524F3C1BF006EAA59 /* Extentions.swift */,
 				8461AEE324F919520011763C /* SearchBar.swift */,
 				84C894DB24F2D8BC0044C27D /* NetworkingManager.swift */,
+				84F658CE252A08DC00D3BDE5 /* LineChart.swift */,
 				84F525F6251506BD0093ED99 /* SlideOverCard.swift */,
 				84E6074A24F9184B0022AE64 /* Views */,
 				84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */,
@@ -232,6 +235,7 @@
 				84BE0D7124F33533006EAA59 /* RowViewPortfolio.swift in Sources */,
 				84F8F5D224D3AB570058C4D3 /* AppDelegate.swift in Sources */,
 				84649DE224F6874D00F12DAE /* AskingView.swift in Sources */,
+				84F658CF252A08DC00D3BDE5 /* LineChart.swift in Sources */,
 				84E6074924F916640022AE64 /* DataTypes.swift in Sources */,
 				8461AEE424F919520011763C /* SearchBar.swift in Sources */,
 				84F2269924FB38100073A227 /* LogsView.swift in Sources */,

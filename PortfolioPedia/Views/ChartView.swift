@@ -17,12 +17,17 @@ struct ChartView: View {
     
     var body: some View {
         NavigationView{
-            VStack(alignment: .leading) {
-                LineView(data: totalNumbers.totalGainHistory.reversed(), title: "Rendite", legend: String(totalNumbers.renditePercent)+"%")
-                Spacer()
-            }.padding(20)
-            
-            .navigationBarTitle(Text("Rendite Chart"), displayMode: .inline)
+            VStack() {
+                Text("Portfolio yield history")
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                LineChart(yDataPoints: totalNumbers.totalGainHistory.reversed(), withYLabels: true, withAnimation: true)
+                    .frame(width: 350, height: 200)
+                    .scaledToFit()
+                    .padding(.bottom, 150)
+            }
+            .navigationBarTitle(Text("Charts"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {self.presentationMode.wrappedValue.dismiss()}) { Text("Done").bold()})
         }
     }
