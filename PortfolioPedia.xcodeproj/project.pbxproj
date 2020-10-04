@@ -11,7 +11,6 @@
 		840D416A24D43B2700394CA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D416924D43B2700394CA8 /* ContentView.swift */; };
 		84136FCC25051AE20082BD3A /* DividendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84136FCB25051AE20082BD3A /* DividendView.swift */; };
 		84136FD12506D1BA0082BD3A /* TopNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84136FD02506D1BA0082BD3A /* TopNewsView.swift */; };
-		841E873D24DCA6F10098C9EA /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 841E873C24DCA6F10098C9EA /* SwiftUICharts */; };
 		84366F7524F3DBFB0099BD6B /* MoreInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366F7424F3DBFB0099BD6B /* MoreInfo.swift */; };
 		8436977F24DEA70D0006F331 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8436977E24DEA70D0006F331 /* SettingView.swift */; };
 		8461AEE424F919520011763C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8461AEE324F919520011763C /* SearchBar.swift */; };
@@ -28,6 +27,7 @@
 		84F2269924FB38100073A227 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2269824FB38100073A227 /* LogsView.swift */; };
 		84F525F7251506BD0093ED99 /* SlideOverCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F525F6251506BD0093ED99 /* SlideOverCard.swift */; };
 		84F658CF252A08DC00D3BDE5 /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F658CE252A08DC00D3BDE5 /* LineChart.swift */; };
+		84F658F1252A676D00D3BDE5 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F658F0252A676D00D3BDE5 /* PieChart.swift */; };
 		84F8F5D224D3AB570058C4D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */; };
 		84F8F5D424D3AB570058C4D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F5D324D3AB570058C4D3 /* SceneDelegate.swift */; };
 		84F8F5D824D3AB5B0058C4D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */; };
@@ -57,6 +57,7 @@
 		84F2269824FB38100073A227 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		84F525F6251506BD0093ED99 /* SlideOverCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideOverCard.swift; sourceTree = "<group>"; };
 		84F658CE252A08DC00D3BDE5 /* LineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
+		84F658F0252A676D00D3BDE5 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		84F8F5CE24D3AB570058C4D3 /* Daily Portfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily Portfolio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8F5D124D3AB570058C4D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84F8F5D324D3AB570058C4D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,7 +73,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84F8F5E724D3AC5F0058C4D3 /* URLImage in Frameworks */,
-				841E873D24DCA6F10098C9EA /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +134,7 @@
 				8461AEE324F919520011763C /* SearchBar.swift */,
 				84C894DB24F2D8BC0044C27D /* NetworkingManager.swift */,
 				84F658CE252A08DC00D3BDE5 /* LineChart.swift */,
+				84F658F0252A676D00D3BDE5 /* PieChart.swift */,
 				84F525F6251506BD0093ED99 /* SlideOverCard.swift */,
 				84E6074A24F9184B0022AE64 /* Views */,
 				84F8F5D724D3AB5B0058C4D3 /* Assets.xcassets */,
@@ -170,7 +171,6 @@
 			name = PortfolioPedia;
 			packageProductDependencies = (
 				84F8F5E624D3AC5F0058C4D3 /* URLImage */,
-				841E873C24DCA6F10098C9EA /* SwiftUICharts */,
 			);
 			productName = "url_swiftUi-bilder";
 			productReference = 84F8F5CE24D3AB570058C4D3 /* Daily Portfolio.app */;
@@ -202,7 +202,6 @@
 			mainGroup = 84F8F5C524D3AB570058C4D3;
 			packageReferences = (
 				84F8F5E524D3AC5F0058C4D3 /* XCRemoteSwiftPackageReference "url-image" */,
-				841E873B24DCA6F10098C9EA /* XCRemoteSwiftPackageReference "ChartView" */,
 			);
 			productRefGroup = 84F8F5CF24D3AB570058C4D3 /* Products */;
 			projectDirPath = "";
@@ -239,6 +238,7 @@
 				84E6074924F916640022AE64 /* DataTypes.swift in Sources */,
 				8461AEE424F919520011763C /* SearchBar.swift in Sources */,
 				84F2269924FB38100073A227 /* LogsView.swift in Sources */,
+				84F658F1252A676D00D3BDE5 /* PieChart.swift in Sources */,
 				8436977F24DEA70D0006F331 /* SettingView.swift in Sources */,
 				84B6CD4424D96ACF002716C2 /* DataBank.swift in Sources */,
 				84366F7524F3DBFB0099BD6B /* MoreInfo.swift in Sources */,
@@ -450,14 +450,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		841E873B24DCA6F10098C9EA /* XCRemoteSwiftPackageReference "ChartView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AppPear/ChartView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.4;
-			};
-		};
 		84F8F5E524D3AC5F0058C4D3 /* XCRemoteSwiftPackageReference "url-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
@@ -469,11 +461,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		841E873C24DCA6F10098C9EA /* SwiftUICharts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 841E873B24DCA6F10098C9EA /* XCRemoteSwiftPackageReference "ChartView" */;
-			productName = SwiftUICharts;
-		};
 		84F8F5E624D3AC5F0058C4D3 /* URLImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 84F8F5E524D3AC5F0058C4D3 /* XCRemoteSwiftPackageReference "url-image" */;
