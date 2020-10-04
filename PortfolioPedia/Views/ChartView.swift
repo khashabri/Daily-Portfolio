@@ -17,26 +17,26 @@ struct ChartView: View {
     var body: some View {
         NavigationView{
             ScrollView{
-            VStack() {
-                Text("Portfolio yield history")
-                    .font(.headline)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                LineChart(yDataPoints: totalNumbers.totalGainHistory.reversed(), withYLabels: true, withAnimation: true)
-                    .frame(width: 350, height: 200)
-                    .scaledToFit()
-                    .padding(.bottom, 20)
-                
-                Divider()
-                Text("Current value distribution")
-                    .font(.headline)
-                    .multilineTextAlignment(.center)
-                    .padding(.top)
-                PieChartView(handelDicts: handelDicts)
+                VStack() {
+                    Text("Portfolio yield history")
+                        .font(.headline)
+                        .multilineTextAlignment(.center)
+                        .padding(.top)
+                    LineChart(yDataPoints: totalNumbers.totalGainHistory.reversed(), withYLabels: true, withAnimation: true)
+                        .frame(width: 350, height: 200)
+                        .scaledToFit()
+                        .padding(.bottom, 20)
+                    
+                    Divider()
+                    Text("Current value distribution")
+                        .font(.headline)
+                        .multilineTextAlignment(.center)
+                        .padding(.top)
+                    PieChartView(handelDicts: handelDicts)
+                }
+                .navigationBarTitle(Text("Charts"), displayMode: .inline)
+                .navigationBarItems(trailing: Button(action: {self.presentationMode.wrappedValue.dismiss()}) { Text("Done").bold()})
             }
-            .navigationBarTitle(Text("Charts"), displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {self.presentationMode.wrappedValue.dismiss()}) { Text("Done").bold()})
-        }
         }
     }
 }

@@ -269,6 +269,7 @@ struct totalInfoSubview: View {
     @Binding var handelDicts: HandelDicts
     @Binding var loadingState: LoadingState
     @Binding var erroredComps: [String]
+    @State var showCharts = false
     
     var body: some View {
         VStack{
@@ -288,6 +289,15 @@ struct totalInfoSubview: View {
                     HStack {
                         Text("Rendite")
                         Spacer()
+                        if loadingState == LoadingState.allDone{
+                            Button(action: { self.showCharts.toggle()}){
+                                HStack{
+                                    Image(systemName: "chart.pie")
+                                }
+                                .sheet(isPresented: $showCharts) {ChartView(totalNumbers: self.totalNumbers, handelDicts: self.handelDicts)}
+                            }
+                        }
+                        
                         if roundGoodD(totalNumbers.rendite) < 0 {
                             Text(currencyString(totalNumbers.rendite) + " (" + String(abs(totalNumbers.renditePercent)) + "%)")
                                 .foregroundColor(Color.red)
@@ -310,7 +320,6 @@ struct totalInfoHeader: View {
     @Binding var handelDicts: HandelDicts
     @Binding var totalNumbers: TotalNumbers
     @Binding var erroredComps: [String]
-    @State var showPlot = false
     @State private var showingAlert = false
     
     var body: some View {
@@ -346,13 +355,6 @@ struct totalInfoHeader: View {
             case .allDone:
                 Text("Up to date")
                 Image(systemName: "checkmark.seal.fill")
-                            Button(action: { self.showPlot.toggle()}){
-                                HStack{
-                                    Image(systemName: "paintbrush")
-                                    Text("Chart")
-                                }
-                                .sheet(isPresented: $showPlot) {ChartView(totalNumbers: self.totalNumbers, handelDicts: self.handelDicts)}
-                            }
             }
         }
     }

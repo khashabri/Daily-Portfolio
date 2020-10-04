@@ -1,5 +1,11 @@
 import SwiftUI
 
+let sampleChartDataModel = [ ChartCellModel(color: Color.red, value: 123, name: "Math"),
+                             ChartCellModel(color: Color.yellow, value: 233, name: "Physics"),
+                             ChartCellModel(color: Color.pink, value: 73, name: "Chemistry"),
+                             ChartCellModel(color: Color.blue, value: 731, name: "Litrature"),
+                             ChartCellModel(color: Color.green, value: 51, name: "Art")]
+
 struct PieChartCell: Shape {
     let startAngle: Angle
     let endAngle: Angle
@@ -102,7 +108,6 @@ final class ChartDataModel: ObservableObject {
             startingAngle = lastBarEndAngle
         }
         lastBarEndAngle += Angle(degrees: Double(value / totalValue) * 360 )
-        print(lastBarEndAngle.degrees)
         return lastBarEndAngle
     }
 }
@@ -113,36 +118,38 @@ struct PieChartView: View {
     @State var selectedDonut: String = ""
     
     var body: some View {
-        ScrollView{
+        VStack {
             VStack {
-                VStack {
-                    PieChart(dataModel: ChartDataModel.init(dataModel: makeChartDataModel()), onTap: {
-                        dataModel in
-                        if let dataModel = dataModel {
-                            self.selectedPie = "Company Name: \(dataModel.name)\nCurrent investment value: \(dataModel.value) $"
-                        } else {
-                            self.selectedPie = ""
-                        }
-                    })
-                    .frame(width: 150, height: 150, alignment: .center)
-                    .padding()
-                    Text(selectedPie)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .font(.footnote)
-                        .multilineTextAlignment(.leading)
-                    Spacer()
-                    
-                }
-                Spacer()
+                PieChart(dataModel: ChartDataModel.init(dataModel: makeChartDataModel()), onTap: {
+                    dataModel in
+                    if let dataModel = dataModel {
+                        self.selectedPie = "Company Name: \(dataModel.name)\nCurrent investment value: \(dataModel.value) $"
+                    } else {
+                        self.selectedPie = ""
+                    }
+                })
+                .frame(width: 150, height: 150, alignment: .center)
+                .padding()
+                Text(selectedPie)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .font(.footnote)
+                    .multilineTextAlignment(.leading)
+                
                 HStack {
                     ForEach(makeChartDataModel()) { dataSet in
                         VStack {
-                            Circle().foregroundColor(dataSet.color)
+                            Circle()
+                                .foregroundColor(dataSet.color)
+                                .frame(width: 25, height: 25)
                             Text(dataSet.name).font(.footnote)
-                        }
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.01)
+                        }.padding(.horizontal)
                     }
-                }.padding()
+                }
+                .padding()
             }
+            
         }
     }
     
@@ -163,9 +170,3 @@ struct PieChartView_Previews: PreviewProvider {
         PieChartView(handelDicts: SampleData().handelDicts)
     }
 }
-
-let sampleChartDataModel = [ ChartCellModel(color: Color.red, value: 123, name: "Math"),
-               ChartCellModel(color: Color.yellow, value: 233, name: "Physics"),
-               ChartCellModel(color: Color.pink, value: 73, name: "Chemistry"),
-               ChartCellModel(color: Color.blue, value: 731, name: "Litrature"),
-               ChartCellModel(color: Color.green, value: 51, name: "Art")]
