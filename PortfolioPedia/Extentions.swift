@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension String {
     // calc next day for a string date
@@ -83,13 +84,13 @@ extension Date {
         return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
     
-   var currentUTCTimeZoneDate: String {
+    var currentUTCTimeZoneDate: String {
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "UTC")
         formatter.amSymbol = "AM"
         formatter.pmSymbol = "PM"
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
+        
         return formatter.string(from: self)
     }
 }
@@ -105,5 +106,14 @@ extension Array where Element == UserInput{
         let a = self.map{ $0.id }
         let b = other.map{ $0.id }
         return a.count == b.count && a.sorted() == b.sorted()
+    }
+}
+
+extension View {
+    public func gradientForeground(colors: [Color]) -> some View {
+        self.overlay(LinearGradient(gradient: .init(colors: colors),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing))
+            .mask(self)
     }
 }

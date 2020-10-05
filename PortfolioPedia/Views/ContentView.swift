@@ -284,11 +284,13 @@ struct totalInfoSubview: View {
                         Text("Investment")
                         Spacer()
                         Text(currencyString(totalNumbers.totalInvestment))
+                            .animation(nil)
                     }
                     HStack {
                         Text("Current Value")
                         Spacer()
                         Text(currencyString(totalNumbers.totalValue))
+                            .animation(nil)
                     }
                     HStack {
                         Text("Rendite")
@@ -304,10 +306,12 @@ struct totalInfoSubview: View {
                         if roundGoodD(totalNumbers.rendite) < 0 {
                             Text(currencyString(totalNumbers.rendite) + " (" + String(abs(totalNumbers.renditePercent)) + "%)")
                                 .foregroundColor(Color.red)
+                                .animation(nil)
                         }
                         else {
                             Text("+" + currencyString(totalNumbers.rendite) + " (" + String(totalNumbers.renditePercent) + "%)")
                                 .foregroundColor(Color.green)
+                                .animation(nil)
                         }
                     }
                 }
@@ -361,8 +365,18 @@ struct totalInfoHeader: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
             case .allDone:
-                Text("Up to date")
+                if #available(iOS 14.0, *) {
+                    Text("Up to date")
+                        .textCase(nil)
+                        .gradientForeground(colors: [.green, .blue])
+                }
+                else{
+                    Text("Up to date")
+                        .gradientForeground(colors: [.green, .blue])
+                }
                 Image(systemName: "checkmark.seal.fill")
+                    .gradientForeground(colors: [.green, .blue])
+
             }
         }
     }

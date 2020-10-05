@@ -134,6 +134,7 @@ struct PieChartView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .font(.footnote)
                     .multilineTextAlignment(.leading)
+                    .animation(nil)
                 
                 HStack {
                     ForEach(makeChartDataModel()) { dataSet in
