@@ -60,6 +60,13 @@ struct LineChartShape: Shape {
                 }
             }
             
+            if index == dataPoints.endIndex - 1 || index == 0 {
+                x -= pointSize / 2
+                y -= pointSize / 2
+
+                path.addEllipse(in: CGRect(x: x-1, y: y, width: 4, height: pointSize))
+            }
+            
             if  markPoints && (value == maxValue || value == minValue) {
                 x -= pointSize / 2
                 y -= pointSize / 2
@@ -196,18 +203,19 @@ struct LineChart: View {
     }
 }
 
-//struct myChartView: View {
-//    var yDataPoints: [Double] = samples.reversed()
-//
-//    var body: some View {
-//        VStack{
-//            LineChart(yDataPoints: yDataPoints, withYLabels: false)
-//        }
-//    }
-//}
+struct myChartView: View {
+    var yDataPoints: [Double]
 
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
+    var body: some View {
+        VStack{
+            LineChart(yDataPoints: yDataPoints, withYLabels: true, withAnimation: false)
+                .frame(width: 350, height: 200, alignment: .center)
+        }
+    }
+}
+
+struct myChartView_Previews: PreviewProvider {
+    static var previews: some View {
+        myChartView(yDataPoints: SampleData().totalNumbers.totalGainHistory.reversed())
+    }
+}
