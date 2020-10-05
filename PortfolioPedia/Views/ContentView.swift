@@ -74,11 +74,11 @@ struct ContentView: View {
                 self.buildElements()
             }
             
-//            TopNewsView().environmentObject(self.settings)
-//                .tabItem {
-//                    Image(systemName: "flame")
-//                    Text("Top News")
-//                }
+            //            TopNewsView().environmentObject(self.settings)
+            //                .tabItem {
+            //                    Image(systemName: "flame")
+            //                    Text("Top News")
+            //                }
             
             SettingView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)
                 .tabItem {
@@ -95,7 +95,7 @@ struct ContentView: View {
             self.loadingState = .allDone
             return
         }
-            
+        
         self.loadingState = .isLoading
         var pionierInputs = [UserInput]()
         var followerInputs = [UserInput]()
@@ -313,8 +313,9 @@ struct totalInfoSubview: View {
                 }
             }
             .sheet(isPresented: $showCharts) {ChartView(totalNumbers: self.totalNumbers, handelDicts: self.handelDicts)}
-            Form{}
-            .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)}
+            .background(EmptyView()
+                            .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)})
+            
             
             Spacer()
         }
