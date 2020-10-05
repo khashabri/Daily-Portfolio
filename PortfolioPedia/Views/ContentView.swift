@@ -269,13 +269,17 @@ struct totalInfoSubview: View {
     @Binding var handelDicts: HandelDicts
     @Binding var loadingState: LoadingState
     @Binding var erroredComps: [String]
+    
     @State var showCharts = false
+    @State var showLogs = false
+    
+    @EnvironmentObject var settings: UserSettings
     
     var body: some View {
         VStack{
             Form{
                 
-                Section(header: totalInfoHeader(loadingState: $loadingState,handelDicts: $handelDicts ,totalNumbers: $totalNumbers, erroredComps: $erroredComps), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts)) {
+                Section(header: totalInfoHeader(loadingState: $loadingState,handelDicts: $handelDicts ,totalNumbers: $totalNumbers, erroredComps: $erroredComps), footer: totalInfoFooter(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, showLogs: self.$showLogs)) {
                     HStack {
                         Text("Investment")
                         Spacer()
@@ -294,7 +298,6 @@ struct totalInfoSubview: View {
                                 HStack{
                                     Image(systemName: "chart.pie")
                                 }
-                                .sheet(isPresented: $showCharts) {ChartView(totalNumbers: self.totalNumbers, handelDicts: self.handelDicts)}
                             }
                         }
                         
@@ -309,6 +312,10 @@ struct totalInfoSubview: View {
                     }
                 }
             }
+            .sheet(isPresented: $showCharts) {ChartView(totalNumbers: self.totalNumbers, handelDicts: self.handelDicts)}
+            Form{}
+            .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)}
+            
             Spacer()
         }
     }
@@ -363,9 +370,7 @@ struct totalInfoHeader: View {
 struct totalInfoFooter: View {
     @Binding var totalNumbers: TotalNumbers
     @Binding var handelDicts: HandelDicts
-    
-    @State var showLogs = false
-    @EnvironmentObject var settings: UserSettings
+    @Binding var showLogs: Bool
     
     var body: some View {
         HStack {
@@ -378,8 +383,7 @@ struct totalInfoFooter: View {
                 HStack{
                     Image(systemName: "pencil.and.ellipsis.rectangle")
                     Text("View Logs")
-                }
-                .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)}
+                }.foregroundColor(.blue)
             }
         }
     }
