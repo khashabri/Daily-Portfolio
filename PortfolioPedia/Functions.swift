@@ -121,6 +121,7 @@ func isAboutZero(_ x: Double) -> Bool{
 }
 
 func removeEndZeros(_ arr: [Double]) -> [Double]{
+    if arr.isEmpty { return [Double]() }
     let binary = arr.map{abs($0) < 0.0009}
     let indx = binary.lastIndex(of: false) ?? 0
     return Array(arr[0...indx])
