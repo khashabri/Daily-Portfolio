@@ -337,7 +337,10 @@ struct totalInfoHeader: View {
     var body: some View {
         HStack {
             Image(systemName: "sum")
+                .foregroundColor(.green)
             Text("Total Result")
+                .bold()
+                .gradientForeground(colors: [.green, .orange, .red])
             Spacer()
             switch loadingState{
             case .isLoading:
@@ -365,18 +368,11 @@ struct totalInfoHeader: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
             case .allDone:
-                if #available(iOS 14.0, *) {
-                    Text("Up to date")
-                        .textCase(nil)
-                        .gradientForeground(colors: [.green, .blue])
-                }
-                else{
-                    Text("Up to date")
-                        .gradientForeground(colors: [.green, .blue])
-                }
+                Text("Up to date")
+                    .modifier(lowerCase())
                 Image(systemName: "checkmark.seal.fill")
-                    .gradientForeground(colors: [.green, .blue])
-
+                    .foregroundColor(.purple)
+                
             }
         }
     }

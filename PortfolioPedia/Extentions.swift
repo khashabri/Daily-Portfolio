@@ -117,3 +117,15 @@ extension View {
             .mask(self)
     }
 }
+
+struct lowerCase: ViewModifier {
+    func body(content: Content) -> some View {
+        Group {
+            if #available(iOS 14, *) {
+                AnyView(content.textCase(.none))
+            } else {
+                content
+            }
+        }
+    }
+}
