@@ -293,7 +293,7 @@ struct totalInfoSubview: View {
                             .animation(nil)
                     }
                     HStack {
-                        Text("Rendite")
+                        Text("Yield")
                         Spacer()
                         if loadingState == LoadingState.allDone{
                             Button(action: { self.showCharts.toggle()}){
