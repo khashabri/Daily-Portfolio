@@ -334,7 +334,8 @@ struct totalInfoHeader: View {
     @Binding var handelDicts: HandelDicts
     @Binding var totalNumbers: TotalNumbers
     @Binding var erroredComps: [String]
-    @State private var showingAlert = false
+    @State private var showingErrorAlert = false
+    @State private var showingUpToDateAlert = false
     
     var body: some View {
         HStack {
@@ -356,11 +357,11 @@ struct totalInfoHeader: View {
             case .errorOccured:
                 HStack{
                     Button(action: {
-                        self.showingAlert = true
+                        self.showingErrorAlert = true
                     }) {
                         Image(systemName: "exclamationmark.bubble")
                     }
-                    .alert(isPresented:$showingAlert) {
+                    .alert(isPresented: $showingErrorAlert) {
                         Alert(title: Text("Error Message"), message: Text("Server didn't fully respond for the following companies: " + erroredComps.joined(separator: ", ")), dismissButton: .default(Text("Dismiss")))
                     }
                     
@@ -370,11 +371,14 @@ struct totalInfoHeader: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
             case .allDone:
-                Text("Up to date")
-                    .modifier(lowerCase())
-                Image(systemName: "checkmark.seal.fill")
-                    .foregroundColor(.purple)
-                
+                Button(action: { self.showingUpToDateAlert = true }) {
+                    Text("Up to date")
+                        .modifier(lowerCase())
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundColor(.purple)
+                }.alert(isPresented: $showingUpToDateAlert) {
+                    Alert(title: Text("Up to date!"), message: Text("Your portfolio is already updated. Next server check will be on 2020-10-12"), dismissButton: .default(Text("Got it!")))
+                } 
             }
         }
     }
