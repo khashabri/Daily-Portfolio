@@ -18,7 +18,7 @@ struct ChartView: View {
         NavigationView{
             ScrollView{
                 VStack() {
-                    if totalNumbers.totalGainHistory.isEmpty || totalNumbers.totalGainHistory == [0.0] {
+                    if totalNumbers.totalGainHistory.isEmpty {
                         Text("Your portfolio is currently empty. Fill in your stocks and come back again!")
                     }else{
                         Text("Portfolio yield history")

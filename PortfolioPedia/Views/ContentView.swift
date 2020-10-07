@@ -215,12 +215,13 @@ struct ContentView: View {
         }
         // removing zeros which may be there because of deleting an earlier purchase
         self.totalNumbers.totalGainHistory = removeEndZeros(self.totalNumbers.totalGainHistory)
-        (self.totalNumbers.totalGainHistory.last != 0) ? self.totalNumbers.totalGainHistory.append(0) : () // gain should begin from a 0
+        !(isAboutZero(self.totalNumbers.totalGainHistory.last!)) ? self.totalNumbers.totalGainHistory.append(0) : () // gain should begin from a 0
         
         self.totalNumbers.totalInvestment -= handelDicts.portfolioListInvestDict[removedKey]!
         self.totalNumbers.totalValue -= (handelDicts.portfolioListInvestDict[removedKey]! + handelDicts.portfolioListGainDict[removedKey]!)
         self.totalNumbers.rendite -= handelDicts.portfolioListGainDict[removedKey]!
         self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
+        (self.totalNumbers.totalGainHistory.count == 1 && isAboutZero(self.totalNumbers.totalGainHistory[0])) ? self.totalNumbers.totalGainHistory = [Double]() : ()
         
         self.handelDicts.companiesEntriesDict[removedKey] = nil
         self.handelDicts.portfolioListInvestDict[removedKey] = nil
