@@ -46,13 +46,13 @@ struct ContentView: View {
                         .onAppear{ buildElements() }
                         
                         if colorScheme == .dark{
-                            SlideOverCardBlack(tabBarHeight: .constant(geometry.size.height-23), $position, backgroundStyle: $background) {
+                            SlideOverCardBlack(tabBarHeight: .constant(geometry.size.height-22), $position, backgroundStyle: $background) {
                                 VStack {
                                     totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
                                 }
                             }
                         }else{
-                            SlideOverCardLight(tabBarHeight: .constant(geometry.size.height-23), $position, backgroundStyle: $background) {
+                            SlideOverCardLight(tabBarHeight: .constant(geometry.size.height-22), $position, backgroundStyle: $background) {
                                 VStack {
                                     totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
                                 }

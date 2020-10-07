@@ -130,7 +130,7 @@ struct Card: ViewModifier {
                 }
 
                 Handle()
-                content.padding(.top, 23)
+                content.padding(.top, 22)
             }
             .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .scaleEffect(x: 1, y: 1, anchor: .center)
