@@ -26,7 +26,8 @@ public struct SlideOverCardLight<Content> : View where Content : View {
     @Binding var backgroundStyle: BackgroundStyle
     var content: () -> Content
     
-    public init(tabBarHeight: Binding<CGFloat>, _ position: Binding<CardPosition> = .constant(.middle), backgroundStyle: Binding<BackgroundStyle> = .constant(.solid), content: @escaping () -> Content) {        self.content = content
+    public init(tabBarHeight: Binding<CGFloat>, _ position: Binding<CardPosition> = .constant(.middle), backgroundStyle: Binding<BackgroundStyle> = .constant(.solid), content: @escaping () -> Content) {
+        self.content = content
         self._tabBarHeight = tabBarHeight
         self._defaultPosition = position
         self._backgroundStyle = backgroundStyle
