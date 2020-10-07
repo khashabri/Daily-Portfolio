@@ -27,7 +27,7 @@ struct ChartView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(.top)
                             
-                            LineChart(yDataPoints: SampleData().totalNumbers.totalGainHistory.reversed(), withYLabels: true, withAnimation: true)
+                            LineChart(yDataPoints: totalNumbers.totalGainHistory.reversed(), withYLabels: true, withAnimation: true)
                                 .padding([.leading, .bottom, .trailing])
                                 .frame(width: geo.size.width, height: 230, alignment: .center)
                             

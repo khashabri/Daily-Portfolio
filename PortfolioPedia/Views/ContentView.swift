@@ -373,6 +373,7 @@ struct totalInfoHeader: View {
             case .allDone:
                 Button(action: { self.showingUpToDateAlert = true }) {
                     Text("Up to date")
+                        .foregroundColor(.gray)
                         .modifier(lowerCase())
                     Image(systemName: "checkmark.seal.fill")
                         .foregroundColor(.purple)
