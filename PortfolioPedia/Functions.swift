@@ -417,21 +417,21 @@ func notificationPermission() -> Bool {
     return authorizationStatus == .authorized
 }
 
-func aboveTabBarPosition(screenSize: CGRect) -> CGFloat{
-    switch screenSize {
-    case CGRect(x: 0.0, y: 0.0, width: 375.0, height: 667.0): // iPhone 8 & iPhone SE
-        return 485
-    case CGRect(x: 0.0, y: 0.0, width: 414.0, height: 736.0): // iPhone 8 Plus
-        return 551
-    case CGRect(x: 0.0, y: 0.0, width: 414.0, height: 896.0): // iPhone 11
-        return 650
-    case CGRect(x: 0.0, y: 0.0, width: 375.0, height: 812.0): // iPhone 11 Pro
-        return 569
-    case CGRect(x: 0.0, y: 0.0, width: 414.0, height: 896.0): // iPhone 11 Pro Max
-        return 654
-    case CGRect(x: 0.0, y: 0.0, width: 320.0, height: 568.0): // iPod touch
-        return 390
-    default:
-        return screenSize.height/1.425
-    }
-}
+//func aboveTabBarPosition(screenSize: CGRect) -> CGFloat{
+//    switch screenSize {
+//    case CGRect(x: 0.0, y: 0.0, width: 375.0, height: 667.0): // iPhone 8 & iPhone SE
+//        return 485
+//    case CGRect(x: 0.0, y: 0.0, width: 414.0, height: 736.0): // iPhone 8 Plus
+//        return 551
+//    case CGRect(x: 0.0, y: 0.0, width: 414.0, height: 896.0): // iPhone 11
+//        return 650
+//    case CGRect(x: 0.0, y: 0.0, width: 375.0, height: 812.0): // iPhone 11 Pro
+//        return 569
+//    case CGRect(x: 0.0, y: 0.0, width: 414.0, height: 896.0): // iPhone 11 Pro Max
+//        return 654
+//    case CGRect(x: 0.0, y: 0.0, width: 320.0, height: 568.0): // iPod touch
+//        return 390
+//    default:
+//        return screenSize.height/1.425
+//    }
+//}

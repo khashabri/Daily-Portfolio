@@ -30,30 +30,32 @@ struct ContentView: View {
     var body: some View {
         TabView {
             NavigationView{
-                ZStack(alignment: Alignment.top){
-                    List() {
-                        
-                        ForEach(self.handelDicts.portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
+                GeometryReader { geometry in
+                    ZStack(alignment: Alignment.top){
+                        List() {
                             
-                            NavigationLink(destination: MoreInfo(dataEntries: self.handelDicts.companiesEntriesDict[key]!)) {
-                                RowViewPortfolio(dataEntries: self.handelDicts.companiesEntriesDict[key]! ,Name: (self.handelDicts.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.handelDicts.portfolioListInvestDict[key]!, portfolioListGainDict: self.handelDicts.portfolioListGainDict[key]!, portfolioListPercentageDict: self.handelDicts.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.handelDicts.portfolioListShareNumberDict[key]!)
+                            ForEach(self.handelDicts.portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
+                                
+                                NavigationLink(destination: MoreInfo(dataEntries: self.handelDicts.companiesEntriesDict[key]!)) {
+                                    RowViewPortfolio(dataEntries: self.handelDicts.companiesEntriesDict[key]! ,Name: (self.handelDicts.companiesEntriesDict[key]?.first!.compName)!, portfolioListInvestDict: self.handelDicts.portfolioListInvestDict[key]!, portfolioListGainDict: self.handelDicts.portfolioListGainDict[key]!, portfolioListPercentageDict: self.handelDicts.portfolioListPercentageDict[key]!, portfolioListShareNumberDict: self.handelDicts.portfolioListShareNumberDict[key]!)
+                                }
                             }
+                            .onDelete(perform: self.deleteRow)
                         }
-                        .onDelete(perform: self.deleteRow)
-                    }
-                    .listStyle(DefaultListStyle())
-                    .onAppear{ buildElements() }
-                    
-                    if colorScheme == .dark{
-                        SlideOverCardBlack($position, backgroundStyle: $background) {
-                            VStack {
-                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
+                        .listStyle(DefaultListStyle())
+                        .onAppear{ buildElements() }
+                        
+                        if colorScheme == .dark{
+                            SlideOverCardBlack(tabBarHeight: .constant(geometry.size.height-23), $position, backgroundStyle: $background) {
+                                VStack {
+                                    totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
+                                }
                             }
-                        }
-                    }else{
-                        SlideOverCardLight($position, backgroundStyle: $background) {
-                            VStack {
-                                totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
+                        }else{
+                            SlideOverCardLight(tabBarHeight: .constant(geometry.size.height-23), $position, backgroundStyle: $background) {
+                                VStack {
+                                    totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
+                                }
                             }
                         }
                     }
@@ -85,7 +87,6 @@ struct ContentView: View {
                     Image(systemName: "gear")
                     Text("Settings")
                 }
-            
         }
     }
     

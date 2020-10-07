@@ -3,34 +3,37 @@ import SwiftUI
 
 @available(iOS 13.0, *)
 public struct SlideOverCardBlack<Content> : View where Content : View {
+    @Binding var tabBarHeight: CGFloat
     @Binding var defaultPosition : CardPosition
     @Binding var backgroundStyle: BackgroundStyle
     var content: () -> Content
     
-    public init(_ position: Binding<CardPosition> = .constant(.middle), backgroundStyle: Binding<BackgroundStyle> = .constant(.solid), content: @escaping () -> Content) {
+    public init(tabBarHeight: Binding<CGFloat>,_ position: Binding<CardPosition> = .constant(.middle), backgroundStyle: Binding<BackgroundStyle> = .constant(.solid), content: @escaping () -> Content) {
         self.content = content
+        self._tabBarHeight = tabBarHeight
         self._defaultPosition = position
         self._backgroundStyle = backgroundStyle
     }
      
     public var body: some View {
-        ModifiedContent(content: self.content(), modifier: Card(colorScheme: false, position: self.$defaultPosition, backgroundStyle: self.$backgroundStyle))
+        ModifiedContent(content: self.content(), modifier: Card(tabBarHeight: self.$tabBarHeight, colorScheme: false, position: self.$defaultPosition, backgroundStyle: self.$backgroundStyle))
        }
 }
 
 public struct SlideOverCardLight<Content> : View where Content : View {
+    @Binding var tabBarHeight: CGFloat
     @Binding var defaultPosition : CardPosition
     @Binding var backgroundStyle: BackgroundStyle
     var content: () -> Content
     
-    public init(_ position: Binding<CardPosition> = .constant(.middle), backgroundStyle: Binding<BackgroundStyle> = .constant(.solid), content: @escaping () -> Content) {
-        self.content = content
+    public init(tabBarHeight: Binding<CGFloat>, _ position: Binding<CardPosition> = .constant(.middle), backgroundStyle: Binding<BackgroundStyle> = .constant(.solid), content: @escaping () -> Content) {        self.content = content
+        self._tabBarHeight = tabBarHeight
         self._defaultPosition = position
         self._backgroundStyle = backgroundStyle
     }
      
     public var body: some View {
-        ModifiedContent(content: self.content(), modifier: Card(colorScheme: true, position: self.$defaultPosition, backgroundStyle: self.$backgroundStyle))
+        ModifiedContent(content: self.content(), modifier: Card(tabBarHeight: self.$tabBarHeight, colorScheme: true, position: self.$defaultPosition, backgroundStyle: self.$backgroundStyle))
        }
 }
 
@@ -42,12 +45,12 @@ public enum CardPosition: CGFloat {
     
     case bottom , middle, top
     
-    func offsetFromTop() -> CGFloat {
+    func offsetFromTop(tabBarHeight: CGFloat) -> CGFloat {
         switch self {
         case .bottom:
-            return tabBarPosition!
+            return tabBarHeight
         case .middle:
-            return UIScreen.main.bounds.height/2.8
+            return tabBarHeight/2
         case .top:
             return 80 // 0 oberste Rand vor dem Safe Area
         }
@@ -81,6 +84,7 @@ enum DragState {
 
 
 struct Card: ViewModifier {
+    @Binding var tabBarHeight: CGFloat
     @State var colorScheme: Bool
     @GestureState var dragState: DragState = .inactive
     @Binding var position : CardPosition
@@ -125,12 +129,12 @@ struct Card: ViewModifier {
                 }
 
                 Handle()
-                content.padding(.top, 20)
+                content.padding(.top, 23)
             }
             .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .scaleEffect(x: 1, y: 1, anchor: .center)
         }
-        .offset(y:  max(0, self.position.offsetFromTop() + self.dragState.translation.height))
+        .offset(y:  max(0, self.position.offsetFromTop(tabBarHeight: tabBarHeight) + self.dragState.translation.height))
         .animation((self.dragState.isDragging ? animation : animation))
         .gesture(drag)
     }
@@ -146,10 +150,10 @@ struct Card: ViewModifier {
         
         // Determining the direction of the drag gesture and its distance from the top
         let dragDirection = drag.predictedEndLocation.y - drag.location.y
-        let offsetFromTopOfView = position.offsetFromTop() + drag.translation.height
+        let offsetFromTopOfView = position.offsetFromTop(tabBarHeight: tabBarHeight) + drag.translation.height
         
         // Determining whether drawer is above or below `.partiallyRevealed` threshold for snapping behavior.
-        if offsetFromTopOfView <= CardPosition.middle.offsetFromTop() {
+        if offsetFromTopOfView <= CardPosition.middle.offsetFromTop(tabBarHeight: tabBarHeight) {
 //            higherStop = .top
             higherStop = .middle
             lowerStop = .middle
@@ -160,7 +164,7 @@ struct Card: ViewModifier {
         }
         
         // Determining whether drawer is closest to top or bottom
-        if (offsetFromTopOfView - higherStop.offsetFromTop()) < (lowerStop.offsetFromTop() - offsetFromTopOfView) {
+        if (offsetFromTopOfView - higherStop.offsetFromTop(tabBarHeight: tabBarHeight)) < (lowerStop.offsetFromTop(tabBarHeight: tabBarHeight) - offsetFromTopOfView) {
             nearestPosition = higherStop
         } else {
             nearestPosition = lowerStop
