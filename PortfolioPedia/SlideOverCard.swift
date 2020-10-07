@@ -53,7 +53,7 @@ public enum CardPosition: CGFloat {
         case .middle:
             return tabBarHeight/2
         case .top:
-            return 80 // 0 oberste Rand vor dem Safe Area
+            return tabBarHeight/4
         }
     }
 }
