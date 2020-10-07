@@ -141,16 +141,13 @@ struct PieChartView: View {
                         VStack {
                             Circle()
                                 .foregroundColor(dataSet.color)
-                                .frame(width: 25, height: 25)
                             Text(dataSet.name).font(.footnote)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.01)
                         }.padding(.horizontal)
                     }
                 }
-                .padding()
             }
-            
         }
     }
     

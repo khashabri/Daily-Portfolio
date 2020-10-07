@@ -26,10 +26,10 @@ struct ChartView: View {
                                 .font(.headline)
                                 .multilineTextAlignment(.center)
                                 .padding(.top)
-                            LineChart(yDataPoints: totalNumbers.totalGainHistory.reversed(), withYLabels: true, withAnimation: true)
-                                .padding(.horizontal)
-                                .frame(width: geo.size.width, height: 200, alignment: .center)
-                                .padding(.bottom, 20)
+                            
+                            LineChart(yDataPoints: SampleData().totalNumbers.totalGainHistory.reversed(), withYLabels: true, withAnimation: true)
+                                .padding([.leading, .bottom, .trailing])
+                                .frame(width: geo.size.width, height: 230, alignment: .center)
                             
                             Divider()
                             Text("Current value distribution")
@@ -38,12 +38,11 @@ struct ChartView: View {
                                 .padding(.top)
                             PieChartView(handelDicts: handelDicts)
                         }
-                    }
-                    
-                    .navigationBarTitle(Text("Charts"), displayMode: .inline)
-                    .navigationBarItems(trailing: Button(action: {self.presentationMode.wrappedValue.dismiss()}) { Text("Done").bold()})
+                    }.padding(.bottom, 100)
                 }
             }
+            .navigationBarTitle(Text("Charts"), displayMode: .inline)
+            .navigationBarItems(trailing: Button(action: {self.presentationMode.wrappedValue.dismiss()}) { Text("Done").bold()})
         }
     }
 }
