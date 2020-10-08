@@ -20,6 +20,7 @@ struct SettingView: View {
     // for email sending
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var showingMail = false
+    @State var unavailabilityText = ""
     
     var body: some View {
         NavigationView {
@@ -39,7 +40,7 @@ struct SettingView: View {
                         }
                 }
                 
-                Section(header: Text("About"), footer: Text("Company logos are provided by clearbit.com")) {
+                Section(header: Text("About"), footer: Text("Company logos are provided by clearbit.com") + Text(unavailabilityText).foregroundColor(.purple)) {
                     HStack {
                         Text("Version")
                         Spacer()
@@ -92,6 +93,7 @@ struct SettingView: View {
                     }
                 }
             }
+            .onAppear{ !MFMailComposeViewController.canSendMail() ? self.unavailabilityText = "\nIn-App Email seems to not work on your device. You can still contact me via Email at khashabri@gmail.com. 📨" : ()}
             .navigationBarTitle("Settings")
         }
     }
@@ -104,28 +106,39 @@ struct notiFooter: View {
         VStack{
             Text("Get notified every day about half an hour after market closure to check your latest portfolio state.")
             if !notificationPermission() && toggleIsOn{
-                Text("Notifications permission denied! Enable app notification in system settings and retoggle this afterwards.").foregroundColor(.red)
+                Button(action: {self.settingsOpener()} ){
+                   Text("Notifications permission denied! Enable app notification in system").foregroundColor(.red)
+                        + Text(" Settings ").foregroundColor(.blue) + Text("and retoggle this afterwards.").foregroundColor(.red)
+                }
+            }
+        }
+    }
+    
+    private func settingsOpener(){
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }
     }
 }
 
 struct MailView: UIViewControllerRepresentable {
-
+    
     @Environment(\.presentationMode) var presentation
     @Binding var result: Result<MFMailComposeResult, Error>?
-
+    
     class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
-
+        
         @Binding var presentation: PresentationMode
         @Binding var result: Result<MFMailComposeResult, Error>?
-
+        
         init(presentation: Binding<PresentationMode>,
              result: Binding<Result<MFMailComposeResult, Error>?>) {
             _presentation = presentation
             _result = result
         }
-
+        
         func mailComposeController(_ controller: MFMailComposeViewController,
                                    didFinishWith result: MFMailComposeResult,
                                    error: Error?) {
@@ -139,26 +152,26 @@ struct MailView: UIViewControllerRepresentable {
             self.result = .success(result)
         }
     }
-
+    
     func makeCoordinator() -> Coordinator {
         return Coordinator(presentation: presentation,
                            result: $result)
     }
-
+    
     func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
         let vc = MFMailComposeViewController()
         vc.setToRecipients(["khashabri@gmail.com"])
         vc.setSubject("PortfolioPedia: Bug Report / Suggestion")
-//        vc.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
+        //        vc.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
         vc.mailComposeDelegate = context.coordinator
         return vc
     }
-
+    
     func updateUIViewController(_ uiViewController: MFMailComposeViewController,
                                 context: UIViewControllerRepresentableContext<MailView>) {
-
+        
     }
-
+    
 }
 
 //struct SettingView_Previews: PreviewProvider {
