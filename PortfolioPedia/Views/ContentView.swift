@@ -378,7 +378,7 @@ struct totalInfoHeader: View {
                     Image(systemName: "checkmark.seal.fill")
                         .foregroundColor(.purple)
                 }.alert(isPresented: $showingUpToDateAlert) {
-                    Alert(title: Text("Up to date!"), message: Text("Your portfolio is already updated. Next server check will be on 2020-10-12"), dismissButton: .default(Text("Got it!")))
+                    Alert(title: Text("Up to date!"), message: Text("Your portfolio is already updated. Next server check will be on " + nextServerCheck()), dismissButton: .default(Text("Got it!")))
                 } 
             }
         }

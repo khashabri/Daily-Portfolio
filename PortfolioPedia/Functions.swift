@@ -164,25 +164,57 @@ func get_yesterday(_ of: Date) -> Date {
     return lastDayDate
 }
 
-// MARK: - FIX: todaysMarketClosure and now() should be timezone dependent
+func get_tomorrow(_ of: Date) -> Date {
+    let lastDayDate = Calendar.current.date(byAdding: .day, value: +1, to: of)!
+    return lastDayDate
+}
 
-//
-func refreshDateThreshold() -> String{
+func nextServerCheck() -> String {
     let calendar = Calendar.current
+    let formatter = DateFormatter()
+    formatter.timeZone = TimeZone(identifier: "UTC")
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     
-    // Calculate in my local time whether the market closure is passed for today.
-    let todaysMarketClosure = calendar.date(bySettingHour: 22, minute: 31, second: 0, of: Date())!
-    let now = Date()
-    var threshold = todaysMarketClosure
+    var nextServerCheck_Date = formatter.date(from: refreshDateThreshold())!
     
-    (now < todaysMarketClosure) ? threshold = get_yesterday(threshold) : ()
+    if Date() < nextServerCheck_Date{
+        formatter.timeZone = .current
+        return formatter.string(from: nextServerCheck_Date)
+    }else{
+        nextServerCheck_Date = get_tomorrow(nextServerCheck_Date)
+        while calendar.isDateInWeekend(nextServerCheck_Date){
+            nextServerCheck_Date = get_tomorrow(nextServerCheck_Date)
+        }
+        formatter.timeZone = .current
+        return formatter.string(from: nextServerCheck_Date)
+    }
+}
+
+func refreshDateThreshold() -> String{
+    
+    // Make string of UTC closure of today
+    let calendar = Calendar.current
+    let formatter = DateFormatter()
+    formatter.timeZone = TimeZone(identifier: "UTC")
+    formatter.dateFormat = "yyyy-MM-dd"
+    let todaysUTCMarketClosure_String = formatter.string(from: Date()) + " 20:31:00"
+
+    // Convert to Date format to be comparable
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let todaysUTCMarketClosure_Date = formatter.date(from: todaysUTCMarketClosure_String)!
+    
+    // Finding the latest available server data
+    var threshold = todaysUTCMarketClosure_Date
+    
+    while (Date() < threshold) {
+        threshold = get_yesterday(threshold)
+    }
     
     while calendar.isDateInWeekend(threshold) {
         threshold = get_yesterday(threshold)
     }
     
-    // Convert my local result to UTC string result
-    let formatter = DateFormatter()
+    // Convert the result to a UTC string
     formatter.timeZone = TimeZone(identifier: "UTC")
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
