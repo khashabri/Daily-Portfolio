@@ -35,7 +35,13 @@ class NetworkingManagerPortfolio: ObservableObject {
         if let loadedWelcome = load_Welcome(compSymbol: self.compPortfolioOutput.compSymbol){
             if loadedWelcome.lastServerCheckTime! >= refreshDateThreshold(){
                 self.welcome = loadedWelcome
-                self.makeCalculations()
+                do{
+                    try self.makeCalculations()
+                } catch{
+                    completion(.failure(.badDate(compName: self.compPortfolioOutput.compName)))
+                    return
+                }
+                
                 
                 save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
                 
@@ -52,7 +58,12 @@ class NetworkingManagerPortfolio: ObservableObject {
                 self.welcome = try JSONDecoder().decode(Welcome.self, from: data)
                 DispatchQueue.main.async {
                     
-                    self.makeCalculations()
+                    do{
+                        try self.makeCalculations()
+                    } catch{
+                        completion(.failure(.badDate(compName: self.compPortfolioOutput.compName)))
+                        return
+                    }
                     
                     save_CompPortfolioOutput(compPortfolioOutput: self.compPortfolioOutput, fileName: self.compPortfolioOutput.savingKey)
                     save_Welcome(welcome: self.welcome!, compSymbol: self.compPortfolioOutput.compSymbol)
@@ -70,7 +81,7 @@ class NetworkingManagerPortfolio: ObservableObject {
         
     }
     
-    func makeCalculations(){
+    func makeCalculations() throws{
         var workingDate = self.compPortfolioOutput.purchaseDate
         let totDatesArr = welcome!.compData.keys.sorted(by: >)
         
@@ -100,6 +111,7 @@ class NetworkingManagerPortfolio: ObservableObject {
         
         
         // Making up portfolio data
+        var counter = 0
         while !totDatesArr.contains(workingDate) {
             workingDate = workingDate.convertToNextDate()
             
@@ -107,6 +119,9 @@ class NetworkingManagerPortfolio: ObservableObject {
                 workingDate = totDatesArr[0]
                 break
             }
+            
+            if counter == 7 { throw  NetworkError.badDate(compName: self.compPortfolioOutput.compName)}
+            counter += 1
         }
         
         let thatDatePosition = totDatesArr.firstIndex(of: workingDate)!

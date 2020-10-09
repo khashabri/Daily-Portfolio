@@ -124,10 +124,23 @@ struct ContentView: View {
                         calculate(compPortfolioOutput: compPortfolioOutput)
                         pionierGroup.leave()
                         
-                    case .failure(let erroredComp):
-                        self.loadingState = .errorOccured
-                        let erroredCompName = erroredComp.get()
-                        self.erroredComps.contains(erroredCompName) ? () : self.erroredComps.append(erroredCompName)
+                    case .failure(let networkError):
+                        switch networkError {
+                        case .badURL(let compName):
+                            self.loadingState = .errorOccured(errorType: .badURL(compName: compName))
+                            let erroredCompName = compName
+                            self.erroredComps.contains(erroredCompName) ? () : self.erroredComps.append(erroredCompName)
+                            
+                        case .badDate(let compName):
+                            self.loadingState = .errorOccured(errorType: .badDate(compName: compName))
+                            let erroredCompName = compName
+                            self.erroredComps.contains(erroredCompName) ? () : self.erroredComps.append(erroredCompName)
+                            
+                            // Removing the bad entry from portfolio. If let because it might be already deleted
+                            if let tmpIndx = self.settings.userInputs.findByID(id: input.id){
+                                self.settings.userInputs.remove(at: tmpIndx)
+                            }
+                        }
                     }
                 }
             }else{
@@ -149,8 +162,21 @@ struct ContentView: View {
                             calculate(compPortfolioOutput: compPortfolioOutput)
                             followerGroup.leave()
                             
-                        // this will actually never happend, since it is done offline
-                        case .failure( _): break
+                        case .failure(let networkError):
+                            switch networkError {
+                            case .badURL( _): break
+                            // this will actually never happend, since it is done offline
+                                
+                            case .badDate(let compName):
+                                self.loadingState = .errorOccured(errorType: .badDate(compName: compName))
+                                let erroredCompName = compName
+                                self.erroredComps.contains(erroredCompName) ? () : self.erroredComps.append(erroredCompName)
+                                
+                                // removing the bad entry from portfolio. If let because it might be already deleted
+                                if let tmpIndx = self.settings.userInputs.findByID(id: input.id){
+                                    self.settings.userInputs.remove(at: tmpIndx)
+                                }
+                            }
                         }
                     }
                 }else{
@@ -297,7 +323,7 @@ struct totalInfoSubview: View {
                     HStack {
                         Text("Yield")
                         Spacer()
-                        if loadingState == LoadingState.allDone{
+                        if loadingState.type() == "allDone"{
                             Button(action: { self.showCharts.toggle()}){
                                 HStack{
                                     Image(systemName: "chart.pie")
@@ -354,22 +380,46 @@ struct totalInfoHeader: View {
                 .padding(.leading, 15)
                 .lineLimit(1)
                 .minimumScaleFactor(0.2)
-            case .errorOccured:
-                HStack{
-                    Button(action: {
-                        self.showingErrorAlert = true
-                    }) {
-                        Image(systemName: "exclamationmark.bubble")
+            case .errorOccured(let errorType):
+                switch errorType{
+                case .badURL( _):
+                    HStack{
+                        Button(action: {
+                            self.showingErrorAlert = true
+                        }) {
+                            Image(systemName: "exclamationmark.bubble")
+                                .foregroundColor(.orange)
+                            Text("Something went wrong. Retry shortly.").bold()
+                                .foregroundColor(.gray)
+                                .modifier(lowerCase())
+                        }
+                        .alert(isPresented: $showingErrorAlert) {
+                            Alert(title: Text("Error Message"), message: Text("Server didn't fully respond for the following companies: " + erroredComps.joined(separator: ", ")), dismissButton: .default(Text("Dismiss")))
+                        }
                     }
-                    .alert(isPresented: $showingErrorAlert) {
-                        Alert(title: Text("Error Message"), message: Text("Server didn't fully respond for the following companies: " + erroredComps.joined(separator: ", ")), dismissButton: .default(Text("Dismiss")))
+                    .padding(.leading, 15)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.2)
+                case .badDate( _):
+                    HStack{
+                        Button(action: {
+                            self.showingErrorAlert = true
+                        }) {
+                            Image(systemName: "exclamationmark.bubble")
+                                .foregroundColor(.orange)
+                            Text("Invalid date!").bold()
+                                .foregroundColor(.gray)
+                                .modifier(lowerCase())
+                        }
+                        .alert(isPresented: $showingErrorAlert) {
+                            Alert(title: Text("Error Message"), message: Text("It seems that the following company has had no IPO at that time: " + erroredComps.joined(separator: ", ")), dismissButton: .default(Text("Dismiss")))
+                        }
                     }
-                    
-                    Text("Something went wrong. Retry shortly.").bold()
+                    .padding(.leading, 15)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.2)
                 }
-                .padding(.leading, 15)
-                .lineLimit(1)
-                .minimumScaleFactor(0.2)
+
             case .allDone:
                 Button(action: { self.showingUpToDateAlert = true }) {
                     Text("Up to date")
@@ -378,7 +428,7 @@ struct totalInfoHeader: View {
                     Image(systemName: "checkmark.seal.fill")
                         .foregroundColor(.purple)
                 }.alert(isPresented: $showingUpToDateAlert) {
-                    Alert(title: Text("Up to date!"), message: Text("Your portfolio is already updated. Next server check will be on " + nextServerCheck()), dismissButton: .default(Text("Got it!")))
+                    Alert(title: Text("Up to date!"), message: Text("Your portfolio is already updated. Next server check will be on:\n" + nextServerCheck()), dismissButton: .default(Text("Got it!")))
                 } 
             }
         }

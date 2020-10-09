@@ -11,17 +11,31 @@ import Foundation
 // MARK: - Enums
 enum NetworkError: Error {
     case badURL(compName: String)
+    case badDate(compName: String)
     
-    func get() -> String {
+    func compName() -> String {
          switch self {
          case .badURL(let string):
+             return string
+         case .badDate(let string):
              return string
          }
      }
 }
 
 enum LoadingState {
-    case isLoading, errorOccured, allDone
+    case isLoading, errorOccured(errorType: NetworkError), allDone
+    
+    func type() -> String {
+         switch self {
+         case .isLoading:
+             return "isLoading"
+         case .errorOccured( _):
+             return "errorOccured"
+         case .allDone:
+             return "allDone"
+         }
+     }
 }
 
 // MARK: - Welcome

@@ -42,7 +42,10 @@ struct LogsView: View {
         // removing zeros which may be there because of deleting an earlier purchase
         self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory - removedEntry.gainHistory
         self.totalNumbers.totalGainHistory = removeEndZeros(self.totalNumbers.totalGainHistory)
-        (self.totalNumbers.totalGainHistory.last != 0) ? self.totalNumbers.totalGainHistory.append(0) : () // gain should begin from a 0
+        !(isAboutZero(self.totalNumbers.totalGainHistory.last!)) ? self.totalNumbers.totalGainHistory.append(0) : () // gain should begin from a 0
+        
+        // If all elements are deleted, clean up totalGainHistory
+        (self.totalNumbers.totalGainHistory.count == 1 && isAboutZero(self.totalNumbers.totalGainHistory[0])) ? self.totalNumbers.totalGainHistory = [Double]() : ()
         
         self.totalNumbers.totalInvestment -= removedEntry.totalInvestment
         self.totalNumbers.totalValue -= removedEntry.totalCurrentValue
