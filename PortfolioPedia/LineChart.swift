@@ -153,8 +153,8 @@ struct LineChart: View {
                     LineChartShape(dataPoints: yDataPoints, drawLine: true, markPoints: false)
                         .trim(from: 0, to: percentage) // breaks path by parts, animatable
                         .stroke(colorScheme == .dark ? darkModelineColor : nonDarkModelineColor, lineWidth: lineWidth)
-                        .border(colorScheme == .dark ? Color.white : Color.black)
                         .animation(.easeOut(duration: withAnimation ? 1 : 0)) // animate
+                        .border(colorScheme == .dark ? Color.white : Color.black)
                         .onAppear {
                             self.percentage = 1 // activates animation for 0 to the end of frame
                         }
