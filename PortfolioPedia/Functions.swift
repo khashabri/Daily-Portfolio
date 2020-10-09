@@ -385,7 +385,7 @@ func enableNotifications(){
     // Schedule Notification
     let content = UNMutableNotificationContent()
     content.title = "New server data available"
-    content.body = "Open the app to check the latest rendite."
+    content.body = "Open the app to check the latest stock return."
     content.sound = UNNotificationSound.default
     
     // given UTC trigger time, convert it to the local device time for local notifications
