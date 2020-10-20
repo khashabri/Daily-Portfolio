@@ -68,6 +68,12 @@ extension Array where Element == UserInput{
     }
 }
 
+extension Array where Element == CompPortfolioOutput{
+    mutating func findByID(id: String) -> Int?{
+        return self.firstIndex{ $0.id == id}
+    }
+}
+
 extension Dictionary where Key == String , Value == CompData {
     // get values for multiple keys
     func values(of: [String]) -> [Double]{

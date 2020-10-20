@@ -134,7 +134,7 @@ func isInt(_ x: String) -> Bool{
 
 func savingKeyMaker(_ userInput: UserInput) -> String{
     let userInput = userInput
-    return userInput.compSymbol + userInput.purchaseDate + String(userInput.purchaseAmount) + String(userInput.manualPurchasedPrice)
+    return userInput.id + userInput.compSymbol + userInput.purchaseDate + String(userInput.purchaseAmount) + String(userInput.manualPurchasedPrice)
 }
 
 func save_CompPortfolioOutput(compPortfolioOutput: CompPortfolioOutput, fileName: String){
