@@ -197,7 +197,7 @@ func refreshDateThreshold() -> String{
     let formatter = DateFormatter()
     formatter.timeZone = TimeZone(identifier: "UTC")
     formatter.dateFormat = "yyyy-MM-dd"
-    let todaysUTCMarketClosure_String = formatter.string(from: Date()) + " 20:31:00"
+    let todaysUTCMarketClosure_String = formatter.string(from: Date()) + " 21:31:00"
 
     // Convert to Date format to be comparable
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

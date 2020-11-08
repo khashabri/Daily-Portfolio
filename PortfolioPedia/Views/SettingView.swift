@@ -40,7 +40,7 @@ struct SettingView: View {
                         }
                 }
                 
-                Section(header: Text("About"), footer: Text("Company logos are provided by clearbit.com") + Text(unavailabilityText).foregroundColor(.purple)) {
+                Section(header: Text("About"), footer: Text("Company logos are provided by") + Text(" Clearbit").bold() + Text(unavailabilityText).foregroundColor(.purple)) {
                     HStack {
                         Text("Version")
                         Spacer()
