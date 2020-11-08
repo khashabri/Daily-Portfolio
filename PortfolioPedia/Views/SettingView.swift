@@ -40,7 +40,14 @@ struct SettingView: View {
                         }
                 }
                 
-                Section(header: Text("About"), footer: Text("Company logos are provided by") + Text(" Clearbit").bold() + Text(unavailabilityText).foregroundColor(.purple)) {
+                Section(footer: Text("Company logos are provided by") + Text(" Clearbit").bold()) {
+                    Toggle("Show logos", isOn: $settings.showLogos)
+                        .onReceive([self.settings.showLogos].publisher.first()) { (value) in
+                            save_UserSettings(userSettings: self.settings)
+                        }
+                }
+                
+                Section(header: Text("About"), footer: Text(unavailabilityText).foregroundColor(.purple)) {
                     HStack {
                         Text("Version")
                         Spacer()
@@ -93,7 +100,7 @@ struct SettingView: View {
                     }
                 }
             }
-            .onAppear{ !MFMailComposeViewController.canSendMail() ? self.unavailabilityText = "\nIn-App Email seems to not work on your device. You can still contact me via Email at khashabri@gmail.com. 📨" : ()}
+            .onAppear{ !MFMailComposeViewController.canSendMail() ? self.unavailabilityText = "In-App Email seems to not work on your device. You can still contact me via Email at khashabri@gmail.com. 📨" : ()}
             .navigationBarTitle("Settings")
         }
     }

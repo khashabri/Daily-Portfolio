@@ -15,16 +15,18 @@ class UserSettings: ObservableObject, Codable {
     @Published var userInputs: [UserInput]
     @Published var openedTimes: Int
     @Published var subscribed: Bool
+    @Published var showLogos: Bool
     @Published var notificationsEnabled: Bool
     
     enum CodingKeys: CodingKey {
-        case openedTimes, userInputs, subscribed, notificationsEnabled
+        case openedTimes, userInputs, subscribed, showLogos, notificationsEnabled
     }
     
-    init(userInputs: [UserInput], openedTimes: Int = 0, subscribed: Bool = false, notificationsEnabled: Bool = true) {
+    init(userInputs: [UserInput], openedTimes: Int = 0, subscribed: Bool = false, showLogos: Bool = true, notificationsEnabled: Bool = true) {
         self.userInputs = userInputs
         self.openedTimes = openedTimes
         self.subscribed = subscribed
+        self.showLogos = showLogos
         self.notificationsEnabled = notificationsEnabled
     }
     
@@ -33,6 +35,7 @@ class UserSettings: ObservableObject, Codable {
         userInputs = try container.decode([UserInput].self, forKey: .userInputs)
         openedTimes = try container.decode(Int.self, forKey: .openedTimes)
         subscribed = try container.decode(Bool.self, forKey: .subscribed)
+        showLogos = try container.decode(Bool.self, forKey: .showLogos)
         notificationsEnabled = try container.decode(Bool.self, forKey: .notificationsEnabled)
     }
 
@@ -41,6 +44,7 @@ class UserSettings: ObservableObject, Codable {
         try container.encode(userInputs, forKey: .userInputs)
         try container.encode(openedTimes, forKey: .openedTimes)
         try container.encode(subscribed, forKey: .subscribed)
+        try container.encode(showLogos, forKey: .showLogos)
         try container.encode(notificationsEnabled, forKey: .notificationsEnabled)
     }
 }

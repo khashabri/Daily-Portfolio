@@ -18,14 +18,18 @@ struct RowViewPortfolio: View {
     @State var portfolioListPercentageDict: Double
     @State var portfolioListShareNumberDict: Double
     
+    @EnvironmentObject var settings: UserSettings
+    
     var body: some View {
         HStack{
             HStack{
                 //                Image("tesla.com")
-                Image(myDic_Symb2Img[dataEntries[0].compSymbol]!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(10)
+                if settings.showLogos{
+                    Image(myDic_Symb2Img[dataEntries[0].compSymbol]!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(10)
+                }
                 
                 VStack(alignment: .leading) {
                     Text(Name)
