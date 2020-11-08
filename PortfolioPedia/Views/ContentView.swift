@@ -90,7 +90,7 @@ struct ContentView: View {
         }
     }
     
-    private func buildElements() {
+    private func buildElements(recalculate: Bool = true) {
         // Do nothing if everything is there
         if self.existingInputs.containsSameElements(as: self.settings.userInputs){
             self.loadingState = .allDone
@@ -184,15 +184,14 @@ struct ContentView: View {
             }
             
             followerGroup.notify(queue: .main) {
-                // removing duplicates if the case at all
-                let allEntries = handelDicts.companiesEntriesDict.values.flatMap{ $0 }
-                let dups = Dictionary(grouping: allEntries, by: {$0}).filter { $1.count > 1 }.keys
-                if !dups.isEmpty{
-                    for dup in dups{
-                        removeDuplicate(duplicate: dup)
-                    }
-                }
                 // finished
+                if recalculate{
+                    self.existingInputs = [UserInput]()
+                    self.handelDicts = HandelDicts()
+                    self.totalNumbers = TotalNumbers()
+                    buildElements(recalculate: false)
+                }
+                
                 self.loadingState = .allDone
             }
         }
@@ -271,31 +270,6 @@ struct ContentView: View {
         
         deleteCache_Welcome(compSymbol: removedKey)
         deleteCache_Articles(compSymbol: removedKey)
-    }
-    
-    private func removeDuplicate(duplicate: CompPortfolioOutput){
-        let key = duplicate.compSymbol
-        let tmpIndx = self.handelDicts.companiesEntriesDict[key]!.findByID(id: duplicate.id)!
-        self.handelDicts.companiesEntriesDict[key]!.remove(at: tmpIndx)
-        
-        // removing zeros which may be there because of deleting an earlier purchase
-        self.totalNumbers.totalGainHistory = self.totalNumbers.totalGainHistory - duplicate.gainHistory
-        self.totalNumbers.totalGainHistory = removeEndZeros(self.totalNumbers.totalGainHistory)
-        !(isAboutZero(self.totalNumbers.totalGainHistory.last!)) ? self.totalNumbers.totalGainHistory.append(0) : () // gain should begin from a 0
-        
-        // If all elements are deleted, clean up totalGainHistory
-        (self.totalNumbers.totalGainHistory.count == 1 && isAboutZero(self.totalNumbers.totalGainHistory[0])) ? self.totalNumbers.totalGainHistory = [Double]() : ()
-        
-        self.totalNumbers.totalInvestment -= duplicate.totalInvestment
-        self.totalNumbers.totalValue -= duplicate.totalCurrentValue
-        self.totalNumbers.rendite = self.totalNumbers.totalValue - self.totalNumbers.totalInvestment
-        self.totalNumbers.renditePercent = calcRateD(x: self.totalNumbers.totalValue, y: self.totalNumbers.totalInvestment)
-        
-        self.handelDicts.portfolioListInvestDict[key]! -= duplicate.totalInvestment
-        self.handelDicts.portfolioListGainDict[key]! -= duplicate.gainHistory.first!
-        self.handelDicts.portfolioListShareNumberDict[key]! -= duplicate.purchaseAmount
-        let currentTotalValue = self.handelDicts.portfolioListInvestDict[key]! + self.handelDicts.portfolioListGainDict[key]!
-        self.handelDicts.portfolioListPercentageDict[key]! = calcRateD(x: currentTotalValue, y: self.handelDicts.portfolioListInvestDict[key]!)
     }
 }
 
