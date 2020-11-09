@@ -42,7 +42,7 @@ struct ContentView: View {
                             }
                             .onDelete(perform: self.deleteRow)
                         }
-                        .listStyle(DefaultListStyle())
+                        .listStyle(PlainListStyle())
                         .onAppear{ buildElements() }
                         
                         if colorScheme == .dark{
