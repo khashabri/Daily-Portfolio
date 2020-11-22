@@ -33,6 +33,14 @@ struct ContentView: View {
             NavigationView{
                 GeometryReader { geometry in
                     ZStack(alignment: Alignment.top){
+                        if #available(iOS 14, *) {
+                            Text("")
+                                .onChange(of: buttonPressed) { _ in
+                                    buildElements()
+                                    buttonPressed = false
+                                }
+                        }
+                        
                         List() {
                             
                             ForEach(self.handelDicts.portfolioListInvestDict.sorted(by: <), id: \.value) {key, value in
@@ -45,13 +53,6 @@ struct ContentView: View {
                         }
                         .listStyle(PlainListStyle())
                         .onAppear{ buildElements() }
-                        if #available(iOS 14, *) {
-                            Text("")
-                                .onChange(of: buttonPressed) { _ in
-                                    buildElements()
-                                    buttonPressed = false
-                                }
-                        }
                         
                         if colorScheme == .dark{
                             SlideOverCardBlack(tabBarHeight: .constant(geometry.size.height-22), $position, backgroundStyle: $background) {
