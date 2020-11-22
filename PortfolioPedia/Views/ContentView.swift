@@ -45,7 +45,7 @@ struct ContentView: View {
                         }
                         .listStyle(PlainListStyle())
                         .onAppear{ buildElements() }
-                        if #available(iOS 14.0, *) {
+                        if #available(iOS 14, *) {
                             Text("")
                                 .onChange(of: buttonPressed) { _ in
                                     buildElements()
