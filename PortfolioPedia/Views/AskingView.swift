@@ -16,6 +16,7 @@ struct AskingView: View {
     @State private var amountOfStock = ""
     @State private var manualPurchasedPrice = ""
     @State private var today = get_today()
+    @Binding var buttonPressed: Bool
     
     // this variable is somit shared through all views with this line
     @EnvironmentObject var settings: UserSettings
@@ -94,7 +95,7 @@ struct AskingView: View {
                         
                         self.presentationMode.wrappedValue.dismiss()
                         self.presentationMode.wrappedValue.dismiss()
-                        
+                        buttonPressed = true // to trigger buildElements()
                     }) {
                         HStack {
                             Image(systemName: "cart.badge.plus")
@@ -147,9 +148,8 @@ struct addButtonFooter: View {
     }
 }
 
-// to use this first comment out @Binding var shouldPopToRootView : Bool
 struct AskingView_Previews: PreviewProvider {
     static var previews: some View {
-        AskingView(compName: "Apple Inc.")
+        AskingView(compName: "Apple Inc.", buttonPressed: .constant(true))
     }
 }

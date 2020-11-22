@@ -16,6 +16,7 @@ struct ContentView: View {
     @State var totalNumbers = TotalNumbers()
     @State var loadingState: LoadingState
     @State var erroredComps = [String]()
+    @State var buttonPressed = false
     
     // For add button
     @State private var showModal = false
@@ -44,6 +45,13 @@ struct ContentView: View {
                         }
                         .listStyle(PlainListStyle())
                         .onAppear{ buildElements() }
+                        if #available(iOS 14.0, *) {
+                            Text("")
+                                .onChange(of: buttonPressed) { _ in
+                                    buildElements()
+                                    buttonPressed = false
+                                }
+                        }
                         
                         if colorScheme == .dark{
                             SlideOverCardBlack(tabBarHeight: .constant(geometry.size.height-22), $position, backgroundStyle: $background) {
@@ -61,7 +69,7 @@ struct ContentView: View {
                     }
                 }
                 
-                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView()))
+                .navigationBarItems(leading: EditButton(), trailing: AddButton(destination: SearchingView(buttonPressed: $buttonPressed)))
                 .navigationBarTitle(Text("Portfolio"))
             }
             
