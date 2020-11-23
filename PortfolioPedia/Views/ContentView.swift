@@ -57,13 +57,13 @@ struct ContentView: View {
                         if colorScheme == .dark{
                             SlideOverCardBlack(tabBarHeight: .constant(geometry.size.height-22), $position, backgroundStyle: $background) {
                                 VStack {
-                                    totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
+                                    totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps, existingInputs: self.$existingInputs)
                                 }
                             }
                         }else{
                             SlideOverCardLight(tabBarHeight: .constant(geometry.size.height-22), $position, backgroundStyle: $background) {
                                 VStack {
-                                    totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps)
+                                    totalInfoSubview(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, loadingState: self.$loadingState, erroredComps: self.$erroredComps, existingInputs: self.$existingInputs)
                                 }
                             }
                         }
@@ -277,6 +277,10 @@ struct ContentView: View {
             self.settings.userInputs.remove(at: indx)
         }
         
+        while let indx = self.existingInputs.firstIndex(where: {$0.compSymbol == removedKey}) {
+            self.existingInputs.remove(at: indx)
+        }
+        
         deleteCache_Welcome(compSymbol: removedKey)
         deleteCache_Articles(compSymbol: removedKey)
     }
@@ -313,6 +317,7 @@ struct totalInfoSubview: View {
     @Binding var handelDicts: HandelDicts
     @Binding var loadingState: LoadingState
     @Binding var erroredComps: [String]
+    @Binding var existingInputs: [UserInput]
     
     @State var showCharts = false
     @State var showLogs = false
@@ -362,7 +367,7 @@ struct totalInfoSubview: View {
             }
             .sheet(isPresented: $showCharts) {ChartView(totalNumbers: self.totalNumbers, handelDicts: self.handelDicts)}
             .background(EmptyView()
-                            .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts).environmentObject(self.settings)})
+                            .sheet(isPresented: $showLogs) {LogsView(totalNumbers: self.$totalNumbers, handelDicts: self.$handelDicts, existingInputs: self.$existingInputs).environmentObject(self.settings)})
             
             
             Spacer()

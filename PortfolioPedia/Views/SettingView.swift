@@ -100,7 +100,7 @@ struct SettingView: View {
                     }
                 }
             }
-            .onAppear{ !MFMailComposeViewController.canSendMail() ? self.unavailabilityText = "In-App Email seems to not work on your device. You can still contact me via Email at khashabri@gmail.com. 📨" : ()}
+            .onAppear{ !MFMailComposeViewController.canSendMail() ? self.unavailabilityText = "In-App Email seems to not work. You can still contact me via Email at khashabri@gmail.com 📨" : ()}
             .navigationBarTitle("Settings")
         }
     }
