@@ -26,10 +26,15 @@ struct SettingView: View {
         NavigationView {
             Form {
                 Section(header: Text("Features"), footer: Text("Add more than two companies to your portfolio and support the app development.")) {
-                    Toggle("Unlock full version", isOn: $settings.subscribed)
+                    Toggle("Unlock full version 🔑", isOn: $settings.subscribed)
                         .onReceive([self.settings.subscribed].publisher.first()) { (value) in
                             save_UserSettings(userSettings: self.settings)
                         }
+                    Button(action: {
+                        // purchase code
+                    }) {
+                        Text("Restore subscription")
+                    }
                 }
                 
                 Section(footer: notiFooter(toggleIsOn: $settings.notificationsEnabled)) {
