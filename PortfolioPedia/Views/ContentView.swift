@@ -138,6 +138,7 @@ struct ContentView: View {
                             self.loadingState = .errorOccured(errorType: .badURL(compName: compName))
                             let erroredCompName = compName
                             self.erroredComps.contains(erroredCompName) ? () : self.erroredComps.append(erroredCompName)
+                            pionierGroup.leave() // still full calc the loaded companies
                             
                         case .badDate(let compName):
                             self.loadingState = .errorOccured(errorType: .badDate(compName: compName))
@@ -156,13 +157,13 @@ struct ContentView: View {
             }
         }
         
-        // second fetching data of other inputs so they can be done offline
+        // second fetching data of other inputs so they can be done offline. This code will be called in ANY CASE (error & success). The loop will determin whether offline data are available (or the company loading was errored)
         pionierGroup.notify(queue: .main) {
             let followerGroup = DispatchGroup()
             for input in followerInputs {
                 followerGroup.enter()
                 
-                if !self.existingInputs.contains(input){
+                if !self.existingInputs.contains(input) && !erroredComps.contains(input.compName){
                     NetworkingManagerPortfolio(userInput: input).getData { result in
                         switch result {
                         case .success(let compPortfolioOutput):
@@ -193,15 +194,18 @@ struct ContentView: View {
             }
             
             followerGroup.notify(queue: .main) {
-                // finished
-                if recalculate{
-                    self.existingInputs = [UserInput]()
-                    self.handelDicts = HandelDicts()
-                    self.totalNumbers = TotalNumbers()
-                    buildElements(recalculate: false)
+                // When there was no error recalc offline (to prevent duplicates) and finish the job
+                if erroredComps.isEmpty{
+                    // finished
+                    if recalculate{
+                        self.existingInputs = [UserInput]()
+                        self.handelDicts = HandelDicts()
+                        self.totalNumbers = TotalNumbers()
+                        buildElements(recalculate: false)
+                    }
+                    
+                    self.loadingState = .allDone
                 }
-                
-                self.loadingState = .allDone
             }
         }
     }
