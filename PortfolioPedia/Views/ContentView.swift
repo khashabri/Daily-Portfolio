@@ -194,10 +194,13 @@ struct ContentView: View {
             }
             
             followerGroup.notify(queue: .main) {
-                // When there was no error recalc offline (to prevent duplicates) and finish the job
+                // When there was no error finish the job
                 if erroredComps.isEmpty{
-                    // finished
-                    if recalculate{
+                    
+                    // cheching for duplicates and evtl. recalc again (offline) to remove them
+                    let ids = self.handelDicts.companiesEntriesDict.values.joined().map{ $0.id }
+                    // still using recalculate help variable to avoid infinit loops. Recalc max 1 time.
+                    if recalculate && ids.count != Set(ids).count{
                         self.existingInputs = [UserInput]()
                         self.handelDicts = HandelDicts()
                         self.totalNumbers = TotalNumbers()

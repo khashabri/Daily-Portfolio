@@ -42,7 +42,7 @@ struct AskingView: View {
                 Section(header: HStack{
                     Image(systemName: "cart")
                     Text("Purchase Informations")}){
-                        DatePicker("Your stock purchase date:", selection: $selectedDate, displayedComponents: .date)
+                    DatePicker("Your stock purchase date:", selection: $selectedDate, in: ...Date(), displayedComponents: .date)
                             .lineLimit(1)
                             .minimumScaleFactor(0.2)
                         TextField("Purchased amount", text: $amountOfStock)

@@ -136,15 +136,18 @@ struct PieChartView: View {
                     .multilineTextAlignment(.leading)
                     .animation(nil)
                 
-                HStack {
+                VStack {
                     ForEach(makeChartDataModel()) { dataSet in
-                        VStack {
+                        HStack {
                             Circle()
+                                .frame(width: 15, height: 15)
                                 .foregroundColor(dataSet.color)
                             Text(dataSet.name).font(.footnote)
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.01)
-                        }.padding(.horizontal)
+                            Spacer()
+                        }
+                        .padding(.leading)
+                        .padding(.leading)
                     }
                 }
             }
