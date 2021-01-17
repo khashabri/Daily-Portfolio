@@ -214,6 +214,12 @@ struct ContentView: View {
     }
     
     private func calculate(compPortfolioOutput: CompPortfolioOutput) {
+        // prevent duplicate calculation
+        let ids = self.handelDicts.companiesEntriesDict.values.joined().map{ $0.id }
+        if ids.contains(compPortfolioOutput.id){
+            return
+        }
+        
         // Catching Data of companies
         let key = compPortfolioOutput.compSymbol
         if self.handelDicts.companiesEntriesDict.keys.contains(key){
