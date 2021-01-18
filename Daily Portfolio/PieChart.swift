@@ -156,7 +156,16 @@ struct PieChartView: View {
     
     private func makeChartDataModel() -> [ChartCellModel]{
         var tmp = [ChartCellModel]()
+        
         var colorsArray = [Color.red, Color.yellow, Color.blue, Color.green, Color.black, Color.gray, Color.orange, Color.purple]
+        
+        let sizeDiff = handelDicts.portfolioListInvestDict.keys.count - colorsArray.count
+        
+        if (0 < sizeDiff){
+            for _ in 0...(sizeDiff){
+                colorsArray.append(Color.random)
+            }
+        }
         
         for key in handelDicts.portfolioListInvestDict.keys.sorted(){
             tmp.append(ChartCellModel(color: colorsArray.removeFirst() , value: CGFloat(roundGoodD(handelDicts.portfolioListInvestDict[key]! + handelDicts.portfolioListGainDict[key]!)), name: handelDicts.companiesEntriesDict[key]![0].compName))
