@@ -27,8 +27,8 @@ struct RowViewPortfolio: View {
                 if settings.showLogos{
                     Image(myDic_Symb2Img[dataEntries[0].compSymbol]!)
                         .resizable()
-                        .frame(height: 40)
                         .aspectRatio(1, contentMode: .fit)
+                        .frame(height: 40)
                         .cornerRadius(10)
                 }
                 
