@@ -57,8 +57,9 @@ func MakeApiStringUrl(compSymbol: String, outputSize: String = "compact") -> Str
     let part2 = compSymbol
     let part3 = "&outputsize="
     let part4 = outputSize
-    let part5 = "&apikey=4HX8NVQU9MV6J5LY"
-    let overall = part1+part2+part3+part4+part5
+    let part5 = "&apikey="
+    let apiKey: String = "" // SET YOUR API KEY FROM "www.alphavantage.co" HERE
+    let overall = part1+part2+part3+part4+part5+apiKey
     
     return overall
 }

@@ -164,8 +164,9 @@ class NetworkingManagerNews: ObservableObject {
     init(compSymbol: String) {
         self.compSymbol = compSymbol
         let name = myDic_Symb2Name[compSymbol]!
+        let apiKey: String = "" // SET YOUR API KEY FROM "newsapi.org" HERE
         let reformattedString = name.replacingOccurrences(of: " ", with: "%20")
-        self.urlString = "http://newsapi.org/v2/everything?q=" + reformattedString + "&from=2020-09-01&sortBy=publishedAt&language=en&apiKey=1da1fd527f8542cb87bd34bfb3d78979"
+        self.urlString = "http://newsapi.org/v2/everything?q=" + reformattedString + "&from=2020-09-01&sortBy=publishedAt&language=en&apiKey=" + apiKey
         // alternativ: sortBy=popularity
     }
     
