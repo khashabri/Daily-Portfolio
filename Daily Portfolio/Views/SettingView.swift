@@ -110,7 +110,7 @@ struct SettingView: View {
                     }
                 }
             }
-            .onAppear{ !MFMailComposeViewController.canSendMail() ? self.unavailabilityText = "In-App Email seems to not work. You can still contact me via Email at khashabri@gmail.com 📨" : ()}
+            .onAppear{ !MFMailComposeViewController.canSendMail() ? self.unavailabilityText = "In-App Email seems to not work. You can still contact me via Email at khashabri@hotmail.com 📨" : ()}
             .navigationBarTitle("Settings")
         }
     }
@@ -177,7 +177,7 @@ struct MailView: UIViewControllerRepresentable {
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
         let vc = MFMailComposeViewController()
-        vc.setToRecipients(["khashabri@gmail.com"])
+        vc.setToRecipients(["khashabri@hotmail.com"])
         vc.setSubject("PortfolioPedia: Bug Report / Suggestion")
         //        vc.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
         vc.mailComposeDelegate = context.coordinator
